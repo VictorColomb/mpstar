@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">MP* Stan</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">MP* Stan</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Réglages</string>
+    <string name="action_refresh">Rafraîchir</string>
+
+    <string name="menu_plan_de_classe">Plan de Classe</string>
+    <string name="menu_planning_ds">Planning des DS</string>
+    <string name="menu_planning_colles">Planning des khôlles</string>
+    <string name="menu_pokedex">Pokédex</string>
+    <string name="menu_emploi_du_temps">Emploi du temps</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="available">Available</string>
+
+    <!-- SETTINGS -->
+    <string name="settings_notifications_header">Notifications</string>
+    <string name="settings_notifications_activated">Activer les notifications</string>
+    <string name="settings_notifications_birthdays">Anniversaires</string>
+    <string name="settings_notifications_colles">Khôlles</string>
+    <string name="settings_perso">Informations personnelles</string>
+    <string name="settings_perso_name">Nom</string>
+</resources>
