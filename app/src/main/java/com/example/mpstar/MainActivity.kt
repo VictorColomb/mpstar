@@ -2,6 +2,7 @@ package com.example.mpstar
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
@@ -22,6 +23,7 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.preference.ListPreference
 import com.example.mpstar.model.Student
 import com.example.mpstar.save.FilesIO
 import java.io.File
@@ -79,6 +81,15 @@ class MainActivity : AppCompatActivity() {
         filesIO = FilesIO(this)
         readSpreadsheetActivity = ReadSpreadsheetActivity(::launchAuthentication, ::showRefreshed)
 
+        //Display name in drawer
+        val namePreference : SharedPreferences? = getSharedPreferences("myPreferences", 0)
+        Log.i("mpstar","namePreference : "+ (namePreference?.getString("perso_name",null)))
+        if (namePreference?.getString("perso_name",null) != "") {
+            Log.i("mpstar", "Displaying name in drawer header")
+        } else {
+            Log.i("mpstar", "Name preference not set")
+        }
+
     }
 
     fun resumePlan() {
@@ -125,6 +136,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Log.i("kotlin test", "$resultCode")
         if (requestCode == RQ_GOOGLE_SIGN_IN) {
             Log.i("kotlin test", "requested sign in")
             if (resultCode == Activity.RESULT_OK) {

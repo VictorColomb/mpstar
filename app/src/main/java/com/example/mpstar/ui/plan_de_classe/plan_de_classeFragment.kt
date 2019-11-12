@@ -42,6 +42,7 @@ class plan_de_classeFragment : Fragment() {
         }
     }
 
+
     override fun onResume() {
         super.onResume()
         Log.i("DEBUG", "HEEEEEEEEEEEEEEEEEEEERE RESUME")

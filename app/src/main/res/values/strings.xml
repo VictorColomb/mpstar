@@ -16,6 +16,7 @@
     <string name="title_activity_settings">Settings</string>
 
     <string name="available">Available</string>
+    <string name="welcome" />
 
     <!-- SETTINGS -->
     <string name="settings_notifications_header">Notifications</string>

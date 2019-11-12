@@ -28,8 +28,8 @@ class ReadSpreadsheetPresenter(private val view: ReadSpreadsheetActivity,
     }
 
     fun loginSuccessful(context: Context) {
-        Log.i("kotlin test","login was successful")
-        Log.i("kotlin test","setting up google account credentials")
+        Log.i("kotlin test", "login was successful")
+        Log.i("kotlin test", "setting up google account credentials")
         authenticationManager.setUpGoogleAccountCredential()
         startReadingSpreadsheet(spreadsheetId, range, context)
     }

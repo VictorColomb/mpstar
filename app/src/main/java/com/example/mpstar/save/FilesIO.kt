@@ -77,6 +77,14 @@ class FilesIO(
         return listOf()
     }
 
+    fun readNamesList() :List<String>{
+        val studentsTemp = readStudentList()
+        return studentsTemp.map {
+            it.myName
+        }
+
+    }
+
     private fun serializer(students: List<Student>): String{
         val mapper = jacksonObjectMapper()
         return mapper.writeValueAsString(students)
