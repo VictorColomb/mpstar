@@ -3,6 +3,7 @@ package com.example.mpstar.save
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.mpstar.MainActivity
 import com.example.mpstar.model.Student
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -42,7 +43,7 @@ class FilesIO(
 
     fun readStudentList() : List<Student>{
         try {
-            var stringBuffer = StringBuffer("")
+            val stringBuffer = StringBuffer("")
 
             // Reads parsed data from internal storage
             val fileInputStream = context.openFileInput(filename)
@@ -82,7 +83,16 @@ class FilesIO(
         return studentsTemp.map {
             it.myName
         }
+    }
 
+    fun getStudentPosition(searchedName :String) :List<Int> {
+        val studentsTemp = readStudentList()
+        for (e in studentsTemp) {
+            if (e.myName == searchedName) {
+                return listOf(e.myRow, e.myColumn)
+            }
+        }
+        return listOf(-1,-1)
     }
 
     private fun serializer(students: List<Student>): String{

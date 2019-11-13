@@ -17,4 +17,13 @@
             android:id="@+id/nav_planning_colles"
             android:title="@string/menu_planning_colles" />
     </group>
+
+    <item android:title="@string/preferences">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:title="@string/action_settings"
+                android:icon="@drawable/ic_settings"/>
+        </menu>
+    </item>
 </menu>

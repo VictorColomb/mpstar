@@ -17,12 +17,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ListPreference
+        android:defaultValue="false"
+        android:entries="@array/names"
+        android:entryValues="@array/names"
+        android:key="perso_name"
+        android:summary="%s"
+        android:title="@string/settings_perso_name" />
     <PreferenceCategory app:title="@string/settings_perso">
         <SwitchPreference
             android:defaultValue="false"
             android:disableDependentsState="false"
+            android:enabled="false"
             android:key="notifications_activated"
-            android:title="@string/settings_notifications_activated" />
+            android:title="@string/settings_notifications_activated"
+            android:summary="À venir..."/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:dependency="notifications_activated"
@@ -33,16 +42,6 @@
             android:dependency="notifications_activated"
             android:key="notifications_colles"
             android:title="@string/settings_notifications_colles" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/settings_perso">
-
-        <ListPreference
-            android:defaultValue="false"
-            android:entries="@array/names"
-            android:entryValues="@array/names"
-            android:key="perso_name"
-            android:title="@string/settings_perso_name"
-            android:summary="%s" />
     </PreferenceCategory>
 
 </PreferenceScreen>

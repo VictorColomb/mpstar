@@ -28,4 +28,10 @@
         android:name="com.example.mpstar.ui.planning_colles.planning_collesFragment"
         android:label="@string/menu_planning_colles"
         tools:layout="@layout/fragment_planning_colles" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.mpstar.ui.settings.settingsFragment"
+        android:label="@string/preferences"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

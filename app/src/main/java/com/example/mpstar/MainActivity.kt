@@ -1,13 +1,21 @@
 package com.example.mpstar
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.InetAddresses
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
+import android.text.Layout
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 import android.util.Log
-import android.view.MenuItem
+import android.view.*
+import android.widget.LinearLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -20,7 +28,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
-import android.view.Menu
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.preference.ListPreference
@@ -32,7 +40,7 @@ import java.lang.Exception
 class MainActivity : AppCompatActivity() {
 
     private var mAppBarConfiguration: AppBarConfiguration? = null
-    private lateinit var readSpreadsheetActivity: ReadSpreadsheetActivity
+    lateinit var readSpreadsheetActivity: ReadSpreadsheetActivity
     private lateinit var filesIO: FilesIO
     private lateinit var students: List<Student>
 
@@ -42,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         Log.i("kotlin test","finished authenthication")
     }
 
-    private fun showRefreshed(){
+    fun showRefreshed(){
         students = readSpreadsheetActivity.presenter.students.toList()
         filesIO.writeStudentList(students)
         showClassPlan()
@@ -79,16 +87,6 @@ class MainActivity : AppCompatActivity() {
         //NOT NEEDED YET val model =ViewModelProviders.of(this)[MyViewModel::class.java]
         filesIO = FilesIO(this)
         readSpreadsheetActivity = ReadSpreadsheetActivity(::launchAuthentication, ::showRefreshed)
-
-        //Display name in drawer
-        val namePreference : SharedPreferences? = getSharedPreferences("myPreferences", 0)
-        Log.i("mpstar","namePreference : "+ (namePreference?.getString("perso_name",null)))
-        if (namePreference?.getString("perso_name",null) != "") {
-            Log.i("mpstar", "Displaying name in drawer header")
-        } else {
-            Log.i("mpstar", "Name preference not set")
-        }
-
     }
 
     fun resumePlan() {
@@ -101,31 +99,9 @@ class MainActivity : AppCompatActivity() {
         resumePlan()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         return NavigationUI.navigateUp(navController, mAppBarConfiguration!!) || super.onSupportNavigateUp()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_refresh -> {
-                // Refresh
-                try {
-                    readSpreadsheetActivity.init(this)
-                }
-                catch (ex : Exception){
-                    Toast.makeText(applicationContext, "Refresh failed", Toast.LENGTH_SHORT).show()
-                }
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -140,6 +116,10 @@ class MainActivity : AppCompatActivity() {
                 Log.i("kotlin test", "Login failed")
             }
         }
+    }
+
+    fun getThis() :Context {
+        return this
     }
 
     companion object{
