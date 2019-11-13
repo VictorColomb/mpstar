@@ -28,10 +28,4 @@
         android:name="com.example.mpstar.ui.planning_colles.planning_collesFragment"
         android:label="@string/menu_planning_colles"
         tools:layout="@layout/fragment_planning_colles" />
-
-    <fragment
-        android:id="@+id/nav_pokedex"
-        android:name="com.example.mpstar.ui.pokedex.pokedexFragment"
-        android:label="@string/menu_pokedex"
-        tools:layout="@layout/fragment_pokedex" />
 </navigation>

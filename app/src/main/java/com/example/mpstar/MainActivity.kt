@@ -68,8 +68,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = AppBarConfiguration.Builder(
-                R.id.nav_plan_de_classe, R.id.nav_planning_ds, R.id.nav_planning_colles,
-                R.id.nav_pokedex, R.id.nav_emploi_du_temps)
+                R.id.nav_plan_de_classe, R.id.nav_planning_ds, R.id.nav_planning_colles, R.id.nav_emploi_du_temps)
                 .setDrawerLayout(drawer)
                 .build()
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
@@ -115,11 +114,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings -> {
-                val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
-                return true
-            }
             R.id.action_refresh -> {
                 // Refresh
                 try {

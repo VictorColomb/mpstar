@@ -16,9 +16,5 @@
         <item
             android:id="@+id/nav_planning_colles"
             android:title="@string/menu_planning_colles" />
-        <item
-            android:id="@+id/nav_pokedex"
-            android:title="@string/menu_pokedex" />
     </group>
-
 </menu>
