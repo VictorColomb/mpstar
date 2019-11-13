@@ -72,6 +72,7 @@ class ReadSpreadsheetActivity (
         spreadsheetAdapter.showAdaptor(context, showClassPlan)
     }
 
+
     companion object {
         const val TAG = "ReadSpreadsheetActivity"
         const val RQ_GOOGLE_SIGN_IN = 999
