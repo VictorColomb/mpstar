@@ -33,10 +33,13 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.preference.ListPreference
+import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.save.FilesIO
 import java.io.File
 import java.lang.Exception
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,11 +47,26 @@ class MainActivity : AppCompatActivity() {
     lateinit var readSpreadsheetActivity: ReadSpreadsheetActivity
     private lateinit var filesIO: FilesIO
     private lateinit var students: List<Student>
+    private lateinit var perso: Personal
 
     private fun launchAuthentication(client: GoogleSignInClient) {
         Log.i("kotlin test","Lauching authenthication")
         startActivityForResult(client.signInIntent, ReadSpreadsheetActivity.RQ_GOOGLE_SIGN_IN)
         Log.i("kotlin test","finished authenthication")
+    }
+
+    fun matchPersonal(personals: MutableList<Personal>){
+        val preferences = getSharedPreferences("mySharedPreferences", 0)
+        val my_name = preferences.getString("perso_name", "JEFF")
+        for (personal in personals){
+            if(personal.myName == my_name){
+                perso = personal
+                val td = Date()
+                val duration : Long = td.time - perso.myBirthday.time
+                Toast.makeText(this, TimeUnit.DAYS.convert(duration, TimeUnit.MILLISECONDS).toString(), Toast.LENGTH_SHORT).show()
+                return
+            }
+        }
     }
 
     fun showRefreshed(){
@@ -93,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 
         //NOT NEEDED YET val model =ViewModelProviders.of(this)[MyViewModel::class.java]
         filesIO = FilesIO(this)
-        readSpreadsheetActivity = ReadSpreadsheetActivity(::launchAuthentication, ::showRefreshed)
+        readSpreadsheetActivity = ReadSpreadsheetActivity(::launchAuthentication, ::showRefreshed, ::matchPersonal)
     }
 
     fun resumePlan() {

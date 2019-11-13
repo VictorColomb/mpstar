@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
 import com.example.mpstar.adapter.SpreadsheetAdapter
+import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.sheets.AuthenticationManager
 import com.example.mpstar.sheets.SheetsAPIDataSource
@@ -23,7 +24,8 @@ import java.util.*
 
 class ReadSpreadsheetActivity (
         private val launchAuthentication: (client: GoogleSignInClient) -> (Unit),
-        private val showClassPlan: ()-> (Unit)) {
+        private val showClassPlan: ()-> (Unit),
+        val matchPersonal: (personals: MutableList<Personal>)-> (Unit)) {
 
     lateinit var presenter : ReadSpreadsheetPresenter
 
@@ -71,7 +73,6 @@ class ReadSpreadsheetActivity (
     fun showPeople(context: Context) {
         spreadsheetAdapter.showAdaptor(context, showClassPlan)
     }
-
 
     companion object {
         const val TAG = "ReadSpreadsheetActivity"

@@ -2,6 +2,7 @@ package com.jack.royer.kotlintest2.ui.read
 
 import android.content.Context
 import android.util.Log
+import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.sheets.AuthenticationManager
 import com.example.mpstar.sheets.SheetsAPIDataSource
@@ -17,6 +18,7 @@ class ReadSpreadsheetPresenter(private val view: ReadSpreadsheetActivity,
 
     private lateinit var readSpreadsheetDisposable : Disposable
     var students : MutableList<Student> = mutableListOf()
+    var personal : MutableList<Personal> = mutableListOf()
 
     fun init(launchAuthentication: (client : GoogleSignInClient) -> (Unit)) {
         launchAuthentication(authenticationManager.googleSignInClient)
@@ -31,13 +33,13 @@ class ReadSpreadsheetPresenter(private val view: ReadSpreadsheetActivity,
         Log.i("kotlin test", "login was successful")
         Log.i("kotlin test", "setting up google account credentials")
         authenticationManager.setUpGoogleAccountCredential()
-        startReadingSpreadsheet(spreadsheetId, range, context)
+        startReadingSpreadsheetStudents(context)
     }
 
-    private fun startReadingSpreadsheet(spreadsheetId : String, range : String, context: Context){
+    private fun startReadingSpreadsheetStudents(context: Context){
         students.clear()
         readSpreadsheetDisposable=
-            sheetsAPIDataSource.readSpreadSheet(spreadsheetId, range)
+            sheetsAPIDataSource.readSpreadSheet(spreadsheetId, rangeStudents)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnError { view.showError(context, it.message!!) }
@@ -47,8 +49,22 @@ class ReadSpreadsheetPresenter(private val view: ReadSpreadsheetActivity,
                 })
     }
 
+    private fun startReadingSpreadsheetPersonal(context: Context){
+        personal.clear()
+        readSpreadsheetDisposable=
+                sheetsAPIDataSource.readSpreadSheetPersonal(spreadsheetId, rangePersonal)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError { view.showError(context, it.message!!) }
+                        .subscribe(Consumer {
+                            personal.addAll(it)
+                            view.matchPersonal(personal)
+                        })
+    }
+
     companion object {
         val spreadsheetId = "1VXDSYl2X5oXNXKeYbNrBH8b1zR_nIzqHbRhZaopWgCw"
-        val range = "Sheet1!A5:F"
+        val rangeStudents = "Sheet1!A5:F"
+        val rangePersonal = "Personal!A2:F"
     }
 }
