@@ -37,6 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 
 public class settingsFragment extends Fragment {
 
@@ -46,7 +47,7 @@ public class settingsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
-        getActivity().getSupportFragmentManager()
+        Objects.requireNonNull(getActivity()).getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.settings, new SettingsFragmentInside())
                 .commit();
@@ -64,6 +65,7 @@ public class settingsFragment extends Fragment {
             final String TAG = SettingsFragmentInside.class.getName();
             getPreferenceManager().setSharedPreferencesName("mySharedPreferences");
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+            SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("mySharedPreferences", 0);
 
             filesIO = new FilesIO(getContext());
             List names = filesIO.readNamesList();
@@ -76,6 +78,13 @@ public class settingsFragment extends Fragment {
             if (preference_perso_name != null) {
                 preference_perso_name.setEntries(namesCs);
                 preference_perso_name.setEntryValues(namesCs);
+            }
+            String previously_selected_name = preferences.getString("perso_name", null);
+            if (previously_selected_name != null && preference_perso_name != null) {
+                preference_perso_name.setValue(previously_selected_name);
+                Log.i("mpstar", "Preference name overwritten by SharedPreferences : "+previously_selected_name);
+            } else {
+                Log.i("mpstar", "Some bitch ass is null");
             }
 
             //disable individual notification settings if global notifications are disabled
