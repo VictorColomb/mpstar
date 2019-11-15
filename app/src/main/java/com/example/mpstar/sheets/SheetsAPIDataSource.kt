@@ -1,5 +1,6 @@
 package com.example.mpstar.sheets
 
+import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
@@ -7,6 +8,8 @@ import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.model.Spreadsheet
 import io.reactivex.Observable
 import io.reactivex.Single
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                           private val transport : HttpTransport,
@@ -38,6 +41,29 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                             myRow = it[2].toString().toInt(),
                             myColumn = it[3].toString().toInt(),
                             myPair = it[4].toString().toBoolean()
+                    )
+                }
+                .toList()
+    }
+
+    fun readSpreadSheetPersonal(spreadsheetId: String,
+                        spreadsheetRange: String): Single<List<Personal>> {
+        val dt = SimpleDateFormat("mm/dd")
+        return Observable
+                .fromCallable{
+                    val response = sheetsAPI.spreadsheets().values()
+                            .get(spreadsheetId, spreadsheetRange)
+                            .execute()
+                    response.getValues() }
+                .flatMapIterable { it }
+                .map {
+                    Personal(
+                            myName = it[0].toString(),
+                            myLastName = it[1].toString(),
+                            myBirthday = dt.parse(it[2].toString()),
+                            myOption = it[3].toString(),
+                            myLanguage = it[4].toString(),
+                            myGroup = it[5].toString().toInt()
                     )
                 }
                 .toList()
