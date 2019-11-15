@@ -17,6 +17,9 @@
 
     <string name="available" />
     <string name="welcome" />
+    <string name="ok">Ok</string>
+    <string name="not_again">Ne plus demander</string>
+    <string name="name_spinner">Nom</string>
 
     <!-- SETTINGS -->
     <string name="settings_notifications_header">Notifications</string>
@@ -27,6 +30,4 @@
     <string name="settings_perso_name">Nom</string>
     <string name="preferences">Préférences</string>
 
-    <!-- TESTS -->
-    <string name="text_pop_up_test">Text pop up test</string>
 </resources>

@@ -2,47 +2,48 @@ package com.example.mpstar
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
-import android.net.ConnectivityManager
-import android.net.InetAddresses
-import android.net.NetworkCapabilities
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Layout
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-
+import android.transition.Slide
+import android.transition.TransitionManager
 import android.util.Log
-import android.view.*
-import android.widget.LinearLayout
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.DialogFragment
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-
-import com.google.android.material.navigation.NavigationView
-import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetActivity
-
-import androidx.drawerlayout.widget.DrawerLayout
-
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-
-import android.widget.PopupWindow
-import android.widget.TextView
-import android.widget.Toast
-import androidx.preference.ListPreference
 import com.example.mpstar.model.Student
 import com.example.mpstar.save.FilesIO
-import java.io.File
-import java.lang.Exception
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.material.navigation.NavigationView
+import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.IllegalStateException
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var names :Array<String>
 
     private var mAppBarConfiguration: AppBarConfiguration? = null
     lateinit var readSpreadsheetActivity: ReadSpreadsheetActivity
     private lateinit var filesIO: FilesIO
     private lateinit var students: List<Student>
+    private lateinit var preferences :SharedPreferences
+
 
     private fun launchAuthentication(client: GoogleSignInClient) {
         Log.i("kotlin test","Lauching authenthication")
@@ -58,14 +59,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun showClassPlan(){
         val r = resources
+        val name = preferences.getString("perso_name", "JEFF")
+
         for (student in students){
             val textView: TextView = findViewById(r.getIdentifier("seat" + student.myRow.toString() + student.myColumn.toString(), "id", packageName))
             textView.text = student.myName
+            if (student.myName == name) {
+                textView.setBackgroundColor(Color.parseColor("#3f51b5"))
+                textView.setTextColor(Color.parseColor("#ffffff"))
+            }
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        preferences = getSharedPreferences("mySharedPreferences", 0)
 
         //UI shit
         setContentView(R.layout.activity_main)
@@ -94,9 +103,39 @@ class MainActivity : AppCompatActivity() {
         showClassPlan()
     }
 
+    @SuppressLint("ApplySharedPref")
+    private fun showPopup() {
+        Log.i("mpstar", "Generating name selection dialog")
+        var selected_name: String? = null
+        names = filesIO.readNamesList().toTypedArray()
+        val namesAdapter = ArrayAdapter(this, 0, names)
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Nom").setSingleChoiceItems(names, -1) { _, which ->
+            selected_name = names[which]
+        }.setPositiveButton(R.string.ok) { _, _ ->
+            val editor = preferences.edit()
+            editor.putString("perso_name", selected_name)
+            editor.putBoolean("perso_name_isset", true)
+            editor.commit()
+            Log.i("mpstar", "Name selection done. Name preference set to : $selected_name")
+            resumePlan()
+        }.setNeutralButton(R.string.not_again) { dialog, which ->
+            val editor = preferences.edit()
+            editor.putBoolean("perso_name_isset", true)
+            editor.commit()
+            Log.i("mpstar", "Name selection never again")
+        }
+        builder.create().show()
+    }
+
     override fun onResume() {
         super.onResume()
         resumePlan()
+
+        val nameSet = preferences.getBoolean("perso_name_isset", false)
+        if (!nameSet) {
+            showPopup()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -110,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == RQ_GOOGLE_SIGN_IN) {
             Log.i("kotlin test", "requested sign in")
             if (resultCode == Activity.RESULT_OK) {
-                readSpreadsheetActivity!!.presenter.loginSuccessful(this)
+                readSpreadsheetActivity.presenter.loginSuccessful(this)
                 Log.i("kotlin test", "Login successful")
             } else {
                 Log.i("kotlin test", "Login failed")
