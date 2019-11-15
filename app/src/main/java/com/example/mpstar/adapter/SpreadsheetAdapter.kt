@@ -11,8 +11,6 @@ import com.example.mpstar.model.Student
 
 class SpreadsheetAdapter(val items: MutableList<Student>){
 
-    fun getItemCount(): Int = items.size
-
     fun showAdaptor(ctx: Context, showClassPlan: ()-> (Unit)){
         showClassPlan()
     }
