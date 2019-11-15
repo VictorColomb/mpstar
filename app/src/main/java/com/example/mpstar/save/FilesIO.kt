@@ -3,7 +3,6 @@ package com.example.mpstar.save
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.example.mpstar.MainActivity
 import com.example.mpstar.model.Student
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -17,10 +16,9 @@ class FilesIO(
 ){
 
     fun writeStudentList(students: List<Student>){
-        Log.i("DEBUG", "writing")
+        Log.i("mpstar", "Writing student list to save file")
         try {
             val fileContents = serializer(students)
-            Log.i("DEBUG", fileContents)
 
             // Writes parsed data to internal storage
             try {
@@ -61,7 +59,6 @@ class FilesIO(
 
 
             fileInputStream.close()
-            Log.i("file", "file" + fileContents)
             try {
                 return deserializer(fileContents)
             }
@@ -83,16 +80,6 @@ class FilesIO(
         return studentsTemp.map {
             it.myName
         }
-    }
-
-    fun getStudentPosition(searchedName :String) :List<Int> {
-        val studentsTemp = readStudentList()
-        for (e in studentsTemp) {
-            if (e.myName == searchedName) {
-                return listOf(e.myRow, e.myColumn)
-            }
-        }
-        return listOf(-1,-1)
     }
 
     private fun serializer(students: List<Student>): String{

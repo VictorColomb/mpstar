@@ -1,15 +1,14 @@
 package com.example.mpstar.sheets
 
+import android.annotation.SuppressLint
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.services.sheets.v4.Sheets
-import com.google.api.services.sheets.v4.model.Spreadsheet
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.text.SimpleDateFormat
-import java.util.*
 
 class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                           private val transport : HttpTransport,
@@ -47,7 +46,7 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
     }
 
     fun readSpreadSheetPersonal(spreadsheetId: String,
-                        spreadsheetRange: String): Single<List<Personal>> {
+                                spreadsheetRange: String): Single<List<Personal>> {
         val dt = SimpleDateFormat("mm/dd")
         return Observable
                 .fromCallable{
@@ -67,10 +66,5 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                     )
                 }
                 .toList()
-    }
-
-    companion object {
-        val KEY_ID = "spreadsheetId"
-        val KEY_URL = "spreadsheetUrl"
     }
 }

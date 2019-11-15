@@ -1,10 +1,7 @@
 package com.jack.royer.kotlintest2.ui.read
 
-import android.app.LauncherActivity
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import androidx.core.app.ActivityCompat.startActivityForResult
 import com.example.mpstar.adapter.SpreadsheetAdapter
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
@@ -13,12 +10,10 @@ import com.example.mpstar.sheets.SheetsAPIDataSource
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.Scope
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.ExponentialBackOff
-import com.google.api.services.sheets.v4.SheetsScopes
 import java.util.*
 
 
@@ -46,7 +41,7 @@ class ReadSpreadsheetActivity (
                 .build()
         val googleSignInClient = GoogleSignIn.getClient(context, signInOptions)
         val googleAccountCredential = GoogleAccountCredential
-            .usingOAuth2(context, Arrays.asList(*AuthenticationManager.SCOPES))
+            .usingOAuth2(context, listOf(*AuthenticationManager.SCOPES))
             .setBackOff(ExponentialBackOff())
         val authManager =
                 AuthenticationManager(
@@ -75,7 +70,6 @@ class ReadSpreadsheetActivity (
     }
 
     companion object {
-        const val TAG = "ReadSpreadsheetActivity"
         const val RQ_GOOGLE_SIGN_IN = 999
     }
 

@@ -1,41 +1,23 @@
 package com.example.mpstar.ui.settings;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.ArraySet;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.CheckBoxPreference;
-import androidx.preference.DialogPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 import androidx.preference.SwitchPreference;
 
 import com.example.mpstar.R;
-import com.example.mpstar.model.Student;
 import com.example.mpstar.save.FilesIO;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,12 +44,11 @@ public class settingsFragment extends Fragment {
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            final String TAG = SettingsFragmentInside.class.getName();
             getPreferenceManager().setSharedPreferencesName("mySharedPreferences");
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
             SharedPreferences preferences = Objects.requireNonNull(getActivity()).getSharedPreferences("mySharedPreferences", 0);
 
-            filesIO = new FilesIO(getContext());
+            filesIO = new FilesIO(Objects.requireNonNull(getContext()));
             List names = filesIO.readNamesList();
             CharSequence[] namesCs = new CharSequence[names.size()];
             int index = 0;

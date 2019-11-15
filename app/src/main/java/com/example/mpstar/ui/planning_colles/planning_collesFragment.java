@@ -11,12 +11,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mpstar.R;
 
+import java.util.Objects;
+
 public class planning_collesFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInsatnceState) {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        View root = inflater.inflate(R.layout.fragment_planning_colles, container, false);
-        return root;
+        Objects.requireNonNull(getActivity()).setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+        return inflater.inflate(R.layout.fragment_planning_colles, container, false);
     }
 }
