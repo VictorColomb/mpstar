@@ -11,7 +11,7 @@ class AuthenticationManager(private val context: Lazy<Context>,
                             val googleSignInClient: GoogleSignInClient,
                             val googleAccountCredential: GoogleAccountCredential?) {
 
-    fun getLastSignedAccount() : GoogleSignInAccount? {
+    private fun getLastSignedAccount() : GoogleSignInAccount? {
         return GoogleSignIn.getLastSignedInAccount(context.value)
     }
 

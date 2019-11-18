@@ -18,6 +18,9 @@
     <string name="available" />
     <string name="welcome" />
     <string name="empty" />
+    <string name="ok">Ok</string>
+    <string name="not_again">Ne plus demander</string>
+    <string name="name_spinner">Nom</string>
 
     <!-- SETTINGS -->
     <string name="settings_notifications_header">Notifications</string>

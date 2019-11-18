@@ -25,10 +25,6 @@ class ReadSpreadsheetPresenter(private val view: ReadSpreadsheetActivity,
         view.initList(students)
     }
 
-    fun dispose() {
-        readSpreadsheetDisposable.dispose()
-    }
-
     fun loginSuccessful(context: Context) {
         Log.i("kotlin test", "login was successful")
         Log.i("kotlin test", "setting up google account credentials")

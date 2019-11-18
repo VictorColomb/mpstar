@@ -1,6 +1,5 @@
 package com.example.mpstar.ui.emploi_du_temps
 
-import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log

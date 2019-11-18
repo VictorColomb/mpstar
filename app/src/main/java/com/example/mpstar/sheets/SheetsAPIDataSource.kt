@@ -1,5 +1,6 @@
 package com.example.mpstar.sheets
 
+import android.annotation.SuppressLint
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.google.api.client.http.HttpTransport
@@ -66,10 +67,5 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                     )
                 }
                 .toList()
-    }
-
-    companion object {
-        val KEY_ID = "spreadsheetId"
-        val KEY_URL = "spreadsheetUrl"
     }
 }

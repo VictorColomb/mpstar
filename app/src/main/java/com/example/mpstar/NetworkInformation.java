@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.util.Log;
 
 public class NetworkInformation {
 
@@ -25,24 +24,19 @@ public class NetworkInformation {
                         return true;
                     } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
                         return true;
-                    }  else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)){
-                        return true;
-                    }
+                    }  else return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET);
                 }
             } else {
 
                 try {
                     NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
                     if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
-                        Log.i("update_statut", "Network is available : true");
                         return true;
                     }
-                } catch (Exception e) {
-                    Log.i("update_statut", "" + e.getMessage());
+                } catch (Exception ignored) {
                 }
             }
         }
-        Log.i("update_statut","Network is available : FALSE ");
         return false;
         }
 
