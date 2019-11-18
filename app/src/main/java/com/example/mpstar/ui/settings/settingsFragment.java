@@ -65,8 +65,6 @@ public class settingsFragment extends Fragment {
             if (previously_selected_name != null && preference_perso_name != null) {
                 preference_perso_name.setValue(previously_selected_name);
                 Log.i("mpstar", "Preference name overwritten by SharedPreferences : "+previously_selected_name);
-            } else {
-                Log.i("mpstar", "Some bitch ass is null");
             }
 
             //disable individual notification settings if global notifications are disabled
