@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.preference.CheckBoxPreference;
@@ -15,14 +14,13 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 
+import com.example.mpstar.MainActivity;
 import com.example.mpstar.R;
 import com.example.mpstar.save.FilesIO;
-
 import java.util.List;
 import java.util.Objects;
 
 public class settingsFragment extends Fragment {
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -37,9 +35,9 @@ public class settingsFragment extends Fragment {
         return root;
     }
 
-
-
     public static class SettingsFragmentInside extends PreferenceFragmentCompat {
+
+        private MainActivity mainActivity = new MainActivity();
 
         FilesIO filesIO;
 
@@ -82,6 +80,17 @@ public class settingsFragment extends Fragment {
                             if (preference_notifications_colles != null)
                                 preference_notifications_colles.setChecked(false);
                         }
+                        return true;
+                    }
+                });
+            }
+
+            final Preference preference_refresh = findPreference("refresh_all");
+            if (preference_refresh != null) {
+                preference_refresh.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        mainActivity.refreshAll();
                         return true;
                     }
                 });

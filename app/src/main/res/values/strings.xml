@@ -31,5 +31,7 @@
     <string name="settings_perso_name">Nom</string>
     <string name="preferences">Préférences</string>
     <string name="select_date">Changer</string>
+    <string name="settings_refresh">Réglages avancés</string>
+    <string name="settings_refresh_button">Tout mettre à jour</string>
 
 </resources>
