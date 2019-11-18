@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun showPersonal(){
         val welcome = findViewById<TextView>(R.id.welcome_string)
-        welcome.text = "Welcome " + perso.myName
+        welcome.text = "Salutations\n" + perso.myName
     }
 
     private fun matchPersonal(personals: MutableList<Personal>){
@@ -98,6 +98,13 @@ class MainActivity : AppCompatActivity() {
 
         filesIO = FilesIO(this)
         readSpreadsheetActivity = ReadSpreadsheetActivity(::launchAuthentication, ::showRefreshed, ::matchPersonal)
+
+        try {
+            showPersonal()
+        }
+        catch (e:Exception){
+            Log.e("YO Le Rap","MY NAME IS BOB")
+        }
     }
 
     fun resumePlan() {
