@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -25,6 +26,7 @@ import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetActivity
 
 class MainActivity : AppCompatActivity() {
 
+    // name of all the students
     private lateinit var names :Array<String>
 
     private var mAppBarConfiguration: AppBarConfiguration? = null
@@ -34,50 +36,39 @@ class MainActivity : AppCompatActivity() {
     private lateinit var preferences : SharedPreferences
     private lateinit var perso: Personal
 
+    // is user signed in
+    var signedIn = false
+
+
+    //<editor-fold desc="Authentication">
+    // Initiates Login process
+    fun requestSignIn(){
+
+    }
+
+    // Starts Login
     private fun launchAuthentication(client: GoogleSignInClient) {
         Log.i("mpstar", "Authenticating...")
         startActivityForResult(client.signInIntent, RQ_GOOGLE_SIGN_IN)
     }
 
+    // Called after the Login Popup has been closed
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RQ_GOOGLE_SIGN_IN) {
+            if (resultCode == Activity.RESULT_OK) {
+
+            }
+        }
+    }
+
     fun refreshAll() {
         //fucking code that shit...
     }
+    //</editor-fold>
 
-    @SuppressLint("SetTextI18n")
-    private fun showPersonal(){
-        val welcome = findViewById<TextView>(R.id.welcome_string)
-        welcome.text = "Salutations\n" + perso.myName
-    }
 
-    private fun matchPersonal(personals: MutableList<Personal>){
-        val myName = preferences.getString("perso_name", "JEFF")
-        for (personal in personals){
-            if(personal.myName == myName){
-                perso = personal
-                showPersonal()
-                return
-            }
-        }
-    }
-
-    private fun showClassPlan(){
-        val name = preferences.getString("perso_name", "JEFF")
-        for (student in students){
-            val textView: TextView = findViewById(resources.getIdentifier("seat" + student.myRow.toString() + student.myColumn.toString(), "id", packageName))
-            textView.text = student.myName
-            if (student.myName == name) {
-                textView.setBackgroundColor(Color.parseColor("#3f51b5"))
-                textView.setTextColor(Color.parseColor("#ffffff"))
-            }
-        }
-    }
-
-    private fun showRefreshed(){
-        students = readSpreadsheetActivity.presenter.students.toList()
-        filesIO.writeStudentList(students)
-        showClassPlan()
-    }
-
+    //<editor-fold desc="Create and Resume">
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -102,24 +93,74 @@ class MainActivity : AppCompatActivity() {
 
         filesIO = FilesIO(this)
         readSpreadsheetActivity = ReadSpreadsheetActivity(::launchAuthentication, ::showRefreshed, ::matchPersonal)
+    }
 
-        try {
-            showPersonal()
-        }
-        catch (e:Exception){
-            Log.e("YO Le Rap","MY NAME IS BOB")
+    override fun onResume() {
+        super.onResume()
+        resumePlan()
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Modify User Interface">
+    // adds the user welcome message
+    private fun showWelcomeMessage(){
+        val welcome = findViewById<TextView>(R.id.welcome_string)
+        val tempString = "Salutations\n" + perso.myName
+        welcome.text = tempString
+    }
+
+    // shows class plan
+    private fun showClassPlan(){
+        val name = preferences.getString("perso_name", "JEFF")
+        for (student in students){
+            val textView: TextView = findViewById(resources.getIdentifier("seat" + student.myRow.toString() + student.myColumn.toString(), "id", packageName))
+            textView.text = student.myName
+            if (student.myName == name) {
+                textView.setBackgroundColor(Color.parseColor("#3f51b5"))
+                textView.setTextColor(Color.parseColor("#ffffff"))
+            }
         }
     }
 
-    fun resumePlan() {
-        students = filesIO.readStudentList()
-        showClassPlan()
-        val nameSet = preferences.getBoolean("perso_name_isset", false)
-        if (!nameSet) {
-            showPopup()
+    //</editor-fold>
+
+
+    //<editor-fold desc="Read Google Sheets">
+    // Fetches Personal Info from List of all Info
+    private fun matchPersonal(personals: MutableList<Personal>){
+        val myName = preferences.getString("perso_name", "JEFF")
+        for (personal in personals){
+            if(personal.myName == myName){
+                perso = personal
+                return
+            }
         }
     }
 
+    // Refresh's the Class Plan
+    fun refreshPlan(){
+        if (signedIn){
+            try {
+                readSpreadsheetActivity.presenter.loginSuccessful(this)
+            }
+            catch(e: Exception){
+                Log.e("ERROR REFRESH PLAN", e.toString())
+            }
+        }
+        else{
+            Toast.makeText(this, "Chacal commence par Sign In", Toast.LENGTH_LONG).show()
+        }
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Write Google Sheets"
+
+    //</editor-fold>
+
+
+    //<editor-fold desc="Enter your name popup">
     @SuppressLint("ApplySharedPref")
     private fun showPopup() {
         var selectedName: String? = null
@@ -145,28 +186,28 @@ class MainActivity : AppCompatActivity() {
             builder.create().show()
         }
     }
+    //</editor-fold>
 
-    override fun onResume() {
-        super.onResume()
-        resumePlan()
+
+    private fun showRefreshed(){
+        students = readSpreadsheetActivity.presenter.students.toList()
+        filesIO.writeStudentList(students)
+        showClassPlan()
     }
+
+    fun resumePlan() {
+        students = filesIO.readStudentList()
+        showClassPlan()
+        val nameSet = preferences.getBoolean("perso_name_isset", false)
+        if (!nameSet) {
+            showPopup()
+        }
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         return NavigationUI.navigateUp(navController, mAppBarConfiguration!!) || super.onSupportNavigateUp()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RQ_GOOGLE_SIGN_IN) {
-            if (resultCode == Activity.RESULT_OK) {
-                readSpreadsheetActivity.presenter.loginSuccessful(this)
-            }
-        }
-    }
-
-    fun getThis() :Context {
-        return this
     }
 
     companion object{
