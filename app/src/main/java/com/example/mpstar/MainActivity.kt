@@ -39,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(client.signInIntent, RQ_GOOGLE_SIGN_IN)
     }
 
+    fun refreshAll() {
+        //fucking code that shit...
+    }
+
     @SuppressLint("SetTextI18n")
     private fun showPersonal(){
         val welcome = findViewById<TextView>(R.id.welcome_string)

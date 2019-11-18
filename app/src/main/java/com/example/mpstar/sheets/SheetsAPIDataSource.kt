@@ -9,7 +9,6 @@ import com.google.api.services.sheets.v4.Sheets
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 
 class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                           private val transport : HttpTransport,
@@ -46,8 +45,9 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                 .toList()
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun readSpreadSheetPersonal(spreadsheetId: String,
-                        spreadsheetRange: String): Single<List<Personal>> {
+                                spreadsheetRange: String): Single<List<Personal>> {
         val df = SimpleDateFormat("MM/dd")
         return Observable
                 .fromCallable{
