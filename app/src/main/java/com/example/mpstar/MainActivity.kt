@@ -102,41 +102,46 @@ class MainActivity : AppCompatActivity() {
 
     fun resumePlan() {
         students = filesIO.readStudentList()
-        showClassPlan()
+        if (students.isEmpty()) {
+            readSpreadsheetActivity.init(this)
+        } else {
+            showClassPlan()
+        }
+        val nameSet = preferences.getBoolean("perso_name_isset", false)
+        if (!nameSet) {
+            showPopup()
+        }
     }
 
     @SuppressLint("ApplySharedPref")
     private fun showPopup() {
         var selectedName: String? = null
         names = filesIO.readNamesList().toTypedArray()
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Nom").setSingleChoiceItems(names, -1) { _, which ->
-            selectedName = names[which]
-        }.setPositiveButton(R.string.ok) { _, _ ->
-            if (selectedName != null) {
+        if (names.isNotEmpty()) {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Nom").setSingleChoiceItems(names, -1) { _, which ->
+                selectedName = names[which]
+            }.setPositiveButton(R.string.ok) { _, _ ->
+                if (selectedName != null) {
+                    val editor = preferences.edit()
+                    editor.putString("perso_name", selectedName)
+                    editor.putBoolean("perso_name_isset", true)
+                    editor.commit()
+                    resumePlan()
+                    Log.i("mpstar", "Setting name preference to : $selectedName")
+                }
+            }.setNeutralButton(R.string.not_again) { _, _ ->
                 val editor = preferences.edit()
-                editor.putString("perso_name", selectedName)
                 editor.putBoolean("perso_name_isset", true)
                 editor.commit()
-                resumePlan()
-                Log.i("mpstar", "Setting name preference to : $selectedName")
             }
-        }.setNeutralButton(R.string.not_again) { _, _ ->
-            val editor = preferences.edit()
-            editor.putBoolean("perso_name_isset", true)
-            editor.commit()
+            builder.create().show()
         }
-        builder.create().show()
     }
 
     override fun onResume() {
         super.onResume()
         resumePlan()
-
-        val nameSet = preferences.getBoolean("perso_name_isset", false)
-        if (!nameSet) {
-            showPopup()
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

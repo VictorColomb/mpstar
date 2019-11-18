@@ -3,7 +3,6 @@ package com.example.mpstar.ui.plan_de_classe
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -55,7 +54,6 @@ class plan_de_classeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.i("DEBUG", "HEEEEEEEEEEEEEEEEEEEERE RESUME")
         val mainActivity: MainActivity = this.activity as MainActivity
         mainActivity.resumePlan()
     }
