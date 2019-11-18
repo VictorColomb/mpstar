@@ -102,11 +102,7 @@ class MainActivity : AppCompatActivity() {
 
     fun resumePlan() {
         students = filesIO.readStudentList()
-        if (students.isEmpty()) {
-            readSpreadsheetActivity.init(this)
-        } else {
-            showClassPlan()
-        }
+        showClassPlan()
         val nameSet = preferences.getBoolean("perso_name_isset", false)
         if (!nameSet) {
             showPopup()
