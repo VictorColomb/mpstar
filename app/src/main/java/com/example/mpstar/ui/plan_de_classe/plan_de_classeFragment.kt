@@ -38,7 +38,7 @@ class plan_de_classeFragment : Fragment() {
                 if (NetworkInformation.isNetworkAvailable(context)) {
                     val mainActivity: MainActivity = this.activity as MainActivity
                     try {
-                        mainActivity.readSpreadsheetActivity.init(mainActivity.getThis())
+                        mainActivity.requestSignIn()
                     } catch (ex :Exception) {
                         Toast.makeText(context, "Refresh failed", Toast.LENGTH_SHORT).show()
                     }

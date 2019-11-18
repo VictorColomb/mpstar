@@ -1,61 +1,56 @@
 package com.jack.royer.kotlintest2.ui.read
 
-import android.content.Context
-import android.util.Log
+import com.example.mpstar.MainActivity
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.sheets.AuthenticationManager
 import com.example.mpstar.sheets.SheetsAPIDataSource
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
 
-class ReadSpreadsheetPresenter(private val view: ReadSpreadsheetActivity,
-                               private val authenticationManager: AuthenticationManager,
-                               private val sheetsAPIDataSource: SheetsAPIDataSource) {
+class ReadSpreadsheetPresenter( private val view: MainActivity,
+                                private val authenticationManager: AuthenticationManager,
+                                private val sheetsAPIDataSource: SheetsAPIDataSource) {
 
     private lateinit var readSpreadsheetDisposable : Disposable
     var students : MutableList<Student> = mutableListOf()
     var personal : MutableList<Personal> = mutableListOf()
 
-    fun init(launchAuthentication: (client : GoogleSignInClient) -> (Unit)) {
-        launchAuthentication(authenticationManager.googleSignInClient)
-        view.initList(students)
-    }
 
-    fun loginSuccessful(context: Context) {
-        Log.i("kotlin test", "login was successful")
-        Log.i("kotlin test", "setting up google account credentials")
+    fun loginSuccessful() {
         authenticationManager.setUpGoogleAccountCredential()
-        startReadingSpreadsheetStudents(context)
-        startReadingSpreadsheetPersonal(context)
+        startReadingSpreadsheetStudents()
     }
 
-    private fun startReadingSpreadsheetStudents(context: Context){
+    fun startLogin(){
+        view.launchAuthentication(authenticationManager.googleSignInClient)
+    }
+
+    private fun startReadingSpreadsheetStudents(){
         students.clear()
         readSpreadsheetDisposable=
             sheetsAPIDataSource.readSpreadSheet(spreadsheetId, rangeStudents)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { view.showError(context, it.message!!) }
+                .doOnError { view.showError(it.message!!) }
                 .subscribe(Consumer {
                     students.addAll(it)
-                    view.showPeople(context)
+                    view.finishedReadingStudents()
                 })
     }
 
-    private fun startReadingSpreadsheetPersonal(context: Context){
+    private fun startReadingSpreadsheetPersonal(){
         personal.clear()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetPersonal(spreadsheetId, rangePersonal)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError { view.showError(context, it.message!!) }
+                        .doOnError { view.showError(it.message!!) }
                         .subscribe(Consumer {
                             personal.addAll(it)
-                            view.matchPersonal(personal)
+                            view.finishedReadingPersonal()
                         })
     }
 

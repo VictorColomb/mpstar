@@ -20,35 +20,56 @@ import androidx.navigation.ui.NavigationUI
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.save.FilesIO
+import com.example.mpstar.sheets.AuthenticationManager
+import com.example.mpstar.sheets.SheetsAPIDataSource
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationView
-import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetActivity
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.api.client.util.ExponentialBackOff
+import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetPresenter
 
 class MainActivity : AppCompatActivity() {
 
+    //<editor-fold desc="Variables">
     // name of all the students
     private lateinit var names :Array<String>
 
+    // shit with drawer VICTOR
     private var mAppBarConfiguration: AppBarConfiguration? = null
-    lateinit var readSpreadsheetActivity: ReadSpreadsheetActivity
+
+    // class for reading and writing data to storage
     private lateinit var filesIO: FilesIO
-    private lateinit var students: List<Student>
+
+    //class for interacting with google sheets
+    private lateinit var presenter : ReadSpreadsheetPresenter
+
+    // VICCCCCCCCCCCCCCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTOOOOOOOOOOOOOOOOOOOOOOR
     private lateinit var preferences : SharedPreferences
+
+    // list of all the students in the class
+    private lateinit var students: List<Student>
+
+    // user's personal info
     private lateinit var perso: Personal
 
     // is user signed in
     var signedIn = false
+    //</editor-fold>
 
 
     //<editor-fold desc="Authentication">
     // Initiates Login process
     fun requestSignIn(){
-
+        presenter.startLogin()
     }
 
     // Starts Login
-    private fun launchAuthentication(client: GoogleSignInClient) {
-        Log.i("mpstar", "Authenticating...")
+    fun launchAuthentication(client: GoogleSignInClient) {
+        Log.i("INFORMATION MAIN", "Beginning Authentication")
         startActivityForResult(client.signInIntent, RQ_GOOGLE_SIGN_IN)
     }
 
@@ -64,6 +85,31 @@ class MainActivity : AppCompatActivity() {
 
     fun refreshAll() {
         //fucking code that shit...
+    }
+
+    private fun initDependencies() {
+        val signInOptions : GoogleSignInOptions =
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        //.requestScopes(Scope(SheetsScopes.SPREADSHEETS_READONLY))
+                        //.requestScopes(Scope(SheetsScopes.SPREADSHEETS))
+                        //.requestScopes(Drive.SCOPE_FILE)
+                        .requestEmail()
+                        .build()
+        val googleSignInClient = GoogleSignIn.getClient(this, signInOptions)
+        val googleAccountCredential = GoogleAccountCredential
+                .usingOAuth2(this, listOf(*AuthenticationManager.SCOPES))
+                .setBackOff(ExponentialBackOff())
+        val authManager =
+                AuthenticationManager(
+                        lazyOf(this),
+                        googleSignInClient,
+                        googleAccountCredential)
+        val sheetsApiDataSource =
+                SheetsAPIDataSource(authManager,
+                        AndroidHttp.newCompatibleTransport(),
+                        JacksonFactory.getDefaultInstance())
+        presenter = ReadSpreadsheetPresenter(this, authManager, sheetsApiDataSource)
+
     }
     //</editor-fold>
 
@@ -90,15 +136,26 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration!!)
         NavigationUI.setupWithNavController(navigationView, navController)
 
-
+        // initializes late-init classes
+        initDependencies()
         filesIO = FilesIO(this)
-        readSpreadsheetActivity = ReadSpreadsheetActivity(::launchAuthentication, ::showRefreshed, ::matchPersonal)
     }
 
     override fun onResume() {
         super.onResume()
+
+        // displays class plan
         resumePlan()
+
+        // displays welcome message
+        showWelcomeMessage()
     }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Asynchronous">
+    fun finishedReadingPersonal(){showRefreshed()}
+    fun finishedReadingStudents(){}
     //</editor-fold>
 
 
@@ -108,6 +165,13 @@ class MainActivity : AppCompatActivity() {
         val welcome = findViewById<TextView>(R.id.welcome_string)
         val tempString = "Salutations\n" + perso.myName
         welcome.text = tempString
+    }
+
+    // DEPRECATED
+    private fun showRefreshed(){
+        students = presenter.students.toList()
+        filesIO.writeStudentList(students)
+        showClassPlan()
     }
 
     // shows class plan
@@ -142,10 +206,10 @@ class MainActivity : AppCompatActivity() {
     fun refreshPlan(){
         if (signedIn){
             try {
-                readSpreadsheetActivity.presenter.loginSuccessful(this)
+                presenter.loginSuccessful()
             }
             catch(e: Exception){
-                Log.e("ERROR REFRESH PLAN", e.toString())
+                showError(e.toString())
             }
         }
         else{
@@ -189,12 +253,6 @@ class MainActivity : AppCompatActivity() {
     //</editor-fold>
 
 
-    private fun showRefreshed(){
-        students = readSpreadsheetActivity.presenter.students.toList()
-        filesIO.writeStudentList(students)
-        showClassPlan()
-    }
-
     fun resumePlan() {
         students = filesIO.readStudentList()
         showClassPlan()
@@ -210,7 +268,15 @@ class MainActivity : AppCompatActivity() {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration!!) || super.onSupportNavigateUp()
     }
 
+    //<editor-fold desc="Miscellaneous">
+    //Shows the error
+    fun showError(error: String) {
+        Log.e("ERROR MAIN", error)
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+    }
+
     companion object{
         const val RQ_GOOGLE_SIGN_IN = 999
     }
+    //</editor-fold>
 }
