@@ -30,6 +30,10 @@ class ReadSpreadsheetActivity (
         presenter.init(launchAuthentication)
     }
 
+    fun refreshAll(context: Context){
+        init(context)
+    }
+
     private fun initDependencies(context: Context) {
         val signInOptions : GoogleSignInOptions =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
