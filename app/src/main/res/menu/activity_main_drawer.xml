@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_plan_de_classe"
+            android:title="@string/menu_plan_de_classe" />
+        <item
+            android:id="@+id/nav_emploi_du_temps"
+            android:title="@string/menu_emploi_du_temps" />
+        <item
+            android:id="@+id/nav_planning_ds"
+            android:title="@string/menu_planning_ds" />
+        <item
+            android:id="@+id/nav_planning_colles"
+            android:title="@string/menu_planning_colles" />
+    </group>
+
+    <item android:title="@string/preferences">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:title="@string/action_settings"
+                android:icon="@drawable/ic_settings"/>
+        </menu>
+    </item>
+</menu>

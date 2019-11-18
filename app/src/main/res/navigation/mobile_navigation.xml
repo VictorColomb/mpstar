@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_plan_de_classe">
+
+    <fragment
+        android:id="@+id/nav_plan_de_classe"
+        android:name="com.example.mpstar.ui.plan_de_classe.plan_de_classeFragment"
+        android:label="@string/menu_plan_de_classe"
+        tools:layout="@layout/fragment_plan_de_classe" />
+
+    <fragment
+        android:id="@+id/nav_emploi_du_temps"
+        android:name="com.example.mpstar.ui.emploi_du_temps.EmploiDuTempsFragment"
+        android:label="@string/menu_emploi_du_temps"
+        tools:layout="@layout/fragment_emploi_du_temps" />
+
+    <fragment
+        android:id="@+id/nav_planning_ds"
+        android:name="com.example.mpstar.ui.planning_ds.planning_dsFragment"
+        android:label="@string/menu_planning_ds"
+        tools:layout="@layout/fragment_planning_ds" />
+
+    <fragment
+        android:id="@+id/nav_planning_colles"
+        android:name="com.example.mpstar.ui.planning_colles.planning_collesFragment"
+        android:label="@string/menu_planning_colles"
+        tools:layout="@layout/fragment_planning_colles" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.mpstar.ui.settings.settingsFragment"
+        android:label="@string/preferences"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
