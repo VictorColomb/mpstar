@@ -33,6 +33,7 @@ public class settingsFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.settings, new SettingsFragmentInside())
                 .commit();
+
         return root;
     }
 
