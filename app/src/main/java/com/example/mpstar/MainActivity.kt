@@ -1,32 +1,27 @@
 package com.example.mpstar
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-
 import android.util.Log
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-
-import com.google.android.material.navigation.NavigationView
-import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetActivity
-
-import androidx.drawerlayout.widget.DrawerLayout
-
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-
-import android.widget.TextView
-import androidx.viewpager.widget.ViewPager
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.save.FilesIO
-import com.example.mpstar.ui.planning_colles.TabAdapter
-import com.google.android.material.tabs.TabLayout
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.material.navigation.NavigationView
+import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,30 +36,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun launchAuthentication(client: GoogleSignInClient) {
         Log.i("mpstar", "Authenticating...")
-        startActivityForResult(client.signInIntent, ReadSpreadsheetActivity.RQ_GOOGLE_SIGN_IN)
+        startActivityForResult(client.signInIntent, RQ_GOOGLE_SIGN_IN)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showPersonal(){
+        val welcome = findViewById<TextView>(R.id.welcome_string)
+        welcome.text = "Welcome " + perso.myName
     }
 
     private fun matchPersonal(personals: MutableList<Personal>){
-    fun showPersonal(){
-        val welcome = findViewById<TextView>(R.id.welcome_string)
-        welcome.setText("Welcome " + perso.myName)
-    }
-
-    fun matchPersonal(personals: MutableList<Personal>){
-        val my_name = preferences.getString("perso_name", "JEFF")
+        val myName = preferences.getString("perso_name", "JEFF")
         for (personal in personals){
-            if(personal.myName == my_name){
+            if(personal.myName == myName){
                 perso = personal
                 showPersonal()
                 return
             }
         }
-    }
-
-    private fun showRefreshed(){
-        students = readSpreadsheetActivity.presenter.students.toList()
-        filesIO.writeStudentList(students)
-        showClassPlan()
     }
 
     private fun showClassPlan(){
@@ -77,6 +66,12 @@ class MainActivity : AppCompatActivity() {
                 textView.setTextColor(Color.parseColor("#ffffff"))
             }
         }
+    }
+
+    private fun showRefreshed(){
+        students = readSpreadsheetActivity.presenter.students.toList()
+        filesIO.writeStudentList(students)
+        showClassPlan()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,19 +107,19 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("ApplySharedPref")
     private fun showPopup() {
-        var selected_name: String? = null
+        var selectedName: String? = null
         names = filesIO.readNamesList().toTypedArray()
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Nom").setSingleChoiceItems(names, -1) { _, which ->
-            selected_name = names[which]
+            selectedName = names[which]
         }.setPositiveButton(R.string.ok) { _, _ ->
-            if (selected_name != null) {
+            if (selectedName != null) {
                 val editor = preferences.edit()
-                editor.putString("perso_name", selected_name)
+                editor.putString("perso_name", selectedName)
                 editor.putBoolean("perso_name_isset", true)
                 editor.commit()
                 resumePlan()
-                Log.i("mpstar", "Setting name preference to : $selected_name")
+                Log.i("mpstar", "Setting name preference to : $selectedName")
             }
         }.setNeutralButton(R.string.not_again) { _, _ ->
             val editor = preferences.edit()
