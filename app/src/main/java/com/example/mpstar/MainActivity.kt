@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RQ_GOOGLE_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
-
+                presenter.loginSuccessful()
             }
         }
     }
@@ -154,8 +154,10 @@ class MainActivity : AppCompatActivity() {
 
 
     //<editor-fold desc="Asynchronous">
-    fun finishedReadingPersonal(){showRefreshed()}
-    fun finishedReadingStudents(){}
+    fun finishedReadingPersonal(){}
+    fun finishedReadingStudents(){
+        showRefreshed()
+    }
     //</editor-fold>
 
 
