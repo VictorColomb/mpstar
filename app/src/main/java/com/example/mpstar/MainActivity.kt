@@ -1,22 +1,13 @@
 package com.example.mpstar
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
-import android.net.ConnectivityManager
-import android.net.InetAddresses
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
-import android.text.Layout
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 
 import android.util.Log
-import android.view.*
-import android.widget.LinearLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -29,17 +20,13 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
-import android.widget.PopupWindow
 import android.widget.TextView
-import android.widget.Toast
-import androidx.preference.ListPreference
+import androidx.viewpager.widget.ViewPager
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.save.FilesIO
-import java.io.File
-import java.lang.Exception
-import java.util.*
-import java.util.concurrent.TimeUnit
+import com.example.mpstar.ui.planning_colles.TabAdapter
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,12 +34,20 @@ class MainActivity : AppCompatActivity() {
     lateinit var readSpreadsheetActivity: ReadSpreadsheetActivity
     private lateinit var filesIO: FilesIO
     private lateinit var students: List<Student>
+
+    // Stores user's personal data
     private lateinit var perso: Personal
+
 
     private fun launchAuthentication(client: GoogleSignInClient) {
         Log.i("kotlin test","Lauching authenthication")
         startActivityForResult(client.signInIntent, ReadSpreadsheetActivity.RQ_GOOGLE_SIGN_IN)
         Log.i("kotlin test","finished authenthication")
+    }
+
+    fun showPersonal(){
+        val welcome = findViewById<TextView>(R.id.welcome_string)
+        welcome.setText("Welcome " + perso.myName)
     }
 
     fun matchPersonal(personals: MutableList<Personal>){
@@ -61,9 +56,7 @@ class MainActivity : AppCompatActivity() {
         for (personal in personals){
             if(personal.myName == my_name){
                 perso = personal
-                val td = Date()
-                val duration : Long = td.time - perso.myBirthday.time
-                Toast.makeText(this, TimeUnit.DAYS.convert(duration, TimeUnit.MILLISECONDS).toString(), Toast.LENGTH_SHORT).show()
+                showPersonal()
                 return
             }
         }

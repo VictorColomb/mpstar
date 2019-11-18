@@ -5,11 +5,10 @@ import com.example.mpstar.model.Student
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.services.sheets.v4.Sheets
-import com.google.api.services.sheets.v4.model.Spreadsheet
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.text.SimpleDateFormat
-import java.util.*
+import java.time.LocalDate
 
 class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                           private val transport : HttpTransport,
@@ -48,7 +47,7 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
 
     fun readSpreadSheetPersonal(spreadsheetId: String,
                         spreadsheetRange: String): Single<List<Personal>> {
-        val dt = SimpleDateFormat("mm/dd")
+        val df = SimpleDateFormat("MM/dd")
         return Observable
                 .fromCallable{
                     val response = sheetsAPI.spreadsheets().values()
@@ -60,7 +59,7 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                     Personal(
                             myName = it[0].toString(),
                             myLastName = it[1].toString(),
-                            myBirthday = dt.parse(it[2].toString()),
+                            myBirthday = df.parse(it[2].toString())!!,
                             myOption = it[3].toString(),
                             myLanguage = it[4].toString(),
                             myGroup = it[5].toString().toInt()

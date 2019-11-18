@@ -34,6 +34,7 @@ class ReadSpreadsheetPresenter(private val view: ReadSpreadsheetActivity,
         Log.i("kotlin test", "setting up google account credentials")
         authenticationManager.setUpGoogleAccountCredential()
         startReadingSpreadsheetStudents(context)
+        startReadingSpreadsheetPersonal(context)
     }
 
     private fun startReadingSpreadsheetStudents(context: Context){
@@ -63,8 +64,8 @@ class ReadSpreadsheetPresenter(private val view: ReadSpreadsheetActivity,
     }
 
     companion object {
-        val spreadsheetId = "1VXDSYl2X5oXNXKeYbNrBH8b1zR_nIzqHbRhZaopWgCw"
-        val rangeStudents = "Sheet1!A5:F"
-        val rangePersonal = "Personal!A2:F"
+        const val spreadsheetId = "1VXDSYl2X5oXNXKeYbNrBH8b1zR_nIzqHbRhZaopWgCw"
+        const val rangeStudents = "Sheet1!A5:F"
+        const val rangePersonal = "Personal!A2:G"
     }
 }

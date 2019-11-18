@@ -17,6 +17,7 @@
 
     <string name="available" />
     <string name="welcome" />
+    <string name="empty" />
 
     <!-- SETTINGS -->
     <string name="settings_notifications_header">Notifications</string>
@@ -26,7 +27,6 @@
     <string name="settings_perso">Informations personnelles (À venir…)</string>
     <string name="settings_perso_name">Nom</string>
     <string name="preferences">Préférences</string>
+    <string name="select_date">Changer</string>
 
-    <!-- TESTS -->
-    <string name="text_pop_up_test">Text pop up test</string>
 </resources>
