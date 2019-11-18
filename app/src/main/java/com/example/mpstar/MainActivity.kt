@@ -148,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         resumePlan()
 
         // displays welcome message
-        showWelcomeMessage()
+        //showWelcomeMessage()
     }
     //</editor-fold>
 
