@@ -63,7 +63,8 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                             myBirthday = df.parse(it[2].toString())!!,
                             myOption = it[3].toString(),
                             myLanguage = it[4].toString(),
-                            myGroup = it[5].toString().toInt()
+                            myGroup = it[5].toString().toInt(),
+                            myGroupInfo = it[6].toString().toInt()
                     )
                 }
                 .toList()

@@ -8,5 +8,6 @@ data class Personal (
     val myBirthday : Date,
     val myOption : String,
     val myGroup : Int,
-    val myLanguage : String
+    val myLanguage : String,
+    val myGroupInfo :Int
     )
