@@ -21,17 +21,24 @@ import java.util.*
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class EmploiDuTempsFragment : Fragment() {
 
+    //<editor-fold desc="Variables">
     private val c = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
     private val month = c.get(Calendar.MONTH)
     private val day = c.get(Calendar.DAY_OF_MONTH)
     private val dt = SimpleDateFormat("yyyy/mm/dd", Locale.FRANCE)
     private val dtmd = SimpleDateFormat("dd/mm", Locale.FRANCE)
+    //</editor-fold>
 
+
+    //<editor-fold desc="Load timetable">
     private fun loadTimetable() {
 
     }
+    //</editor-fold>
 
+
+    //<editor-fold desc="Select date popup">
     @SuppressLint("SetTextI18n")
     private fun selectDate() {
         val selectedDateView = activity?.findViewById<TextView>(R.id.selected_date)
@@ -48,7 +55,10 @@ class EmploiDuTempsFragment : Fragment() {
         }, year, month, day)
         datePicker.show()
     }
+    //</editor-fold>
 
+
+    //<editor-fold desc="onCreate, onHiddenChanged and onResume">
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInsatnceState: Bundle?): View? {
         setHasOptionsMenu(true)
@@ -78,7 +88,10 @@ class EmploiDuTempsFragment : Fragment() {
 
         loadTimetable()
     }
+    //</editor-fold>
 
+
+    //<editor-fold desc="Menu items">
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_plan_de_classe, menu)
     }
@@ -110,5 +123,6 @@ class EmploiDuTempsFragment : Fragment() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
+    //</editor-fold>
 
 }

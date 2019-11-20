@@ -12,13 +12,22 @@ import com.example.mpstar.R
 
 class plan_de_classeFragment : Fragment() {
 
-
+    //<editor-fold desc="onCreateView and onResume">
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInsatnceState: Bundle?): View? {
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_plan_de_classe, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val mainActivity: MainActivity = this.activity as MainActivity
+        mainActivity.resumePlan()
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Menu items">
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_plan_de_classe, menu)
     }
@@ -50,11 +59,5 @@ class plan_de_classeFragment : Fragment() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
-
-
-    override fun onResume() {
-        super.onResume()
-        val mainActivity: MainActivity = this.activity as MainActivity
-        mainActivity.resumePlan()
-    }
+    //</editor-fold>
 }
