@@ -4,8 +4,8 @@ import java.util.*
 
 data class DS (
         val myDate : Date,
-        val MyDiscipline : String,
-        val myTime : String,
+        val myDiscipline : String,
+        val myDuration : String,
         val mySecondDiscipline : String,
         val mySecondDuration : String
 )

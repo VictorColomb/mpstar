@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/nav_planning_ds"
-        android:name="com.example.mpstar.ui.planning_ds.planning_dsFragment"
+        android:name="com.example.mpstar.ui.planning_ds.PlanningDsFragment"
         android:label="@string/menu_planning_ds"
         tools:layout="@layout/fragment_planning_ds" />
 

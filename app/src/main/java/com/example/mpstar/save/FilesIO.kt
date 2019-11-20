@@ -3,6 +3,7 @@ package com.example.mpstar.save
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.mpstar.model.DS
 import com.example.mpstar.model.Student
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -10,11 +11,14 @@ import org.json.JSONException
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.text.SimpleDateFormat
+import java.util.*
 
 class FilesIO(
         val context: Context
 ){
 
+    //<editor-fold desc="Read and Write Student data">
     fun writeStudentList(students: List<Student>){
         Log.i("mpstar", "Writing student list to save file")
         try {
@@ -81,7 +85,19 @@ class FilesIO(
             it.myName
         }
     }
+    //</editor-fold>
 
+
+    //<editor-fold desc="Read and Write DS data">
+    fun readDSList() :List<DS>{ // Read DS list from file
+        // FOR TESTING PURPOSES
+        val dt = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+        return listOf(DS(dt.parse("2019/11/23")!!, "Option", "4h", "FALSE", "0"))
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="JSON shit">
     private fun serializer(students: List<Student>): String{
         val mapper = jacksonObjectMapper()
         return mapper.writeValueAsString(students)
@@ -91,6 +107,7 @@ class FilesIO(
         val mapper = jacksonObjectMapper()
         return mapper.readValue(fileContents)
     }
+    //</editor-fold>
 
     companion object{
         const val filename : String = "mpStar.dat"

@@ -22,6 +22,9 @@
     <string name="not_again">Ne plus demander</string>
     <string name="name_spinner">Nom</string>
 
+    <string name="holidays">Pas de DS cette semaine, c\'est les vacances !</string>
+    <string name="no_ds_found">Pas de DS trouvé pour cette date...</string>
+
     <!-- SETTINGS -->
     <string name="settings_notifications_header">Notifications</string>
     <string name="settings_notifications_activated">Activer les notifications</string>
