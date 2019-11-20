@@ -42,17 +42,21 @@ class PlanningDsFragment : Fragment() {
         while (i<dsList.size && dsList[i].myDate != selectedDate.time) {
             i+=1
         }
+        val dsText1 = activity!!.findViewById<TextView>(R.id.dsText1)
+        val dsText2 = activity!!.findViewById<TextView>(R.id.dsText2)
+        val dsText3 = activity!!.findViewById<TextView>(R.id.dsText3)
+        val dsText4 = activity!!.findViewById<TextView>(R.id.dsText4)
+        dsText1.text = getString(R.string.empty)
+        dsText2.text = getString(R.string.empty)
+        dsText3.text = getString(R.string.empty)
+        dsText4.text = getString(R.string.empty)
         if (i == dsList.size) { //if no ds found
-            val dsText1 = activity!!.findViewById<TextView>(R.id.dsText1)
             dsText1.text = getString(R.string.no_ds_found)
         } else { //if ds found
             val selectedDS = dsList[i]
             if (selectedDS.myDiscipline == "HOLIDAYS") {
-                val dsText1 = activity!!.findViewById<TextView>(R.id.dsText1)
                 dsText1.text = getString(R.string.holidays)
             } else {
-                val dsText1 = activity!!.findViewById<TextView>(R.id.dsText1)
-                val dsText2 = activity!!.findViewById<TextView>(R.id.dsText2)
                 if (listOf("A","E","I","O","U").contains(selectedDS.myDiscipline[0].toString())) {
                     dsText1.text = "Devoir d'"+selectedDS.myDiscipline
                 } else {
@@ -60,8 +64,6 @@ class PlanningDsFragment : Fragment() {
                 }
                 dsText2.text = "Durée : "+selectedDS.myDuration
                 if (selectedDS.mySecondDiscipline != "FALSE") {
-                    val dsText3 = activity!!.findViewById<TextView>(R.id.dsText3)
-                    val dsText4 = activity!!.findViewById<TextView>(R.id.dsText4)
                     if (listOf("A","E","I","O","U").contains(selectedDS.mySecondDiscipline[0].toString())) {
                         dsText3.text = "Devoir d'"+selectedDS.mySecondDiscipline
                     } else {

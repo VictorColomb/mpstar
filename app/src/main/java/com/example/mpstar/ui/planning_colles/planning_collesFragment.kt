@@ -21,6 +21,7 @@ import java.util.*
 
 class planning_collesFragment : Fragment() {
 
+    //<editor-fold desc="Variables">
     private lateinit var adapter: TabAdapter
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
@@ -31,11 +32,17 @@ class planning_collesFragment : Fragment() {
     private val dt = SimpleDateFormat("dd/MM", Locale.US)
     private val dtmd = SimpleDateFormat("dd/MM/yyyy", Locale.US)
     private val dayOfWeek = SimpleDateFormat("EEE", Locale.US)
+    //</editor-fold>
 
+
+    //<editor-fold desc="Load colles">
     private fun loadColles(selectedDate :Calendar) {
         Log.i("mpstar", "Would load colles of the week of "+dtmd.format(selectedDate.time))
     }
+    //</editor-fold>
 
+
+    //<editor-fold desc="Select date popup">
     @SuppressLint("SetTextI18n")
     private fun selectDate() {
         val selectedDateView = activity?.findViewById<TextView>(R.id.collesSelectedDate)
@@ -54,7 +61,10 @@ class planning_collesFragment : Fragment() {
         }, year, month, day)
         datePicker.show()
     }
+    //</editor-fold>
 
+
+    //<editor-fold desc="onCreateView and onResume>
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInsatnceState: Bundle?): View? {
         Objects.requireNonNull<FragmentActivity>(activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
@@ -86,4 +96,5 @@ class planning_collesFragment : Fragment() {
         adapter.addFragment(Colle2Fragment(), "Colle 2")
         tabLayout.setupWithViewPager(viewPager)
     }
+    //</editor-fold>
 }
