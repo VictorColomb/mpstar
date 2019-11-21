@@ -18,12 +18,15 @@
     <string name="available" />
     <string name="welcome" />
     <string name="empty" />
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="not_again">Ne plus demander</string>
     <string name="name_spinner">Nom</string>
 
     <string name="holidays">Pas de DS cette semaine, c\'est les vacances !</string>
-    <string name="no_ds_found">Pas de DS trouvé pour cette date...</string>
+    <string name="no_ds_found">Pas de DS trouvé pour cette date…</string>
+    <string name="edt_sunday">C\'est dimanche, pas de cours…</string>
+    <string name="edt_out_bounds">L\'année est finie…</string>
+    <string name="edt_holidays">Pas cours cette semaine, c\'est les vacances !</string>
 
     <!-- SETTINGS -->
     <string name="settings_notifications_header">Notifications</string>

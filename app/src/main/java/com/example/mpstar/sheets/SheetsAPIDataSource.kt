@@ -64,7 +64,8 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                             myOption = it[3].toString(),
                             myLanguage = it[4].toString(),
                             myGroup = it[5].toString().toInt(),
-                            myGroupInfo = it[6].toString().toInt()
+                            myGroupInfo = it[6].toString().toInt(),
+                            myGroupTD = it[7].toString().toInt()
                     )
                 }
                 .toList()

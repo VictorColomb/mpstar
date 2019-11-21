@@ -64,7 +64,7 @@ class planning_collesFragment : Fragment() {
     //</editor-fold>
 
 
-    //<editor-fold desc="onCreateView and onResume>
+    //<editor-fold desc="onCreateView and onResume">
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInsatnceState: Bundle?): View? {
         Objects.requireNonNull<FragmentActivity>(activity).requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
