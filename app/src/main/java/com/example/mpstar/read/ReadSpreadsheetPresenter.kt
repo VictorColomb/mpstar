@@ -2,6 +2,8 @@ package com.jack.royer.kotlintest2.ui.read
 
 import android.util.Log
 import com.example.mpstar.MainActivity
+import com.example.mpstar.model.Colleurs
+import com.example.mpstar.model.DS
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.sheets.AuthenticationManager
@@ -18,6 +20,8 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     private lateinit var readSpreadsheetDisposable : Disposable
     var students : MutableList<Student> = mutableListOf()
     var personal : MutableList<Personal> = mutableListOf()
+    var ds : MutableList<DS> = mutableListOf()
+    var colleurs : MutableList<Colleurs> = mutableListOf()
 
 
     fun loginSuccessful() {
@@ -54,9 +58,39 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                         })
     }
 
+    fun startReadingSpreadsheetDS(){
+        ds.clear()
+        readSpreadsheetDisposable=
+                sheetsAPIDataSource.readSpreadSheetDS(spreadsheetId, rangeDS)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError { view.showError(it.message!!) }
+                        .subscribe(Consumer {
+                            ds.addAll(it)
+                            view.finishedReadingDS()
+                        })
+    }
+
+    fun startReadingSpreadsheetColleurs(){
+        colleurs.clear()
+        readSpreadsheetDisposable=
+                sheetsAPIDataSource.readSpreadSheetColleurs(spreadsheetId, rangeColleurs)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError { view.showError(it.message!!) }
+                        .subscribe(Consumer {
+                            colleurs.addAll(it)
+                            view.finishedReadingColleurs()
+                        })
+    }
+
+
+
     companion object {
         const val spreadsheetId = "1VXDSYl2X5oXNXKeYbNrBH8b1zR_nIzqHbRhZaopWgCw"
         const val rangeStudents = "Sheet1!A5:F"
         const val rangePersonal = "Personal!A2:H"
+        const val rangeDS = "DS!A2:E"
+        const val rangeColleurs = "Colleurs!A2:F"
     }
 }

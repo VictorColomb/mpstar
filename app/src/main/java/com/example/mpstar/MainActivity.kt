@@ -101,6 +101,8 @@ class MainActivity : AppCompatActivity() {
                     try{
                         presenter.startReadingSpreadsheetStudents()
                         presenter.startReadingSpreadsheetPersonal()
+                        presenter.startReadingSpreadsheetDS()
+                        presenter.startReadingSpreadsheetColleurs()
                     }
                     catch (e:Exception){
                         showError(e.toString())
@@ -170,7 +172,16 @@ class MainActivity : AppCompatActivity() {
 
     //<editor-fold desc="Asynchronous">
     fun finishedReadingPersonal(){
+        filesIO.writePersonalList(presenter.personal)
+        matchPersonal(presenter.personal)
+    }
 
+    fun finishedReadingColleurs(){
+        filesIO.writeColleursList(presenter.colleurs)
+    }
+
+    fun finishedReadingDS(){
+        filesIO.writeDSList(presenter.ds)
     }
 
     fun finishedReadingStudents(){
@@ -218,8 +229,30 @@ class MainActivity : AppCompatActivity() {
         for (personal in personals){
             if(personal.myName == myName){
                 perso = personal
+                showWelcomeMessage()
                 return
             }
+        }
+    }
+
+
+    // Refreshes everything
+    fun refreshAll(){
+        Log.e("SATAN", "ALL HELL IS ABOUT TO BREAK LOOSE")
+        if (signedIn){
+            try {
+                presenter.startReadingSpreadsheetStudents()
+                presenter.startReadingSpreadsheetPersonal()
+                presenter.startReadingSpreadsheetDS()
+                presenter.startReadingSpreadsheetColleurs()
+            }
+            catch(e: Exception){
+                showError(e.toString())
+            }
+        }
+        else{
+            Toast.makeText(this, "Attempting to Log In...", Toast.LENGTH_LONG).show()
+            requestSignIn(RQ_REFRESH_ALL)
         }
     }
 
