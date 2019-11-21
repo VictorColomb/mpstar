@@ -18,32 +18,23 @@ class FilesIO(
         val context: Context
 ){
 
-    //<editor-fold desc="Read and Write Student data">
-    fun writeStudentList(students: List<Student>){
-        Log.i("mpstar", "Writing student list to save file")
+    private fun write(fileContents: String, filename:String){
+        // Writes parsed data to internal storage
+        Log.i("FILEIO","Writing data to drive")
         try {
-            val fileContents = serializer(students)
-
-            // Writes parsed data to internal storage
-            try {
-                val fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE)
-                val outputStreamWriter = OutputStreamWriter(fileOutputStream)
-                outputStreamWriter.write(fileContents)
-                outputStreamWriter.flush()
-                outputStreamWriter.close()
-            }
-            catch (ex: Exception){
-                Toast.makeText(context,"Error Saving Data", Toast.LENGTH_SHORT).show()
-                Log.e("FILE ERROR", ex.toString())
-            }
+            val fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE)
+            val outputStreamWriter = OutputStreamWriter(fileOutputStream)
+            outputStreamWriter.write(fileContents)
+            outputStreamWriter.flush()
+            outputStreamWriter.close()
         }
-        catch (ex: JSONException){
-            Toast.makeText(context,"Error JSON", Toast.LENGTH_SHORT).show()
-            Log.e("JSON ERROR", ex.toString())
+        catch (ex: Exception){
+            Toast.makeText(context,"Error Saving Data", Toast.LENGTH_SHORT).show()
+            Log.e("FILE ERROR", ex.toString())
         }
     }
 
-    fun readStudentList() : List<Student>{
+    private fun read(filename: String): String{
         try {
             val stringBuffer = StringBuffer("")
 
@@ -61,22 +52,27 @@ class FilesIO(
 
             val fileContents = stringBuffer.toString()
 
-
             fileInputStream.close()
-            try {
-                return deserializer(fileContents)
-            }
-            catch (ex : Exception){
-                Toast.makeText(context,"Error JSON", Toast.LENGTH_SHORT).show()
-                Log.e("JSON ERROR", ex.toString())
-            }
+
+            return fileContents
         }
         catch (ex : Exception)
         {
             Toast.makeText(context,"Error Reading Data", Toast.LENGTH_SHORT).show()
             Log.e("FILE ERROR", ex.toString())
+            return ""
         }
-        return listOf()
+    }
+
+    //<editor-fold desc="Read and Write Student data">
+    fun writeStudentList(students: List<Student>){
+        val fileContents = jacksonObjectMapper().writeValueAsString(students)
+        write(fileContents, filenamePlan)
+    }
+
+    fun readStudentList() : List<Student>{
+        val fileContents = read(filenamePlan)
+        return jacksonObjectMapper().readValue(fileContents)
     }
 
     fun readNamesList() :List<String>{
@@ -89,61 +85,92 @@ class FilesIO(
 
 
     //<editor-fold desc="Read and Write DS data">
+    fun writeDSList(listDS: List<DS>){
+        val fileContents = jacksonObjectMapper().writeValueAsString(listDS)
+        write(fileContents, filenameDS)
+    }
+
     fun readDSList() :List<DS>{ // Read DS list from file
-        // FOR TESTING PURPOSES
+        val fileContents = read(filenameDS)
+        return jacksonObjectMapper().readValue(fileContents)
+
+        /* FOR TESTING PURPOSES
         val dt = SimpleDateFormat("yyyy/MM/dd", Locale.US)
         return listOf(DS(dt.parse("2019/11/23")!!, "Option", "4h", "FALSE", "0"))
+         */
     }
     //</editor-fold>
 
 
     //<editor-fold desc="Read and Write EDT data">
-    fun readEdtList() : EDT? { // Read EDT data from file
-        // EDT? temporary, remove "?"
-        return null
+    fun writeEDTList(edt: EDT){
+        val fileContents = jacksonObjectMapper().writeValueAsString(edt)
+        write(fileContents, filenameEDT)
+    }
+
+    fun readEdtList() : EDT { // Read EDT data from file
+        val fileContents = read(filenameEDT)
+        return jacksonObjectMapper().readValue(fileContents)
     }
     //</editor-fold>
 
 
     //<editor-fold desc="Read and Write Personal data">
-    fun readPersonalList() :List<Personal>? {
-        // "?" temporary, remove when function coded
-        return null
+    fun writePersonalList(perso : List<Personal>){
+        val fileContents = jacksonObjectMapper().writeValueAsString(perso)
+        write(fileContents, filenamePlan)
+    }
+
+    fun readPersonalList() :List<Personal> {
+        val fileContents = read(filenamePersonal)
+        return jacksonObjectMapper().readValue(fileContents)
     }
     //</editor-fold>
 
 
     //<editor-fold desc="Read and Write Colleurs data">
-    fun readColleursList() :List<Colleurs>? {
-        return null
+    fun writeColleursList(colleurs: List<Colleurs>){
+        val fileContents = jacksonObjectMapper().writeValueAsString(colleurs)
+        write(fileContents, filenamePlan)
+    }
+
+    fun readColleursList() :List<Colleurs> {
+        val fileContents = read(filenameColleur)
+        return jacksonObjectMapper().readValue(fileContents)
     }
     //</editor-fold>
 
 
     //<editor-fold desc="Read and Write Colles data">
-    fun readCollesMathsList() :List<Colles>? {
-        return null
+    fun writeCollesMathsList(colles: List<Colles>){
+        val fileContents = jacksonObjectMapper().writeValueAsString(colles)
+        write(fileContents, filenameCM)
     }
 
-    fun readCollesAutreList() :List<Colles>? {
-        return null
-    }
-    //</editor-fold>
-
-
-    //<editor-fold desc="JSON shit">
-    private fun serializer(students: List<Student>): String{
-        val mapper = jacksonObjectMapper()
-        return mapper.writeValueAsString(students)
+    fun writeCollesAutreList(colles: List<Colles>){
+        val fileContents = jacksonObjectMapper().writeValueAsString(colles)
+        write(fileContents, filenameCA)
     }
 
-    private fun deserializer(fileContents: String): List<Student>{
-        val mapper = jacksonObjectMapper()
-        return mapper.readValue(fileContents)
+    fun readCollesMathsList() :List<Colles> {
+        val fileContents = read(filenameCM)
+        return jacksonObjectMapper().readValue(fileContents)
+    }
+
+    fun readCollesAutreList() :List<Colles> {
+        val fileContents = read(filenameCA)
+        return jacksonObjectMapper().readValue(fileContents)
     }
     //</editor-fold>
 
     companion object{
-        const val filename : String = "mpStar.dat"
+        const val filenamePlan : String = "mpStarPlan.dat"
+        const val filenameDS : String = "mpStarDS.dat"
+        const val filenameEDT : String = "mpStarEDT.dat"
+        const val filenameColleur : String = "mpStarColleur.dat"
+        const val filenamePersonal : String = "mpStarPerso.dat"
+        const val filenameCM : String = "mpStarCM.dat"
+        const val filenameCA : String = "mpStarCA.dat"
+
     }
 }

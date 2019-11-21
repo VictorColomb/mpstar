@@ -62,34 +62,56 @@ class MainActivity : AppCompatActivity() {
 
 
     //<editor-fold desc="Authentication">
-    // Initiates Login process
-    fun requestSignIn(){
-        presenter.startLogin()
+    fun requestSignIn(requestCode: Int = RQ_GOOGLE_SIGN_IN) {
+        presenter.startLogin(requestCode)
     }
 
     // Starts Login
-    fun launchAuthentication(client: GoogleSignInClient) {
+    fun launchAuthentication(client: GoogleSignInClient, requestCode: Int) {
         Log.i("INFORMATION MAIN", "Beginning Authentication")
-        startActivityForResult(client.signInIntent, RQ_GOOGLE_SIGN_IN)
+        startActivityForResult(client.signInIntent, requestCode)
     }
 
     // Called after the Login Popup has been closed
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RQ_GOOGLE_SIGN_IN) {
-            if (resultCode == Activity.RESULT_OK) {
-                Log.i("INFORMATION MAIN", "Calling presenter.loginSuccessful()")
-                presenter.loginSuccessful()
+
+        when (requestCode) {
+            RQ_GOOGLE_SIGN_IN -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    presenter.loginSuccessful()
+                }
+            }
+
+            RQ_REFRESH_PLAN -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    presenter.loginSuccessful()
+                    try{
+                        presenter.startReadingSpreadsheetStudents()
+                    }
+                    catch (e:Exception){
+                        showError(e.toString())
+                    }
+                }
+            }
+
+            RQ_REFRESH_ALL -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    presenter.loginSuccessful()
+                    try{
+                        presenter.startReadingSpreadsheetStudents()
+                        presenter.startReadingSpreadsheetPersonal()
+                    }
+                    catch (e:Exception){
+                        showError(e.toString())
+                    }
+                }
             }
         }
     }
 
-    fun refreshAll() {
-        //fucking code that shit...
-    }
-
     private fun initDependencies() {
-        val signInOptions : GoogleSignInOptions =
+        val signInOptions: GoogleSignInOptions =
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         //.requestScopes(Scope(SheetsScopes.SPREADSHEETS_READONLY))
                         //.requestScopes(Scope(SheetsScopes.SPREADSHEETS))
@@ -140,12 +162,17 @@ class MainActivity : AppCompatActivity() {
         // initializes late-init classes
         initDependencies()
         filesIO = FilesIO(this)
+
+        try{requestSignIn()}catch (ex:Exception){showError(ex.toString())}
     }
     //</editor-fold>
 
 
     //<editor-fold desc="Asynchronous">
-    fun finishedReadingPersonal(){}
+    fun finishedReadingPersonal(){
+
+    }
+
     fun finishedReadingStudents(){
         Log.i("INFORMATION MAIN", "Calling showRefreshed()")
         showRefreshed()
@@ -198,22 +225,20 @@ class MainActivity : AppCompatActivity() {
 
     // Refresh's the Class Plan
     fun refreshPlan(){
+        Log.i("MAIN REFRESH", "Attempting to refresh plan")
         if (signedIn){
             try {
-                presenter.loginSuccessful()
+                presenter.startReadingSpreadsheetStudents()
             }
             catch(e: Exception){
                 showError(e.toString())
             }
         }
         else{
-            Toast.makeText(this, "Chacal commence par Sign In", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Attempting to Log In...", Toast.LENGTH_LONG).show()
+            requestSignIn(RQ_REFRESH_PLAN)
         }
     }
-    //</editor-fold>
-
-
-    //<editor-fold desc="Write Google Sheets (empty)"
 
     //</editor-fold>
 
@@ -272,6 +297,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         const val RQ_GOOGLE_SIGN_IN = 999
+        const val RQ_REFRESH_PLAN = 998
+        const val RQ_REFRESH_ALL = 997
     }
     //</editor-fold>
 }

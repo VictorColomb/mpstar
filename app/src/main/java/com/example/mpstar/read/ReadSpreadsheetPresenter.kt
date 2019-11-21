@@ -22,15 +22,13 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
 
     fun loginSuccessful() {
         authenticationManager.setUpGoogleAccountCredential()
-        Log.i("INFORMATION MAIN", "Calling startReadingSpreadsheetStudents()")
-        startReadingSpreadsheetStudents()
     }
 
-    fun startLogin(){
-        view.launchAuthentication(authenticationManager.googleSignInClient)
+    fun startLogin(requestCode: Int){
+        view.launchAuthentication(authenticationManager.googleSignInClient, requestCode)
     }
 
-    private fun startReadingSpreadsheetStudents(){
+    fun startReadingSpreadsheetStudents(){
         students.clear()
         readSpreadsheetDisposable=
             sheetsAPIDataSource.readSpreadSheet(spreadsheetId, rangeStudents)
@@ -43,7 +41,7 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                 })
     }
 
-    private fun startReadingSpreadsheetPersonal(){
+    fun startReadingSpreadsheetPersonal(){
         personal.clear()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetPersonal(spreadsheetId, rangePersonal)
