@@ -4,7 +4,7 @@ data class Colleurs (
         val myId : String,
         val mySubject : String,
         val myName : String,
-        val myDay : Int,
+        val myDay : String,
         val myTime : Int,
         val myPlace : String
 )

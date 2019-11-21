@@ -39,9 +39,7 @@ class PlanningDsFragment : Fragment() {
         val dsList = filesIO.readDSList()
         Log.i("mpstar", "Got DS list from FilesIO : $dsList")
         var i=0
-        while (i<dsList.size && dsList[i].myDate != selectedDate.time) {
-            i+=1
-        }
+        while (i<dsList.size && dsList[i].myDate != selectedDate.time) {i+=1}
         val dsText1 = activity!!.findViewById<TextView>(R.id.dsText1)
         val dsText2 = activity!!.findViewById<TextView>(R.id.dsText2)
         val dsText3 = activity!!.findViewById<TextView>(R.id.dsText3)

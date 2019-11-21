@@ -59,6 +59,6 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     companion object {
         const val spreadsheetId = "1VXDSYl2X5oXNXKeYbNrBH8b1zR_nIzqHbRhZaopWgCw"
         const val rangeStudents = "Sheet1!A5:F"
-        const val rangePersonal = "Personal!A2:G"
+        const val rangePersonal = "Personal!A2:H"
     }
 }

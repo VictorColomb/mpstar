@@ -3,8 +3,7 @@ package com.example.mpstar.save
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.example.mpstar.model.DS
-import com.example.mpstar.model.Student
+import com.example.mpstar.model.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.json.JSONException
@@ -93,6 +92,40 @@ class FilesIO(
         // FOR TESTING PURPOSES
         val dt = SimpleDateFormat("yyyy/MM/dd", Locale.US)
         return listOf(DS(dt.parse("2019/11/23")!!, "Option", "4h", "FALSE", "0"))
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Read and Write EDT data">
+    fun readEdtList() : EDT? { // Read EDT data from file
+        // EDT? temporary, remove "?"
+        return null
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Read and Write Personal data">
+    fun readPersonalList() :List<Personal>? {
+        // "?" temporary, remove when function coded
+        return null
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Read and Write Colleurs data">
+    fun readColleursList() :List<Colleurs>? {
+        return null
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Read and Write Colles data">
+    fun readCollesMathsList() :List<Colles>? {
+        return null
+    }
+
+    fun readCollesAutreList() :List<Colles>? {
+        return null
     }
     //</editor-fold>
 

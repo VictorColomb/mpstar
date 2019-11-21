@@ -2,7 +2,7 @@ package com.example.mpstar.model
 
 import java.util.*
 
-data class CollesAutre (
+data class Colles (
         val myGroup : Int,
-        val myColle : Dictionary<Date, String>
+        val myColles : Dictionary<Date, String>
 )

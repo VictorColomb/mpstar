@@ -141,16 +141,6 @@ class MainActivity : AppCompatActivity() {
         initDependencies()
         filesIO = FilesIO(this)
     }
-
-    override fun onResume() {
-        super.onResume()
-
-        // displays class plan
-        resumePlan()
-
-        // displays welcome message
-        //showWelcomeMessage()
-    }
     //</editor-fold>
 
 
@@ -271,6 +261,7 @@ class MainActivity : AppCompatActivity() {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         return NavigationUI.navigateUp(navController, mAppBarConfiguration!!) || super.onSupportNavigateUp()
     }
+
 
     //<editor-fold desc="Miscellaneous">
     //Shows the error
