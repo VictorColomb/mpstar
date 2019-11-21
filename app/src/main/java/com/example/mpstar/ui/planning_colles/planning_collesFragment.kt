@@ -82,17 +82,17 @@ class planning_collesFragment : Fragment() {
         while (i < personalAll.size && personalAll[i].myName != namePreference) {i+=1}
         if (i < personalAll.size) {personal = personalAll[i]}
 
-        if (personal != null) {
-            val groupeColleTextview = activity!!.findViewById<TextView>(R.id.groupe_de_colle)
-            groupeColleTextview.text = personal!!.myGroup.toString()
-        }
-
         return inflater.inflate(R.layout.fragment_planning_colles, container, false)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
+
+        if (personal != null) {
+            val groupeColleTextview = activity!!.findViewById<TextView>(R.id.groupe_de_colle)
+            groupeColleTextview.text = personal!!.myGroup.toString()
+        }
 
         val selectDateButton = activity!!.findViewById<Button>(R.id.collesSelectDateButton)
         selectDateButton.setOnClickListener{
@@ -102,8 +102,6 @@ class planning_collesFragment : Fragment() {
         val cFri:Calendar = c.clone() as Calendar
         cFri.add(Calendar.DAY_OF_MONTH, 5)
         collesSelectedDate.text = "Semaine du "+dt.format(c.time)+" au "+dt.format(cFri.time)
-
-
     }
     //</editor-fold>
 }

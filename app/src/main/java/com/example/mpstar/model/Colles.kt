@@ -4,5 +4,5 @@ import java.util.*
 
 data class Colles (
         val myGroup : Int,
-        val myColles : Dictionary<Date, String>
+        val myColles : Map<Date, String>
 )

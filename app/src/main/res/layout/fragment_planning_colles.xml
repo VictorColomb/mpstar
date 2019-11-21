@@ -42,7 +42,7 @@
         android:id="@+id/groupe_de_colle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:text="@string/empty"
         app:layout_constraintStart_toEndOf="@+id/colles_textView4"
         app:layout_constraintTop_toTopOf="@+id/colles_textView4" />

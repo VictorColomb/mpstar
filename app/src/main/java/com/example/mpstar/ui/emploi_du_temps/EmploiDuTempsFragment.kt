@@ -49,7 +49,7 @@ class EmploiDuTempsFragment : Fragment() {
     } // time in Int (0 -> 22) to time in String (8h00 -> 19h30)
 
     @SuppressLint("SetTextI18n")
-    private fun loadTimetableDisplay(edtToday :Dictionary<Int, String>, monday :Date, dayString :String) {
+    private fun loadTimetableDisplay(edtToday :Map<Int, String>, monday :Date, dayString :String) {
         // fetch personal info
         val preferences = activity!!.getSharedPreferences("mySharedPreferences", 0)
         val namePreference = preferences.getString("perso_name", null)
@@ -79,7 +79,7 @@ class EmploiDuTempsFragment : Fragment() {
         var j=0                        // background color counter
         var begin: Int                 // lesson begin time
         var discipline :String?        // lesson discipline
-        while (i<edtToday.size()) {
+        while (i<edtToday.size) {
             begin = i
             discipline = edtToday[i]
             while (edtToday[i] == discipline) {
@@ -195,29 +195,33 @@ class EmploiDuTempsFragment : Fragment() {
         var j=0
         while (j<dsList.size && dsList[j].myDate != selectedDateCalendarSat.time) {j+=1}
 
+        Log.i("Emploi du temps", "Samedi de la semaine : "+dt.format(selectedDateCalendarSat.time)+". C'est un "+dayOfWeek.format(selectedDateCalendarSat.time))
+
         val edtCase0 = activity!!.findViewById<TextView>(R.id.edt_case0)
         if (j == dsList.size) {
             edtCase0.text = getString(R.string.edt_out_bounds)
         } else {
             val dsWeek = dsList[j]
-            if(dsWeek.myDiscipline == "HOLIDAYS") {
+            if(dsWeek.myDiscipline == "HOLIDAYS" || edt == null) {
                 edtCase0.text = getString(R.string.edt_holidays)
+                val edtCase1 = activity!!.findViewById<TextView>(R.id.edt_case1)
+                edtCase1.text = getString(R.string.edt_holidays2)
             } else {
                 when (dayOfWeek.format(selectedDate.time)) {
                     "Mon" -> { // monday
-                        loadTimetableDisplay(edt!!.myMonday, selectedDateMonday.time, "Mon")
+                        loadTimetableDisplay(edt.myMonday, selectedDateMonday.time, "Mon")
                     }
                     "Tue" -> { // tuesday
-                        loadTimetableDisplay(edt!!.myTuesday, selectedDateMonday.time, "Tue")
+                        loadTimetableDisplay(edt.myTuesday, selectedDateMonday.time, "Tue")
                     }
                     "Wed" -> { // wednesday
-                        loadTimetableDisplay(edt!!.myWednesday, selectedDateMonday.time, "Wed")
+                        loadTimetableDisplay(edt.myWednesday, selectedDateMonday.time, "Wed")
                     }
                     "Thu" -> { // thursday
-                        loadTimetableDisplay(edt!!.myThursday, selectedDateMonday.time, "Thu")
+                        loadTimetableDisplay(edt.myThursday, selectedDateMonday.time, "Thu")
                     }
                     "Fri" -> { // friday
-                        loadTimetableDisplay(edt!!.myFriday, selectedDateMonday.time, "Fri")
+                        loadTimetableDisplay(edt.myFriday, selectedDateMonday.time, "Fri")
                     }
                     "Sat" -> { // saturday
                         if (listOf("A","E","I","O","U").contains(dsWeek.myDiscipline[0].toString())) {
@@ -292,9 +296,10 @@ class EmploiDuTempsFragment : Fragment() {
         }
 
         val selectedDateView = activity?.findViewById<TextView>(R.id.selected_date)
-        selectedDateView?.text = "Emploi du temps du $day/$month"
+        val monthCorr = (month+1).toString()
+        selectedDateView?.text = "Emploi du temps du $day/$monthCorr"
 
-        loadTimetable(dt.parse("$year/$month/$day"))
+        loadTimetable(dt.parse("$year/$monthCorr/$day"))
     }
     //</editor-fold>
 
