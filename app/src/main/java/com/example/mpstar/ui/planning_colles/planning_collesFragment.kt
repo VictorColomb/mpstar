@@ -12,19 +12,17 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.viewpager.widget.ViewPager
-
 import com.example.mpstar.R
-import com.google.android.material.tabs.TabLayout
+import com.example.mpstar.model.Personal
+import com.example.mpstar.save.FilesIO
 import java.text.SimpleDateFormat
 import java.util.*
 
 class planning_collesFragment : Fragment() {
 
     //<editor-fold desc="Variables">
-    private lateinit var adapter: TabAdapter
-    private lateinit var tabLayout: TabLayout
-    private lateinit var viewPager: ViewPager
+    private lateinit var filesIO : FilesIO
+    private var personal : Personal? = null
     private val c = Calendar.getInstance()
     private val year = c.get(Calendar.YEAR)
     private val month = c.get(Calendar.MONTH)
@@ -73,6 +71,22 @@ class planning_collesFragment : Fragment() {
         while (dayOfWeek.format(c.time) != "Mon") {
             c.add(Calendar.DAY_OF_MONTH, -1)
         }
+
+        filesIO = FilesIO(context!!)
+
+        // fetch personal data
+        val preferences = activity!!.getSharedPreferences("mySharedPreferences", 0)
+        val namePreference = preferences.getString("perso_name", null)
+        val personalAll = filesIO.readPersonalList()
+        var i=0
+        while (i < personalAll.size && personalAll[i].myName != namePreference) {i+=1}
+        if (i < personalAll.size) {personal = personalAll[i]}
+
+        if (personal != null) {
+            val groupeColleTextview = activity!!.findViewById<TextView>(R.id.groupe_de_colle)
+            groupeColleTextview.text = personal!!.myGroup.toString()
+        }
+
         return inflater.inflate(R.layout.fragment_planning_colles, container, false)
     }
 
@@ -89,12 +103,7 @@ class planning_collesFragment : Fragment() {
         cFri.add(Calendar.DAY_OF_MONTH, 5)
         collesSelectedDate.text = "Semaine du "+dt.format(c.time)+" au "+dt.format(cFri.time)
 
-        viewPager = activity!!.findViewById(R.id.colleViewPager)
-        tabLayout = activity!!.findViewById(R.id.ColleLayout)
-        adapter = TabAdapter(activity!!.supportFragmentManager)
-        adapter.addFragment(Colle1Fragment(), "Colle 1")
-        adapter.addFragment(Colle2Fragment(), "Colle 2")
-        tabLayout.setupWithViewPager(viewPager)
+
     }
     //</editor-fold>
 }

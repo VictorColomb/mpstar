@@ -53,13 +53,12 @@
 
                     <TextView
                         android:id="@+id/edt_case0"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
 
                 <TableRow
                     android:id="@+id/edt_row1"
@@ -68,14 +67,12 @@
 
                     <TextView
                         android:id="@+id/edt_case1"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row2"
                     android:layout_width="match_parent"
@@ -83,14 +80,12 @@
 
                     <TextView
                         android:id="@+id/edt_case2"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row3"
                     android:layout_width="match_parent"
@@ -98,14 +93,12 @@
 
                     <TextView
                         android:id="@+id/edt_case3"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row4"
                     android:layout_width="match_parent"
@@ -113,14 +106,12 @@
 
                     <TextView
                         android:id="@+id/edt_case4"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row5"
                     android:layout_width="match_parent"
@@ -128,14 +119,12 @@
 
                     <TextView
                         android:id="@+id/edt_case5"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row6"
                     android:layout_width="match_parent"
@@ -143,14 +132,12 @@
 
                     <TextView
                         android:id="@+id/edt_case6"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row7"
                     android:layout_width="match_parent"
@@ -158,14 +145,12 @@
 
                     <TextView
                         android:id="@+id/edt_case7"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row8"
                     android:layout_width="match_parent"
@@ -173,14 +158,12 @@
 
                     <TextView
                         android:id="@+id/edt_case8"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row9"
                     android:layout_width="match_parent"
@@ -188,14 +171,12 @@
 
                     <TextView
                         android:id="@+id/edt_case9"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row10"
                     android:layout_width="match_parent"
@@ -203,14 +184,12 @@
 
                     <TextView
                         android:id="@+id/edt_case10"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row11"
                     android:layout_width="match_parent"
@@ -218,14 +197,12 @@
 
                     <TextView
                         android:id="@+id/edt_case11"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row12"
                     android:layout_width="match_parent"
@@ -233,14 +210,12 @@
 
                     <TextView
                         android:id="@+id/edt_case12"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row13"
                     android:layout_width="match_parent"
@@ -248,14 +223,12 @@
 
                     <TextView
                         android:id="@+id/edt_case13"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row14"
                     android:layout_width="match_parent"
@@ -263,14 +236,12 @@
 
                     <TextView
                         android:id="@+id/edt_case14"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row15"
                     android:layout_width="match_parent"
@@ -278,14 +249,12 @@
 
                     <TextView
                         android:id="@+id/edt_case15"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row16"
                     android:layout_width="match_parent"
@@ -293,14 +262,12 @@
 
                     <TextView
                         android:id="@+id/edt_case16"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row17"
                     android:layout_width="match_parent"
@@ -308,14 +275,12 @@
 
                     <TextView
                         android:id="@+id/edt_case17"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row18"
                     android:layout_width="match_parent"
@@ -323,14 +288,12 @@
 
                     <TextView
                         android:id="@+id/edt_case18"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row19"
                     android:layout_width="match_parent"
@@ -338,14 +301,12 @@
 
                     <TextView
                         android:id="@+id/edt_case19"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row20"
                     android:layout_width="match_parent"
@@ -353,14 +314,12 @@
 
                     <TextView
                         android:id="@+id/edt_case20"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row21"
                     android:layout_width="match_parent"
@@ -368,14 +327,12 @@
 
                     <TextView
                         android:id="@+id/edt_case21"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
-
-
                 <TableRow
                     android:id="@+id/edt_row22"
                     android:layout_width="match_parent"
@@ -383,12 +340,13 @@
 
                     <TextView
                         android:id="@+id/edt_case22"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/empty"
                         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                        android:textSize="22sp" />
+                        android:textSize="20sp" />
                 </TableRow>
+
 
             </TableLayout>
         </ScrollView>
