@@ -204,6 +204,18 @@ class MainActivity : AppCompatActivity() {
         }
         filesIO.writeCollesMathsList(presenter.collesM)
     }
+
+    fun finishedReadingCollesA(sheet :List<List<Any>>){
+        val df = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        for(i in 1 until sheet.size){
+            val dict : MutableMap<Date, String> = HashMap()
+            for (j in sheet[i].indices){
+                dict[df.parse(sheet[j][0].toString())!!] = 'A'+sheet[j][i].toString()
+            }
+            presenter.collesA.add(Colles(i,dict.toMap()))
+        }
+        filesIO.writeCollesMathsList(presenter.collesA)
+    }
     //</editor-fold>
 
 
