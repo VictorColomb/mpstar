@@ -2,16 +2,16 @@ package com.jack.royer.kotlintest2.ui.read
 
 import android.util.Log
 import com.example.mpstar.MainActivity
-import com.example.mpstar.model.Colleurs
-import com.example.mpstar.model.DS
-import com.example.mpstar.model.Personal
-import com.example.mpstar.model.Student
+import com.example.mpstar.model.*
 import com.example.mpstar.sheets.AuthenticationManager
 import com.example.mpstar.sheets.SheetsAPIDataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class ReadSpreadsheetPresenter( private val view: MainActivity,
                                 private val authenticationManager: AuthenticationManager,
@@ -22,6 +22,7 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     var personal : MutableList<Personal> = mutableListOf()
     var ds : MutableList<DS> = mutableListOf()
     var colleurs : MutableList<Colleurs> = mutableListOf()
+    var collesM : MutableList<Colles> = mutableListOf()
 
 
     fun loginSuccessful() {
@@ -84,6 +85,28 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                         })
     }
 
+    fun startReadingSpreadsheetColleM(){
+        val df = SimpleDateFormat("MM/dd/yyyy")
+        collesM.clear()
+        val sheet : MutableList<List<Any>> = mutableListOf()
+        readSpreadsheetDisposable=
+                sheetsAPIDataSource.readSpreadSheetCM(spreadsheetId, rangeCM)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError { view.showError(it.message!!) }
+                        .subscribe(Consumer {
+                            sheet.addAll(it)
+                            view.finishedReadingColleurs()
+                        })
+        for(i in 1 until sheet.size){
+            var dict : MutableMap<Date, String> = HashMap<Date,String>()
+            for (j in sheet[i].indices){
+                dict.put(df.parse(sheet[0][j].toString()),'M'+sheet[i][j].toString())
+            }
+            collesM.add(Colles(i,dict.toMap()))
+        }
+    }
+
 
 
     companion object {
@@ -92,5 +115,6 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
         const val rangePersonal = "Personal!A2:H"
         const val rangeDS = "DS!A2:E"
         const val rangeColleurs = "Colleurs!A2:F"
+        const val rangeCM = "CollesMaths!A2:N"
     }
 }

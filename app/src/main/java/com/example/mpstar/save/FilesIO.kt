@@ -119,7 +119,7 @@ class FilesIO(
 
     fun readPersonalList() :List<Personal> {
         val fileContents = read(filenamePersonal)
-        return jacksonObjectMapper().readValue(fileContents)
+        return (jacksonObjectMapper().readValue(fileContents))
     }
     //</editor-fold>
 
