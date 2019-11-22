@@ -99,7 +99,7 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     fun startReadingSpreadsheetColleA(){
         val sheet : MutableList<List<Any>> = mutableListOf()
         readSpreadsheetDisposable=
-                sheetsAPIDataSource.readSpreadSheetCM(spreadsheetId, rangeCM)
+                sheetsAPIDataSource.readSpreadSheetCM(spreadsheetId, rangeCA)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnError { view.showError(it.message!!) }
@@ -131,7 +131,7 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
         const val rangeDS = "DS!A2:E"
         const val rangeColleurs = "Colleurs!A2:F"
         const val rangeCM = "CollesMaths!A2:N"
-        const val rangeCA = "CollesAutres!A2:N"
-        const val rangeEDT = "EDT!A2:F"
+        const val rangeCA = "CollesAutre!A2:N"
+        const val rangeEDT = "EDT!B1:X"
     }
 }

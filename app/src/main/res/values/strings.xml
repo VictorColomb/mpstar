@@ -17,6 +17,7 @@
     <string name="colles_groupe">Groupe de Colle : </string>
     <string name="colle1">Khôlle 1</string>
     <string name="colle2">Khôlle 2</string>
+    <string name="pas_colles">Pas de colles cette semaine !</string>
 
     <string name="available" />
     <string name="welcome" />

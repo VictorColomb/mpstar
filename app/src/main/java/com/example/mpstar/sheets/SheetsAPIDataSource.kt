@@ -140,7 +140,7 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                             .execute()
                     response.getValues() }
                 .flatMapIterable {
-                    listOf(it[0],it[1],it[2],it[3],it[4],it[5]) }
+                    listOf(it[0],it[1],it[2],it[3],it[4],it[5])}
                 .toList()
     }
 /*

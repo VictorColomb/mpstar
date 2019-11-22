@@ -17,6 +17,7 @@ import com.example.mpstar.model.Personal
 import com.example.mpstar.save.FilesIO
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class planning_collesFragment : Fragment() {
 
@@ -34,8 +35,61 @@ class planning_collesFragment : Fragment() {
 
 
     //<editor-fold desc="Load colles">
+    private fun timeToString(time :Int) :String{
+        return if (time%2 == 0) {
+            val timeString = time/2 + 8
+            "${timeString}h00"
+        } else {
+            val timeString = (time-1)/2 +8
+            "${timeString}h30"
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun loadColles(selectedDate :Date) {
         Log.i("mpstar", "Loading colles of the week of "+dtmd.format(selectedDate))
+
+        val colleDisplay1 = activity!!.findViewById<TextView>(R.id.colles_display1)
+        val colleDisplay2 = activity!!.findViewById<TextView>(R.id.colles_display2)
+        val colleDisplay3 = activity!!.findViewById<TextView>(R.id.colles_display3)
+        val colleDisplay4 = activity!!.findViewById<TextView>(R.id.colles_display4)
+        val colleDisplay5 = activity!!.findViewById<TextView>(R.id.colles_display5)
+        val colleDisplay6 = activity!!.findViewById<TextView>(R.id.colles_display6)
+
+        //fetch colles data
+        val colleurs = filesIO.readColleursList()
+        val collesMaths = filesIO.readCollesMathsList()
+        var i=0
+        while (i<collesMaths.size && collesMaths[i].myGroup != personal!!.myGroup) {i+=1}
+        if (collesMaths[i].myColles.containsKey(selectedDate)) {
+            val colleMaths = collesMaths[i].myColles[selectedDate]
+            i=0
+            while (i<colleurs.size && colleurs[i].myId != colleMaths) {i+=1}
+            val colleMathsData = colleurs[i]
+            val collesAutre = filesIO.readCollesAutreList()
+            i=0
+            while (i<collesAutre.size && collesAutre[i].myGroup != personal!!.myGroup) {i+=1}
+            val colleAutre = collesAutre[i].myColles[selectedDate]
+            i=0
+            while (i<colleurs.size && colleurs[i].myId != colleAutre) {i+=1}
+            val colleAutreData = colleurs[i]
+
+            val days = mapOf("Mon" to "Lundi", "Tue" to "Mardi", "Wed" to "Mercredi", "Thu" to "Jeudi", "Fri" to "Vendredi")
+
+            colleDisplay1.text = "Khôlle "+colleMathsData.mySubject
+            colleDisplay2.text = days[colleMathsData.myDay] + " | " + timeToString(colleMathsData.myTime) + " - " + timeToString(colleMathsData.myTime + 2)
+            colleDisplay3.text = colleMathsData.myName + " (" + colleMathsData.myPlace + ")"
+            colleDisplay4.text = "Khôlle "+colleAutreData.mySubject
+            colleDisplay5.text = days[colleAutreData.myDay] + " | " + timeToString(colleAutreData.myTime) + " - " + timeToString(colleAutreData.myTime + 2)
+            colleDisplay6.text = colleAutreData.myName + " ("+colleAutreData.myPlace + ")"
+        } else {
+            colleDisplay1.text = getString(R.string.pas_colles)
+            colleDisplay2.text = getString(R.string.empty)
+            colleDisplay3.text = getString(R.string.empty)
+            colleDisplay4.text = getString(R.string.empty)
+            colleDisplay5.text = getString(R.string.empty)
+            colleDisplay6.text = getString(R.string.empty)
+        }
 
     }
     //</editor-fold>
@@ -103,7 +157,7 @@ class planning_collesFragment : Fragment() {
         val cFri:Calendar = c.clone() as Calendar
         cFri.add(Calendar.DAY_OF_MONTH, 5)
         collesSelectedDate.text = "Semaine du "+dt.format(c.time)+" au "+dt.format(cFri.time)
-        loadColles(c.time)
+        loadColles(dtmd.parse(dtmd.format(c.time))!!)
     }
     //</editor-fold>
 }

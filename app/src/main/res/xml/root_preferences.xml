@@ -44,12 +44,4 @@
             android:title="@string/settings_notifications_colles" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_refresh">
-
-        <Preference
-            android:key="refresh_all"
-            android:title="@string/settings_refresh_button"/>
-    </PreferenceCategory>
-
-
 </PreferenceScreen>

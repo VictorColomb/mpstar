@@ -11,7 +11,6 @@ import android.view.*
 import android.widget.Button
 import android.widget.TableRow
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.mpstar.MainActivity
 
@@ -41,10 +40,10 @@ class EmploiDuTempsFragment : Fragment() {
     private fun timeToString(time :Int) :String{
         return if (time%2 == 0) {
             val timeString = time/2 + 8
-            "$timeString h00"
+            timeString.toString()+"h00"
         } else {
             val timeString = (time-1)/2 +8
-            "$timeString h30"
+            timeString.toString()+"h30"
         }
     } // time in Int (0 -> 22) to time in String (8h00 -> 19h30)
 
@@ -84,45 +83,51 @@ class EmploiDuTempsFragment : Fragment() {
             discipline = edtToday[i]
             while (edtToday[i] == discipline) {
                 val textView = activity!!.findViewById<TextView>(resources.getIdentifier("edt_case$i", "id", activity!!.packageName))
-                val rowView = activity!!.findViewById<TextView>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
+                val rowView = activity!!.findViewById<TableRow>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
                 if (colleMathsData.myDay == dayString && colleMathsData.myTime == i) { // if colle maths
-                    textView.text = timeToString(i)+" - "+timeToString(i+2)+" : Colle "+colleMathsData.mySubject+" ("+colleMathsData.myName+ ", "+colleMathsData.myPlace+")"
+                    j+=1
+                    textView.text = timeToString(i)+" - "+timeToString(i+2)+" : Colle "+colleMathsData.mySubject
                     if (j%2 == 0) {
-                        rowView.setBackgroundColor(Color.parseColor("#fafafa"))
+                        rowView.setBackgroundColor(Color.parseColor("#eeeeee"))
                     } else {
-                        rowView.setBackgroundColor(Color.parseColor("#aaaaaa"))
+                        rowView.setBackgroundColor(Color.parseColor("#e1e1e1"))
                     }
                     i+=1
-                    val edtCaseColle2  = activity!!.findViewById<TextView>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
+                    val edtCaseColle2Text = activity!!.findViewById<TextView>(resources.getIdentifier("edt_case$i", "id", activity!!.packageName))
+                    edtCaseColle2Text.text = " ("+colleMathsData.myName+ ", "+colleMathsData.myPlace+")"
+                    val edtCaseColle2  = activity!!.findViewById<TableRow>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
                     if (j%2 == 0) {
-                        edtCaseColle2.setBackgroundColor(Color.parseColor("#fafafa"))
+                        edtCaseColle2.setBackgroundColor(Color.parseColor("#eeeeee"))
                     } else {
-                        edtCaseColle2.setBackgroundColor(Color.parseColor("#aaaaaa"))
+                        edtCaseColle2.setBackgroundColor(Color.parseColor("#e1e1e1"))
                     }
                     i+=1
                     break
                 }
                 if (colleAutreData.myDay == dayString && colleAutreData.myTime == i) { // if colle autre
-                    textView.text = timeToString(i)+" - "+timeToString(i+2)+" : Colle "+colleAutreData.mySubject+" ("+colleAutreData.myName+ ", "+colleAutreData.myPlace+")"
+                    j+=1
+                    textView.text = timeToString(i)+" - "+timeToString(i+2)+" : Colle "+colleAutreData.mySubject
                     if (j%2 == 0) {
-                        rowView.setBackgroundColor(Color.parseColor("#fafafa"))
+                        rowView.setBackgroundColor(Color.parseColor("#eeeeee"))
                     } else {
-                        rowView.setBackgroundColor(Color.parseColor("#aaaaaa"))
+                        rowView.setBackgroundColor(Color.parseColor("#e1e1e1"))
                     }
                     i+=1
-                    val edtCaseColle2  = activity!!.findViewById<TextView>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
+                    val edtCaseColle2Text = activity!!.findViewById<TextView>(resources.getIdentifier("edt_case$i", "id", activity!!.packageName))
+                    edtCaseColle2Text.text = " ("+colleAutreData.myName+ ", "+colleAutreData.myPlace+")"
+                    val edtCaseColle2  = activity!!.findViewById<TableRow>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
                     if (j%2 == 0) {
-                        edtCaseColle2.setBackgroundColor(Color.parseColor("#fafafa"))
+                        edtCaseColle2.setBackgroundColor(Color.parseColor("#eeeeee"))
                     } else {
-                        edtCaseColle2.setBackgroundColor(Color.parseColor("#aaaaaa"))
+                        edtCaseColle2.setBackgroundColor(Color.parseColor("#e1e1e1"))
                     }
                     i+=1
                     break
                 }
                 if (j%2 == 0) {
-                    rowView.setBackgroundColor(Color.parseColor("#fafafa"))
+                    rowView.setBackgroundColor(Color.parseColor("#eeeeee"))
                 } else {
-                    rowView.setBackgroundColor(Color.parseColor("#aaaaaa"))
+                    rowView.setBackgroundColor(Color.parseColor("#e1e1e1"))
                 }
                 i+=1
             }
@@ -176,6 +181,7 @@ class EmploiDuTempsFragment : Fragment() {
         }
 
         val edt = filesIO.readEdtList()
+        Log.i("FUCK", edt!!.toString())
         val dsList = filesIO.readDSList()
 
         //get monday of the week
@@ -198,11 +204,11 @@ class EmploiDuTempsFragment : Fragment() {
         Log.i("Emploi du temps", "Samedi de la semaine : "+dt.format(selectedDateCalendarSat.time)+". C'est un "+dayOfWeek.format(selectedDateCalendarSat.time))
 
         val edtCase0 = activity!!.findViewById<TextView>(R.id.edt_case0)
-        if (j == dsList.size) {
+        if (j == dsList.size || edt == null) {
             edtCase0.text = getString(R.string.edt_out_bounds)
         } else {
             val dsWeek = dsList[j]
-            if(dsWeek.myDiscipline == "HOLIDAYS" || edt == null) {
+            if(dsWeek.myDiscipline == "HOLIDAYS") {
                 edtCase0.text = getString(R.string.edt_holidays)
                 val edtCase1 = activity!!.findViewById<TextView>(R.id.edt_case1)
                 edtCase1.text = getString(R.string.edt_holidays2)

@@ -214,10 +214,11 @@ class MainActivity : AppCompatActivity() {
             }
             collesA.add(Colles(i,dict.toMap()))
         }
-        filesIO.writeCollesMathsList(collesA)
+        filesIO.writeCollesAutreList(collesA)
     }
 
     fun finishedReadingEDT(sheet :List<List<Any>>){
+        Log.i("TYVFUYRCIYCRYU", sheet.toString())
         val monday = mutableMapOf<Int,String>()
         val tuesday = mutableMapOf<Int,String>()
         val wednesday = mutableMapOf<Int,String>()
@@ -225,12 +226,12 @@ class MainActivity : AppCompatActivity() {
         val friday = mutableMapOf<Int,String>()
 
         for (j in sheet[0].indices){
-            val myIndex = sheet[j][0].toString().toInt()
-            monday[myIndex] = sheet[j][1].toString()
-            tuesday[myIndex] = sheet[j][2].toString()
-            wednesday[myIndex] = sheet[j][3].toString()
-            thursday[myIndex] = sheet[j][4].toString()
-            friday[myIndex] = sheet[j][5].toString()
+            val myIndex = sheet[0][j].toString().toInt()
+            monday[myIndex] = sheet[1][j].toString()
+            tuesday[myIndex] = sheet[2][j].toString()
+            wednesday[myIndex] = sheet[3][j].toString()
+            thursday[myIndex] = sheet[4][j].toString()
+            friday[myIndex] = sheet[5][j].toString()
         }
 
         filesIO.writeEDTList(EDT(monday,tuesday,wednesday,thursday,friday))
@@ -294,6 +295,8 @@ class MainActivity : AppCompatActivity() {
                 presenter.startReadingSpreadsheetDS()
                 presenter.startReadingSpreadsheetColleurs()
                 presenter.startReadingSpreadsheetColleM()
+                presenter.startReadingSpreadsheetColleA()
+                presenter.startReadingSpreadsheetEDT()
             }
             catch(e: Exception){
                 showError(e.toString())

@@ -84,17 +84,6 @@ public class settingsFragment extends Fragment {
                     }
                 });
             }
-
-            final Preference preference_refresh = findPreference("refresh_all");
-            if (preference_refresh != null) {
-                preference_refresh.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        mainActivity.refreshAll();
-                        return true;
-                    }
-                });
-            }
         }
     }
 }
