@@ -18,6 +18,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.mpstar.model.Colles
+import com.example.mpstar.model.EDT
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.save.FilesIO
@@ -210,12 +211,32 @@ class MainActivity : AppCompatActivity() {
         for(i in 1 until sheet.size){
             val dict : MutableMap<Date, String> = HashMap()
             for (j in sheet[i].indices){
-                dict[df.parse(sheet[j][0].toString())!!] = 'A'+sheet[j][i].toString()
+                dict[df.parse(sheet[j][0].toString())!!] = sheet[j][i].toString()
             }
             presenter.collesA.add(Colles(i,dict.toMap()))
         }
         filesIO.writeCollesMathsList(presenter.collesA)
     }
+
+    fun finishedReadingEDT(sheet :List<List<Any>>){
+        val monday = mutableMapOf<Int,String>()
+        val tuesday = mutableMapOf<Int,String>()
+        val wednesday = mutableMapOf<Int,String>()
+        val thursday = mutableMapOf<Int,String>()
+        val friday = mutableMapOf<Int,String>()
+
+        for (j in sheet[0].indices){
+            val myIndex = sheet[j][0].toString().toInt()
+            monday[myIndex] = sheet[j][1].toString()
+            tuesday[myIndex] = sheet[j][2].toString()
+            wednesday[myIndex] = sheet[j][3].toString()
+            thursday[myIndex] = sheet[j][4].toString()
+            friday[myIndex] = sheet[j][5].toString()
+        }
+
+        filesIO.writeEDTList(EDT(monday,tuesday,wednesday,thursday,friday))
+    }
+
     //</editor-fold>
 
 

@@ -25,7 +25,6 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     var collesM : MutableList<Colles> = mutableListOf()
     var collesA : MutableList<Colles> = mutableListOf()
 
-
     fun loginSuccessful() {
         Log.i("PRESENTER", "Logged in successfully")
         view.signedIn = true
@@ -116,6 +115,19 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                         })
     }
 
+    fun startReadingSpreadsheetEDT(){
+        val sheet : MutableList<List<Any>> = mutableListOf()
+        readSpreadsheetDisposable=
+                sheetsAPIDataSource.readSpreadSheetEDT(spreadsheetId, rangeEDT)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError { view.showError(it.message!!) }
+                        .subscribe(Consumer {
+                            sheet.addAll(it)
+                            view.finishedReadingEDT(sheet)
+                        })
+    }
+
 
 
     companion object {
@@ -126,5 +138,6 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
         const val rangeColleurs = "Colleurs!A2:F"
         const val rangeCM = "CollesMaths!A2:N"
         const val rangeCA = "CollesAutres!A2:N"
+        const val rangeEDT = "EDT!A2:F"
     }
 }

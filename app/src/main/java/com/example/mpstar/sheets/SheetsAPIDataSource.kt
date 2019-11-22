@@ -94,33 +94,6 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                 .toList()
     }
 
-    //WIP
-    @SuppressLint("SimpleDateFormat")
-    fun readSpreadSheetEDT(spreadsheetId: String,
-                                spreadsheetRange: String): Single<List<Personal>> {
-        val df = SimpleDateFormat("MM/dd")
-        return Observable
-                .fromCallable{
-                    val response = sheetsAPI.spreadsheets().values()
-                            .get(spreadsheetId, spreadsheetRange)
-                            .execute()
-                    response.getValues() }
-                .flatMapIterable { it }
-                .map {
-                    Personal(
-                            myName = it[0].toString(),
-                            myLastName = it[1].toString(),
-                            myBirthday = df.parse(it[2].toString())!!,
-                            myOption = it[3].toString(),
-                            myLanguage = it[4].toString(),
-                            myGroup = it[5].toString().toInt(),
-                            myGroupInfo = it[6].toString().toInt(),
-                            myGroupTD = it[7].toString().toInt()
-                    )
-                }
-                .toList()
-    }
-
     fun readSpreadSheetColleurs(spreadsheetId: String,
                                 spreadsheetRange: String): Single<List<Colleurs>> {
         return Observable
@@ -154,6 +127,20 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                     response.getValues() }
                 .flatMapIterable {
                     listOf(it[0],it[1],it[2],it[3],it[4],it[5],it[6],it[7],it[8],it[9],it[10],it[11],it[12],it[13]) }
+                .toList()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun readSpreadSheetEDT(spreadsheetId: String,
+                          spreadsheetRange: String): Single<List<List<Any>>> {
+        return Observable
+                .fromCallable{
+                    val response = sheetsAPI.spreadsheets().values()
+                            .get(spreadsheetId, spreadsheetRange)
+                            .execute()
+                    response.getValues() }
+                .flatMapIterable {
+                    listOf(it[0],it[1],it[2],it[3],it[4],it[5]) }
                 .toList()
     }
 /*
