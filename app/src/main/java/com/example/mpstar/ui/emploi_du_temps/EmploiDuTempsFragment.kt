@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.Button
+import android.widget.TableRow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -48,27 +49,27 @@ class EmploiDuTempsFragment : Fragment() {
     } // time in Int (0 -> 22) to time in String (8h00 -> 19h30)
 
     @SuppressLint("SetTextI18n")
-    private fun loadTimetableDisplay(edtToday :Dictionary<Int, String>, monday :Date, dayString :String) {
+    private fun loadTimetableDisplay(edtToday :Map<Int, String>, monday :Date, dayString :String) {
         // fetch personal info
         val preferences = activity!!.getSharedPreferences("mySharedPreferences", 0)
         val namePreference = preferences.getString("perso_name", null)
         val personal = filesIO.readPersonalList()
         var i=0
-        while (i<personal!!.size && personal[i].myName != namePreference.toString()) {i+=1}
+        while (i<personal.size && personal[i].myName != namePreference.toString()) {i+=1}
         val personalInfo = personal[i]
 
         // fetch colle info of the week
         val colleurs = filesIO.readColleursList()
         val collesMaths = filesIO.readCollesMathsList()
         i=0
-        while (i<collesMaths!!.size && collesMaths[i].myGroup != personalInfo.myGroup) {i+=1}
+        while (i<collesMaths.size && collesMaths[i].myGroup != personalInfo.myGroup) {i+=1}
         val colleMaths = collesMaths[i].myColles[monday]
         i=0
-        while (i<colleurs!!.size && colleurs[i].myId != colleMaths) {i+=1}
+        while (i<colleurs.size && colleurs[i].myId != colleMaths) {i+=1}
         val colleMathsData = colleurs[i]
         val collesAutre = filesIO.readCollesAutreList()
         i=0
-        while (i<collesAutre!!.size && collesAutre[i].myGroup != personalInfo.myGroup) {i+=1}
+        while (i<collesAutre.size && collesAutre[i].myGroup != personalInfo.myGroup) {i+=1}
         val colleAutre = collesAutre[i].myColles[monday]
         i=0
         while (i<colleurs.size && colleurs[i].myId == colleAutre) {i+=1}
@@ -78,22 +79,23 @@ class EmploiDuTempsFragment : Fragment() {
         var j=0                        // background color counter
         var begin: Int                 // lesson begin time
         var discipline :String?        // lesson discipline
-        while (i<edtToday.size()) {
+        while (i<edtToday.size) {
             begin = i
             discipline = edtToday[i]
             while (edtToday[i] == discipline) {
                 val textView = activity!!.findViewById<TextView>(resources.getIdentifier("edt_case$i", "id", activity!!.packageName))
+                val rowView = activity!!.findViewById<TextView>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
                 if (colleMathsData.myDay == dayString && colleMathsData.myTime == i) { // if colle maths
                     textView.text = timeToString(i)+" - "+timeToString(i+2)+" : Colle "+colleMathsData.mySubject+" ("+colleMathsData.myName+ ", "+colleMathsData.myPlace+")"
                     if (j%2 == 0) {
-                        textView.setBackgroundColor(Color.parseColor("#ffffff"))
+                        rowView.setBackgroundColor(Color.parseColor("#fafafa"))
                     } else {
-                        textView.setBackgroundColor(Color.parseColor("#aaaaaa"))
+                        rowView.setBackgroundColor(Color.parseColor("#aaaaaa"))
                     }
                     i+=1
-                    val edtCaseColle2  = activity!!.findViewById<TextView>(resources.getIdentifier("edt_case$i", "id", activity!!.packageName))
+                    val edtCaseColle2  = activity!!.findViewById<TextView>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
                     if (j%2 == 0) {
-                        edtCaseColle2.setBackgroundColor(Color.parseColor("#ffffff"))
+                        edtCaseColle2.setBackgroundColor(Color.parseColor("#fafafa"))
                     } else {
                         edtCaseColle2.setBackgroundColor(Color.parseColor("#aaaaaa"))
                     }
@@ -103,14 +105,14 @@ class EmploiDuTempsFragment : Fragment() {
                 if (colleAutreData.myDay == dayString && colleAutreData.myTime == i) { // if colle autre
                     textView.text = timeToString(i)+" - "+timeToString(i+2)+" : Colle "+colleAutreData.mySubject+" ("+colleAutreData.myName+ ", "+colleAutreData.myPlace+")"
                     if (j%2 == 0) {
-                        textView.setBackgroundColor(Color.parseColor("#ffffff"))
+                        rowView.setBackgroundColor(Color.parseColor("#fafafa"))
                     } else {
-                        textView.setBackgroundColor(Color.parseColor("#aaaaaa"))
+                        rowView.setBackgroundColor(Color.parseColor("#aaaaaa"))
                     }
                     i+=1
-                    val edtCaseColle2  = activity!!.findViewById<TextView>(resources.getIdentifier("edt_case$i", "id", activity!!.packageName))
+                    val edtCaseColle2  = activity!!.findViewById<TextView>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
                     if (j%2 == 0) {
-                        edtCaseColle2.setBackgroundColor(Color.parseColor("#ffffff"))
+                        edtCaseColle2.setBackgroundColor(Color.parseColor("#fafafa"))
                     } else {
                         edtCaseColle2.setBackgroundColor(Color.parseColor("#aaaaaa"))
                     }
@@ -118,9 +120,9 @@ class EmploiDuTempsFragment : Fragment() {
                     break
                 }
                 if (j%2 == 0) {
-                    textView.setBackgroundColor(Color.parseColor("#ffffff"))
+                    rowView.setBackgroundColor(Color.parseColor("#fafafa"))
                 } else {
-                    textView.setBackgroundColor(Color.parseColor("#aaaaaa"))
+                    rowView.setBackgroundColor(Color.parseColor("#aaaaaa"))
                 }
                 i+=1
             }
@@ -167,9 +169,10 @@ class EmploiDuTempsFragment : Fragment() {
         var i=0
         while (i <= 22) {
             val textView = activity!!.findViewById<TextView>(resources.getIdentifier("edt_case$i", "id", activity!!.packageName))
+            val rowView = activity!!.findViewById<TableRow>(resources.getIdentifier("edt_row$i", "id", activity!!.packageName))
             i+=1
             textView.text = getString(R.string.empty)
-            textView.setBackgroundColor(Color.parseColor("#ffffff"))
+            rowView.setBackgroundColor(Color.parseColor("#fafafa"))
         }
 
         val edt = filesIO.readEdtList()
@@ -192,29 +195,33 @@ class EmploiDuTempsFragment : Fragment() {
         var j=0
         while (j<dsList.size && dsList[j].myDate != selectedDateCalendarSat.time) {j+=1}
 
+        Log.i("Emploi du temps", "Samedi de la semaine : "+dt.format(selectedDateCalendarSat.time)+". C'est un "+dayOfWeek.format(selectedDateCalendarSat.time))
+
         val edtCase0 = activity!!.findViewById<TextView>(R.id.edt_case0)
         if (j == dsList.size) {
             edtCase0.text = getString(R.string.edt_out_bounds)
         } else {
             val dsWeek = dsList[j]
-            if(dsWeek.myDiscipline == "HOLIDAYS") {
+            if(dsWeek.myDiscipline == "HOLIDAYS" || edt == null) {
                 edtCase0.text = getString(R.string.edt_holidays)
+                val edtCase1 = activity!!.findViewById<TextView>(R.id.edt_case1)
+                edtCase1.text = getString(R.string.edt_holidays2)
             } else {
                 when (dayOfWeek.format(selectedDate.time)) {
                     "Mon" -> { // monday
-                        loadTimetableDisplay(edt!!.myMonday, selectedDateMonday.time, "Mon")
+                        loadTimetableDisplay(edt.myMonday, selectedDateMonday.time, "Mon")
                     }
                     "Tue" -> { // tuesday
-                        loadTimetableDisplay(edt!!.myTuesday, selectedDateMonday.time, "Tue")
+                        loadTimetableDisplay(edt.myTuesday, selectedDateMonday.time, "Tue")
                     }
                     "Wed" -> { // wednesday
-                        loadTimetableDisplay(edt!!.myWednesday, selectedDateMonday.time, "Wed")
+                        loadTimetableDisplay(edt.myWednesday, selectedDateMonday.time, "Wed")
                     }
                     "Thu" -> { // thursday
-                        loadTimetableDisplay(edt!!.myThursday, selectedDateMonday.time, "Thu")
+                        loadTimetableDisplay(edt.myThursday, selectedDateMonday.time, "Thu")
                     }
                     "Fri" -> { // friday
-                        loadTimetableDisplay(edt!!.myFriday, selectedDateMonday.time, "Fri")
+                        loadTimetableDisplay(edt.myFriday, selectedDateMonday.time, "Fri")
                     }
                     "Sat" -> { // saturday
                         if (listOf("A","E","I","O","U").contains(dsWeek.myDiscipline[0].toString())) {
@@ -289,9 +296,10 @@ class EmploiDuTempsFragment : Fragment() {
         }
 
         val selectedDateView = activity?.findViewById<TextView>(R.id.selected_date)
-        selectedDateView?.text = "Emploi du temps du $day/$month"
+        val monthCorr = (month+1).toString()
+        selectedDateView?.text = "Emploi du temps du $day/$monthCorr"
 
-        loadTimetable(dt.parse("$year/$month/$day"))
+        loadTimetable(dt.parse("$year/$monthCorr/$day"))
     }
     //</editor-fold>
 

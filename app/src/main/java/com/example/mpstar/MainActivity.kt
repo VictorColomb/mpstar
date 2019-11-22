@@ -239,7 +239,7 @@ class MainActivity : AppCompatActivity() {
     // Refreshes everything
     fun refreshAll(){
         Log.e("SATAN", "ALL HELL IS ABOUT TO BREAK LOOSE")
-        if (signedIn){
+        if (signedIn) {
             try {
                 presenter.startReadingSpreadsheetStudents()
                 presenter.startReadingSpreadsheetPersonal()
@@ -250,8 +250,8 @@ class MainActivity : AppCompatActivity() {
                 showError(e.toString())
             }
         }
-        else{
-            Toast.makeText(this, "Attempting to Log In...", Toast.LENGTH_LONG).show()
+        else {
+            Log.i("mpstar", "Not signed in, attempting to log in...")
             requestSignIn(RQ_REFRESH_ALL)
         }
     }
@@ -259,7 +259,7 @@ class MainActivity : AppCompatActivity() {
     // Refresh's the Class Plan
     fun refreshPlan(){
         Log.i("MAIN REFRESH", "Attempting to refresh plan")
-        if (signedIn){
+        if (signedIn) {
             try {
                 presenter.startReadingSpreadsheetStudents()
             }
@@ -267,8 +267,9 @@ class MainActivity : AppCompatActivity() {
                 showError(e.toString())
             }
         }
-        else{
-            Toast.makeText(this, "Attempting to Log In...", Toast.LENGTH_LONG).show()
+        else {
+            Log.i("mpstar", "Not signed in, attempting to log in...")
+            Toast.makeText(this, "Attempting to Log In...", Toast.LENGTH_SHORT).show()
             requestSignIn(RQ_REFRESH_PLAN)
         }
     }

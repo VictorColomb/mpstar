@@ -10,13 +10,14 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
+
 class FilesIO(
         val context: Context
 ){
 
     private fun write(fileContents: String, filename:String){
         // Writes parsed data to internal storage
-        Log.i("FILEIO","Writing data to drive")
+        Log.i("FILESIO", "Writing data $filename")
         try {
             val fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE)
             val outputStreamWriter = OutputStreamWriter(fileOutputStream)
@@ -30,7 +31,7 @@ class FilesIO(
         }
     }
 
-    private fun read(filename: String): String{
+    private fun read(filename: String): String?{
         try {
             val stringBuffer = StringBuffer("")
 
@@ -52,11 +53,12 @@ class FilesIO(
 
             return fileContents
         }
+        //catch (ex : NoSuchFileException) {Log.i("FILESIO", "File not found")}
         catch (ex : Exception)
         {
             Toast.makeText(context,"Error Reading Data", Toast.LENGTH_SHORT).show()
             Log.e("FILE ERROR", ex.toString())
-            return ""
+            return null
         }
     }
 
@@ -68,7 +70,7 @@ class FilesIO(
 
     fun readStudentList() : List<Student>{
         val fileContents = read(filenamePlan)
-        return jacksonObjectMapper().readValue(fileContents)
+        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {listOf()}
     }
 
     fun readNamesList() :List<String>{
@@ -88,7 +90,7 @@ class FilesIO(
 
     fun readDSList() :List<DS>{ // Read DS list from file
         val fileContents = read(filenameDS)
-        return jacksonObjectMapper().readValue(fileContents)
+        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {listOf()}
 
         /* FOR TESTING PURPOSES
         val dt = SimpleDateFormat("yyyy/MM/dd", Locale.US)
@@ -104,9 +106,9 @@ class FilesIO(
         write(fileContents, filenameEDT)
     }
 
-    fun readEdtList() : EDT { // Read EDT data from file
+    fun readEdtList() : EDT? { // Read EDT data from file
         val fileContents = read(filenameEDT)
-        return jacksonObjectMapper().readValue(fileContents)
+        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {null}
     }
     //</editor-fold>
 
@@ -114,12 +116,12 @@ class FilesIO(
     //<editor-fold desc="Read and Write Personal data">
     fun writePersonalList(perso : List<Personal>){
         val fileContents = jacksonObjectMapper().writeValueAsString(perso)
-        write(fileContents, filenamePlan)
+        write(fileContents, filenamePersonal)
     }
 
     fun readPersonalList() :List<Personal> {
         val fileContents = read(filenamePersonal)
-        return (jacksonObjectMapper().readValue(fileContents))
+        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {listOf()}
     }
     //</editor-fold>
 
@@ -127,12 +129,12 @@ class FilesIO(
     //<editor-fold desc="Read and Write Colleurs data">
     fun writeColleursList(colleurs: List<Colleurs>){
         val fileContents = jacksonObjectMapper().writeValueAsString(colleurs)
-        write(fileContents, filenamePlan)
+        write(fileContents, filenameColleur)
     }
 
     fun readColleursList() :List<Colleurs> {
         val fileContents = read(filenameColleur)
-        return jacksonObjectMapper().readValue(fileContents)
+        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {listOf()}
     }
     //</editor-fold>
 
@@ -150,12 +152,12 @@ class FilesIO(
 
     fun readCollesMathsList() :List<Colles> {
         val fileContents = read(filenameCM)
-        return jacksonObjectMapper().readValue(fileContents)
+        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {listOf()}
     }
 
     fun readCollesAutreList() :List<Colles> {
         val fileContents = read(filenameCA)
-        return jacksonObjectMapper().readValue(fileContents)
+        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {listOf()}
     }
     //</editor-fold>
 
@@ -167,6 +169,5 @@ class FilesIO(
         const val filenamePersonal : String = "mpStarPerso.dat"
         const val filenameCM : String = "mpStarCM.dat"
         const val filenameCA : String = "mpStarCA.dat"
-
     }
 }

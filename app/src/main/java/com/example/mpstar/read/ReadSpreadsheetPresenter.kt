@@ -26,6 +26,8 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
 
 
     fun loginSuccessful() {
+        Log.i("PRESENTER", "Logged in successfully")
+        view.signedIn = true
         authenticationManager.setUpGoogleAccountCredential()
     }
 
