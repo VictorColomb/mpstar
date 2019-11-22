@@ -34,8 +34,9 @@ class planning_collesFragment : Fragment() {
 
 
     //<editor-fold desc="Load colles">
-    private fun loadColles(selectedDate :Calendar) {
-        Log.i("mpstar", "Would load colles of the week of "+dtmd.format(selectedDate.time))
+    private fun loadColles(selectedDate :Date) {
+        Log.i("mpstar", "Loading colles of the week of "+dtmd.format(selectedDate))
+
     }
     //</editor-fold>
 
@@ -55,7 +56,7 @@ class planning_collesFragment : Fragment() {
             val selectedDateFri = selectedDate.clone() as Calendar
             selectedDateFri.add(Calendar.DAY_OF_MONTH, 5)
             selectedDateView?.text = "Semaine du "+dt.format(selectedDate.time)+" au "+dt.format(selectedDateFri.time)
-            loadColles(selectedDate)
+            loadColles(selectedDate.time)
         }, year, month, day)
         datePicker.show()
     }
@@ -102,6 +103,7 @@ class planning_collesFragment : Fragment() {
         val cFri:Calendar = c.clone() as Calendar
         cFri.add(Calendar.DAY_OF_MONTH, 5)
         collesSelectedDate.text = "Semaine du "+dt.format(c.time)+" au "+dt.format(cFri.time)
+        loadColles(c.time)
     }
     //</editor-fold>
 }

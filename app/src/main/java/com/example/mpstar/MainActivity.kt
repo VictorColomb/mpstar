@@ -17,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.example.mpstar.model.Colles
 import com.example.mpstar.model.Personal
 import com.example.mpstar.model.Student
 import com.example.mpstar.save.FilesIO
@@ -31,6 +32,9 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.ExponentialBackOff
 import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetPresenter
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class MainActivity : AppCompatActivity() {
 
@@ -188,6 +192,18 @@ class MainActivity : AppCompatActivity() {
         Log.i("INFORMATION MAIN", "Calling showRefreshed()")
         showRefreshed()
     }
+
+    fun finishedReadingCollesM(sheet :List<List<Any>>){
+        val df = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        for(i in 1 until sheet.size){
+            val dict : MutableMap<Date, String> = HashMap()
+            for (j in sheet[i].indices){
+                dict[df.parse(sheet[j][0].toString())!!] = 'M'+sheet[j][i].toString()
+            }
+            presenter.collesM.add(Colles(i,dict.toMap()))
+        }
+        filesIO.writeCollesMathsList(presenter.collesM)
+    }
     //</editor-fold>
 
 
@@ -245,6 +261,7 @@ class MainActivity : AppCompatActivity() {
                 presenter.startReadingSpreadsheetPersonal()
                 presenter.startReadingSpreadsheetDS()
                 presenter.startReadingSpreadsheetColleurs()
+                presenter.startReadingSpreadsheetColleM()
             }
             catch(e: Exception){
                 showError(e.toString())

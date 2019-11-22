@@ -88,7 +88,6 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetColleM(){
-        val df = SimpleDateFormat("MM/dd/yyyy")
         collesM.clear()
         val sheet : MutableList<List<Any>> = mutableListOf()
         readSpreadsheetDisposable=
@@ -98,15 +97,8 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                         .doOnError { view.showError(it.message!!) }
                         .subscribe(Consumer {
                             sheet.addAll(it)
-                            view.finishedReadingColleurs()
+                            view.finishedReadingCollesM(sheet)
                         })
-        for(i in 1 until sheet.size){
-            var dict : MutableMap<Date, String> = HashMap<Date,String>()
-            for (j in sheet[i].indices){
-                dict.put(df.parse(sheet[0][j].toString()),'M'+sheet[i][j].toString())
-            }
-            collesM.add(Colles(i,dict.toMap()))
-        }
     }
 
 
