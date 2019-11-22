@@ -17,10 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import com.example.mpstar.model.Colles
-import com.example.mpstar.model.EDT
-import com.example.mpstar.model.Personal
-import com.example.mpstar.model.Student
+import com.example.mpstar.model.*
 import com.example.mpstar.save.FilesIO
 import com.example.mpstar.sheets.AuthenticationManager
 import com.example.mpstar.sheets.SheetsAPIDataSource
@@ -181,12 +178,12 @@ class MainActivity : AppCompatActivity() {
         matchPersonal(presenter.personal)
     }
 
-    fun finishedReadingColleurs(){
-        filesIO.writeColleursList(presenter.colleurs)
+    fun finishedReadingColleurs(colleurs: MutableList<Colleurs>){
+        filesIO.writeColleursList(colleurs)
     }
 
-    fun finishedReadingDS(){
-        filesIO.writeDSList(presenter.ds)
+    fun finishedReadingDS(ds: MutableList<DS>){
+        filesIO.writeDSList(ds)
     }
 
     fun finishedReadingStudents(){
@@ -196,26 +193,28 @@ class MainActivity : AppCompatActivity() {
 
     fun finishedReadingCollesM(sheet :List<List<Any>>){
         val df = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val collesM = mutableListOf<Colles>()
         for(i in 1 until sheet.size){
             val dict : MutableMap<Date, String> = HashMap()
             for (j in sheet[i].indices){
                 dict[df.parse(sheet[j][0].toString())!!] = 'M'+sheet[j][i].toString()
             }
-            presenter.collesM.add(Colles(i,dict.toMap()))
+            collesM.add(Colles(i,dict.toMap()))
         }
-        filesIO.writeCollesMathsList(presenter.collesM)
+        filesIO.writeCollesMathsList(collesM)
     }
 
     fun finishedReadingCollesA(sheet :List<List<Any>>){
         val df = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+        val collesA = mutableListOf<Colles>()
         for(i in 1 until sheet.size){
             val dict : MutableMap<Date, String> = HashMap()
             for (j in sheet[i].indices){
                 dict[df.parse(sheet[j][0].toString())!!] = sheet[j][i].toString()
             }
-            presenter.collesA.add(Colles(i,dict.toMap()))
+            collesA.add(Colles(i,dict.toMap()))
         }
-        filesIO.writeCollesMathsList(presenter.collesA)
+        filesIO.writeCollesMathsList(collesA)
     }
 
     fun finishedReadingEDT(sheet :List<List<Any>>){
