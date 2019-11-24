@@ -30,6 +30,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.ExponentialBackOff
 import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetPresenter
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -82,6 +83,11 @@ class MainActivity : AppCompatActivity() {
             RQ_GOOGLE_SIGN_IN -> {
                 if (resultCode == Activity.RESULT_OK) {
                     presenter.loginSuccessful()
+                    val file = File(filesDir,"mpStarPlan.dat")
+                    if (!file.exists()) {
+                        Log.i("INFORMATION MAIN", "Data file mpStarPlan.dat not found, refreshing everything")
+                        refreshAll()
+                    }
                 }
             }
 
@@ -187,7 +193,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun finishedReadingStudents(){
-        Log.i("INFORMATION MAIN", "Calling showRefreshed()")
         showRefreshed()
     }
 
@@ -305,24 +310,6 @@ class MainActivity : AppCompatActivity() {
         else {
             Log.i("mpstar", "Not signed in, attempting to log in...")
             requestSignIn(RQ_REFRESH_ALL)
-        }
-    }
-
-    // Refresh's the Class Plan
-    fun refreshPlan(){
-        Log.i("MAIN REFRESH", "Attempting to refresh plan")
-        if (signedIn) {
-            try {
-                presenter.startReadingSpreadsheetStudents()
-            }
-            catch(e: Exception){
-                showError(e.toString())
-            }
-        }
-        else {
-            Log.i("mpstar", "Not signed in, attempting to log in...")
-            Toast.makeText(this, "Attempting to Log In...", Toast.LENGTH_SHORT).show()
-            requestSignIn(RQ_REFRESH_PLAN)
         }
     }
 
