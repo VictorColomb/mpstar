@@ -71,7 +71,7 @@ class EmploiDuTempsFragment : Fragment() {
         while (i<collesAutre.size && collesAutre[i].myGroup != personalInfo.myGroup) {i+=1}
         val colleAutre = collesAutre[i].myColles[monday]
         i=0
-        while (i<colleurs.size && colleurs[i].myId == colleAutre) {i+=1}
+        while (i<colleurs.size && colleurs[i].myId != colleAutre) {i+=1}
         val colleAutreData = colleurs[i]
 
         i=0                            // time counter
