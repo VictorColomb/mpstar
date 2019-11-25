@@ -8,6 +8,7 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import java.util.*
 
 
@@ -91,7 +92,7 @@ class NotificationService: Service(
                 // sets the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setColor(resources.getColor(R.color.colorPrimaryDark))
+                .setColor(ContextCompat.getColor(this, R.color.colorPrimaryDark))
                 .setTimeoutAfter(24*3600*1000)
 
         with(NotificationManagerCompat.from(this)){
