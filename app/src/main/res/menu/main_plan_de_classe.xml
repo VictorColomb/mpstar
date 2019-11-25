@@ -7,6 +7,10 @@
         android:icon="@drawable/ic_action_refresh"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_action_share"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/action_orientation"
         android:icon="@drawable/ic_action_orientation"
         app:showAsAction="ifRoom" />

@@ -34,7 +34,7 @@ class NotificationService: Service(
 
         myTitle = intent?.extras?.getString("Title")?:"Lorem Ipsum Dolor"
         myContent = intent?.extras?.getString("Content")?:"Lorem Ipsum Dolor"
-        myContent = intent?.extras?.getString("BigText")?:"Lorem Ipsum Dolor"
+        myBigText = intent?.extras?.getString("BigText")?:"Lorem Ipsum Dolor"
         timeUntilNotification = intent?.extras?.getLong("Time")?: 1000
         notificationID = intent?.extras?.getInt("ID")?: 0
 

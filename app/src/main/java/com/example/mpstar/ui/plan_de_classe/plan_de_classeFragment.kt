@@ -33,6 +33,7 @@ class plan_de_classeFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val mainActivity: MainActivity = this.activity as MainActivity
         when (item.itemId) {
             R.id.action_orientation -> {
                 val orientation = resources.configuration.orientation
@@ -45,7 +46,6 @@ class plan_de_classeFragment : Fragment() {
             }
             R.id.action_refresh -> {
                 if (NetworkInformation.isNetworkAvailable(context)) {
-                    val mainActivity: MainActivity = this.activity as MainActivity
                     try {
                         mainActivity.refreshAll()
                     } catch (ex :Exception) {
@@ -54,6 +54,10 @@ class plan_de_classeFragment : Fragment() {
                 } else {
                     Toast.makeText(context, "Pas de connection à internet...", Toast.LENGTH_SHORT).show()
                 }
+                return true
+            }
+            R.id.action_share -> {
+                mainActivity.sharePDC()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

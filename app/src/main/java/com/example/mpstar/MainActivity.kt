@@ -8,10 +8,16 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
 import android.util.Log
+import android.view.View
+import android.widget.TableLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -33,8 +39,8 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.ExponentialBackOff
 import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
-import java.time.Duration
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -73,7 +79,7 @@ class MainActivity : AppCompatActivity() {
 
 
     //<editor-fold desc="Authentication">
-    fun requestSignIn(requestCode: Int = RQ_GOOGLE_SIGN_IN) {
+    private fun requestSignIn(requestCode: Int = RQ_GOOGLE_SIGN_IN) {
         presenter.startLogin(requestCode)
     }
 
@@ -193,7 +199,7 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    fun makeNotification(notificationTitle: String,notificationContent: String, notificationBigText: String, notificationTime: Int, notificationID : Int){
+    private fun makeNotification(notificationTitle: String,notificationContent: String, notificationBigText: String, notificationTime: Int, notificationID : Int){
         val service:Intent = Intent(this, NotificationService::class.java)
         service.putExtra("Title", notificationTitle)
         service.putExtra("Content", notificationContent)
@@ -207,7 +213,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun prochainesColles() {
+    private fun prochainesColles() {
         //fetch colles data
         val colleurs = filesIO.readColleursList()
         val collesMaths = filesIO.readCollesMathsList()
@@ -233,7 +239,7 @@ class MainActivity : AppCompatActivity() {
         c.add(Calendar.DAY_OF_WEEK, -today + Calendar.MONDAY)
         val thisMonday = dtmd.parse(dtmd.format(c.time))
 
-        if (mesCollesMath.myColles.containsKey(thisMonday)) {
+        if (mesCollesMath.myColles.containsKey(thisMonday!!)) {
             val maColleMaths = mesCollesMath.myColles[thisMonday]
             val colleMathsData = colleurs[
                     colleurs.map { colleur -> colleur.myId }.indexOf(maColleMaths)
@@ -242,10 +248,10 @@ class MainActivity : AppCompatActivity() {
             val days = mapOf("Mon" to 0, "Tue" to 1, "Wed" to 3, "Thu" to 4, "Fri" to 5)
 
             c.time = Date()
-            val myColleDay = c.add(Calendar.DAY_OF_WEEK, days.getValue(colleMathsData.myDay) + Calendar.MONDAY)
-            val myColleTime = dtmd.parse(dtmd.format(myColleDay))
-            val timeUntilColle = myColleTime.time - Date().time
-            val content = "Colle avec " + colleMathsData.myName + " en " + colleMathsData.myPlace + " a " + timeUntilColle
+            c.add(Calendar.DAY_OF_WEEK, days.getValue(colleMathsData.myDay) + Calendar.MONDAY)
+            val myColleTime = dtmd.parse(dtmd.format(c.time))
+            val timeUntilColle = myColleTime!!.time - Date().time
+            val content = "Colle avec " + colleMathsData.myName + " en " + colleMathsData.myPlace + " à " + timeUntilColle
             makeNotification("Colle", "Colle de Maths ce Soir", content,1000, 1)
         }
     }
@@ -392,6 +398,7 @@ class MainActivity : AppCompatActivity() {
     }
     //</editor-fold>
 
+
     //<editor-fold desc="Read Google Sheets">
     // Fetches Personal Info from List of all Info
     private fun matchPersonal(personals: MutableList<Personal>){
@@ -456,6 +463,64 @@ class MainActivity : AppCompatActivity() {
             }
             builder.create().show()
         }
+    }
+    //</editor-fold>
+
+
+    //<editor-fold desc="Share PDC">
+    private fun getBitmapFromView(view :View) :Bitmap {
+        val returnedBitmap = Bitmap.createBitmap(view.width, view.height,Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(returnedBitmap)
+        val bgDrawable = view.background
+        if (bgDrawable!=null) {
+            bgDrawable.draw(canvas)
+        }   else{
+            canvas.drawColor(Color.WHITE)
+        }
+        view.draw(canvas)
+        return returnedBitmap
+    }
+
+    @SuppressLint("SetWorldReadable", "InflateParams")
+    fun sharePDC() {
+        //plan de classe unhighlight cases
+        val pdcCases = students.map {
+            Pair(it.myRow,it.myColumn)
+        }
+        for (case in pdcCases) {
+            val textView = findViewById<TextView>(resources.getIdentifier("seat${case.first}${case.second}", "id", packageName))
+            textView.background = getDrawable(R.drawable.rounded_corner)
+            textView.setTextColor(Color.parseColor("#3f51b5"))
+        }
+
+        val contentView = findViewById<TableLayout>(R.id.PCD_tableLayout)
+        val bitmap = getBitmapFromView(contentView)
+        try {
+            if(Build.VERSION.SDK_INT>=24){
+                try{
+                    val m = StrictMode::class.java.getMethod("disableDeathOnFileUriExposure")
+                    m.invoke(null)
+                }catch(e :Exception){
+                    Log.e("SHARE INTENT", e.toString())
+                }
+            }
+            val file = File(this.externalCacheDir,"planDeClasse.png")
+            val fOut = FileOutputStream(file)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut)
+            fOut.flush()
+            fOut.close()
+            file.setReadable(true, false)
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+            intent.type = "image/png"
+            startActivity(Intent.createChooser(intent, "Partager le plan de classe"))
+        }
+        catch (ex :Exception) {
+            Log.e("SHARE INTENT", ex.toString())
+        }
+
+        showClassPlan()
     }
     //</editor-fold>
 
