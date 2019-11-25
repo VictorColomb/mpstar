@@ -3,7 +3,8 @@ package com.example.mpstar
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.*
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -14,13 +15,12 @@ import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.mpstar.model.*
+import com.example.mpstar.read.ReadSpreadsheetPresenter
 import com.example.mpstar.save.FilesIO
 import com.example.mpstar.sheets.AuthenticationManager
 import com.example.mpstar.sheets.SheetsAPIDataSource
@@ -32,7 +32,6 @@ import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.ExponentialBackOff
-import com.example.mpstar.read.ReadSpreadsheetPresenter
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     // list of all the students in the class
     private lateinit var students: List<Student>
+    private var planCreatedOn :Date? = null
 
     // user's personal info
     private lateinit var perso: Personal
@@ -236,7 +236,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun finishedReadingEDT(sheet :List<List<Any>>){
-        Log.i("TYVFUYRCIYCRYU", sheet.toString())
         val monday = mutableMapOf<Int,String>()
         val tuesday = mutableMapOf<Int,String>()
         val wednesday = mutableMapOf<Int,String>()
@@ -279,11 +278,13 @@ class MainActivity : AppCompatActivity() {
     // DEPRECATED
     private fun showRefreshed(){
         students = presenter.students.toList()
-        filesIO.writeStudentList(students)
+        planCreatedOn = presenter.planCreatedOn
+        filesIO.writeStudentList(Pair(students,planCreatedOn))
         showClassPlan()
     }
 
     // shows class plan
+    @SuppressLint("SetTextI18n")
     private fun showClassPlan(){
         val name = preferences.getString("perso_name", "JEFF")
         val nameSet = preferences.getBoolean("perso_name_isset", false)
@@ -300,6 +301,12 @@ class MainActivity : AppCompatActivity() {
                 textView.setTextColor(Color.parseColor("#3f51b5"))
                 textView.background = getDrawable(R.drawable.rounded_corner)
             }
+        }
+
+        if (planCreatedOn != null) {
+            val dt = SimpleDateFormat("dd/MM/yyyy", Locale.US)
+            val textView = findViewById<TextView>(R.id.pcd_createdOn)
+            textView.text = "Plan de classe crée le "+dt.format(planCreatedOn!!)
         }
     }
 
@@ -393,7 +400,9 @@ class MainActivity : AppCompatActivity() {
 
 
     fun resumePlan() {
-        students = filesIO.readStudentList()
+        val studentList = filesIO.readStudentList()
+        students = studentList.first
+        planCreatedOn = studentList.second
         showClassPlan()
     }
 

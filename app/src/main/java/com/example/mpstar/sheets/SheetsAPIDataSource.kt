@@ -8,6 +8,7 @@ import com.google.api.services.sheets.v4.Sheets
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.text.SimpleDateFormat
+import java.util.*
 
 class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                           private val transport : HttpTransport,
@@ -37,11 +38,21 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                             myLastName = it[0].toString(),
                             myPoints = it[1].toString().toFloat(),
                             myRow = it[2].toString().toInt(),
-                            myColumn = it[3].toString().toInt(),
-                            myPair = it[4].toString().toBoolean()
+                            myColumn = it[3].toString().toInt()
                     )
                 }
                 .toList()
+    }
+
+    fun readSpreadsheetDate(spreadsheetId: String,spreadsheetRange: String) :Observable<String> {
+        return Observable
+                .fromCallable {
+                    sheetsAPI.spreadsheets().values().get(spreadsheetId,spreadsheetRange).execute().getValues()
+                }
+                .flatMapIterable { it }
+                .map{
+                    it[0].toString()
+                }
     }
 
     @SuppressLint("SimpleDateFormat")

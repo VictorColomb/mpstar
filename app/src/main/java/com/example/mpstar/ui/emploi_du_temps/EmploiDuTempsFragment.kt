@@ -3,7 +3,6 @@ package com.example.mpstar.ui.emploi_du_temps
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -278,7 +277,6 @@ class EmploiDuTempsFragment : Fragment() {
     //<editor-fold desc="onCreate, onHiddenChanged and onResume">
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInsatnceState: Bundle?): View? {
-        setHasOptionsMenu(true)
         activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         filesIO = FilesIO(context!!)
         return inflater.inflate(R.layout.fragment_emploi_du_temps, container, false)
@@ -306,28 +304,6 @@ class EmploiDuTempsFragment : Fragment() {
         selectedDateView?.text = "Emploi du temps du $day/$monthCorr"
 
         loadTimetable(dt.parse("$year/$monthCorr/$day"))
-    }
-    //</editor-fold>
-
-
-    //<editor-fold desc="Menu items">
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_turn_screen, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_orientation_turnScreen -> {
-                val orientation = resources.configuration.orientation
-                if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                } else {
-                    activity!!.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-                }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
     //</editor-fold>
 

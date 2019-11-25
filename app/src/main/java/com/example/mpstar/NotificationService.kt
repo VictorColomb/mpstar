@@ -16,11 +16,11 @@ class NotificationService: Service(
 {
     var timer: Timer? = null
     lateinit var timerTask: TimerTask
-    val secondsUntilNotification: Long = 30
+    val secondsUntilNotification: Long = 5
     var myTitle: String = "Title"
     var myContent: String = "Body"
     var notificationID: Int = 0
-    var priority: Int = NotificationCompat.PRIORITY_DEFAULT
+    var priority: Int = NotificationCompat.PRIORITY_HIGH
 
     override fun onBind(intent: Intent?): IBinder? {
         return null

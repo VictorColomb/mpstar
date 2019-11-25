@@ -10,6 +10,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ReadSpreadsheetPresenter( private val view: MainActivity,
@@ -18,11 +20,13 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
 
     private lateinit var readSpreadsheetDisposable : Disposable
     var students : MutableList<Student> = mutableListOf()
+    var planCreatedOn :Date? = null
     var personal : MutableList<Personal> = mutableListOf()
 
-    fun setErrorHandler() {
+    private fun setErrorHandler() {
         RxJavaPlugins.setErrorHandler {
             Log.i("PRESENTER", "Observable reported error while reading spreadsheet")
+            Log.e("PRESENTER", it.toString())
         }
     }
 
@@ -37,6 +41,7 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetStudents(){
+        val df = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         setErrorHandler()
         students.clear()
         readSpreadsheetDisposable=
@@ -49,6 +54,13 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                     students.addAll(it)
                     view.finishedReadingStudents()
                 })
+        readSpreadsheetDisposable=
+                sheetsAPIDataSource.readSpreadsheetDate(spreadsheetId, rangeCreatedDate)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe {
+                            planCreatedOn = df.parse(it.toString())
+                        }
     }
 
     fun startReadingSpreadsheetPersonal(){
@@ -140,5 +152,6 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
         const val rangeCM = "CollesMaths!A2:N"
         const val rangeCA = "CollesAutre!A2:N"
         const val rangeEDT = "EDT!B1:X"
+        const val rangeCreatedDate = "Sheet1!I5"
     }
 }

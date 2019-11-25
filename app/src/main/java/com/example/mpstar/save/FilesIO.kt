@@ -9,6 +9,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.util.*
 
 
 class FilesIO(
@@ -63,19 +64,19 @@ class FilesIO(
     }
 
     //<editor-fold desc="Read and Write Student data">
-    fun writeStudentList(students: List<Student>){
+    fun writeStudentList(students: Pair<List<Student>, Date?>){
         val fileContents = jacksonObjectMapper().writeValueAsString(students)
         write(fileContents, filenamePlan)
     }
 
-    fun readStudentList() : List<Student>{
+    fun readStudentList() : Pair<List<Student>, Date?>{
         val fileContents = read(filenamePlan)
-        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {listOf()}
+        return if (fileContents != null) {jacksonObjectMapper().readValue(fileContents)} else {Pair(listOf(),null)}
     }
 
     fun readNamesList() :List<String>{
         val studentsTemp = readStudentList()
-        return studentsTemp.map {
+        return studentsTemp.first.map {
             it.myName
         }
     }
