@@ -59,36 +59,47 @@ class planning_collesFragment : Fragment() {
         //fetch colles data
         val colleurs = filesIO.readColleursList()
         val collesMaths = filesIO.readCollesMathsList()
-        var i=0
-        while (i<collesMaths.size && collesMaths[i].myGroup != personal!!.myGroup) {i+=1}
-        if (collesMaths[i].myColles.containsKey(selectedDate)) {
-            val colleMaths = collesMaths[i].myColles[selectedDate]
-            i=0
-            while (i<colleurs.size && colleurs[i].myId != colleMaths) {i+=1}
-            val colleMathsData = colleurs[i]
-            val collesAutre = filesIO.readCollesAutreList()
-            i=0
-            while (i<collesAutre.size && collesAutre[i].myGroup != personal!!.myGroup) {i+=1}
-            val colleAutre = collesAutre[i].myColles[selectedDate]
-            i=0
-            while (i<colleurs.size && colleurs[i].myId != colleAutre) {i+=1}
-            val colleAutreData = colleurs[i]
-
-            val days = mapOf("Mon" to "Lundi", "Tue" to "Mardi", "Wed" to "Mercredi", "Thu" to "Jeudi", "Fri" to "Vendredi")
-
-            colleDisplay1.text = "Khôlle "+colleMathsData.mySubject
-            colleDisplay2.text = days[colleMathsData.myDay] + " | " + timeToString(colleMathsData.myTime) + " - " + timeToString(colleMathsData.myTime + 2)
-            colleDisplay3.text = colleMathsData.myName + " (" + colleMathsData.myPlace + ")"
-            colleDisplay4.text = "Khôlle "+colleAutreData.mySubject
-            colleDisplay5.text = days[colleAutreData.myDay] + " | " + timeToString(colleAutreData.myTime) + " - " + timeToString(colleAutreData.myTime + 2)
-            colleDisplay6.text = colleAutreData.myName + " ("+colleAutreData.myPlace + ")"
-        } else {
-            colleDisplay1.text = getString(R.string.pas_colles)
+        val collesAutre = filesIO.readCollesAutreList()
+        if (colleurs.isEmpty() || collesMaths.isEmpty() || collesAutre.isEmpty()) {
+            colleDisplay1.text = getString(R.string.data_error)
             colleDisplay2.text = getString(R.string.empty)
             colleDisplay3.text = getString(R.string.empty)
             colleDisplay4.text = getString(R.string.empty)
             colleDisplay5.text = getString(R.string.empty)
             colleDisplay6.text = getString(R.string.empty)
+        }
+        else {
+
+            var i=0
+            while (i<collesMaths.size && collesMaths[i].myGroup != personal!!.myGroup) {i+=1}
+            if (collesMaths[i].myColles.containsKey(selectedDate)) {
+                val colleMaths = collesMaths[i].myColles[selectedDate]
+                i=0
+                while (i<colleurs.size && colleurs[i].myId != colleMaths) {i+=1}
+                val colleMathsData = colleurs[i]
+                i=0
+                while (i<collesAutre.size && collesAutre[i].myGroup != personal!!.myGroup) {i+=1}
+                val colleAutre = collesAutre[i].myColles[selectedDate]
+                i=0
+                while (i<colleurs.size && colleurs[i].myId != colleAutre) {i+=1}
+                val colleAutreData = colleurs[i]
+
+                val days = mapOf("Mon" to "Lundi", "Tue" to "Mardi", "Wed" to "Mercredi", "Thu" to "Jeudi", "Fri" to "Vendredi")
+
+                colleDisplay1.text = "Khôlle "+colleMathsData.mySubject
+                colleDisplay2.text = days[colleMathsData.myDay] + " | " + timeToString(colleMathsData.myTime) + " - " + timeToString(colleMathsData.myTime + 2)
+                colleDisplay3.text = colleMathsData.myName + " (" + colleMathsData.myPlace + ")"
+                colleDisplay4.text = "Khôlle "+colleAutreData.mySubject
+                colleDisplay5.text = days[colleAutreData.myDay] + " | " + timeToString(colleAutreData.myTime) + " - " + timeToString(colleAutreData.myTime + 2)
+                colleDisplay6.text = colleAutreData.myName + " ("+colleAutreData.myPlace + ")"
+            } else {
+                colleDisplay1.text = getString(R.string.pas_colles)
+                colleDisplay2.text = getString(R.string.empty)
+                colleDisplay3.text = getString(R.string.empty)
+                colleDisplay4.text = getString(R.string.empty)
+                colleDisplay5.text = getString(R.string.empty)
+                colleDisplay6.text = getString(R.string.empty)
+            }
         }
 
     }

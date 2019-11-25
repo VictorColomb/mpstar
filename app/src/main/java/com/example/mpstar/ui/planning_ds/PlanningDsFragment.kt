@@ -48,7 +48,10 @@ class PlanningDsFragment : Fragment() {
         dsText2.text = getString(R.string.empty)
         dsText3.text = getString(R.string.empty)
         dsText4.text = getString(R.string.empty)
-        if (i == dsList.size) { //if no ds found
+        if (dsList.isEmpty()) {
+            dsText1.text = getString(R.string.data_error)
+        }
+        else if (i == dsList.size) { //if no ds found
             dsText1.text = getString(R.string.no_ds_found)
         } else { //if ds found
             val selectedDS = dsList[i]

@@ -45,4 +45,8 @@
     <string name="settings_refresh">Réglages avancés</string>
     <string name="settings_refresh_button">Tout mettre à jour</string>
 
+    <string name="refresh_error">Erreur d\'actualisation</string>
+    <string name="refresh_error_message">Les données n\'ont pas pu être récupérées depuis Google Sheets.\n\nVérifiez que vous êtes connecté(e) et que votre compte Google a accès à la Google spreadsheet pour pouvoir actualiser avec succès.\n\nPour obtenir accès à la Google spreadsheet avec votre compte Google, veuillez contactez les administrateurs.</string>
+    <string name="data_error">Aucune donnée,\nveuillez actualiser.</string>
+
 </resources>

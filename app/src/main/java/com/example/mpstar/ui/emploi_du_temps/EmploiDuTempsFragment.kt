@@ -181,7 +181,6 @@ class EmploiDuTempsFragment : Fragment() {
         }
 
         val edt = filesIO.readEdtList()
-        Log.i("FUCK", edt!!.toString())
         val dsList = filesIO.readDSList()
 
         //get monday of the week
@@ -201,10 +200,11 @@ class EmploiDuTempsFragment : Fragment() {
         var j=0
         while (j<dsList.size && dsList[j].myDate != selectedDateCalendarSat.time) {j+=1}
 
-        Log.i("Emploi du temps", "Samedi de la semaine : "+dt.format(selectedDateCalendarSat.time)+". C'est un "+dayOfWeek.format(selectedDateCalendarSat.time))
-
         val edtCase0 = activity!!.findViewById<TextView>(R.id.edt_case0)
-        if (j == dsList.size || edt == null) {
+        if (edt == null) {
+            edtCase0.text = getString(R.string.data_error)
+        }
+        else if (j == dsList.size) {
             edtCase0.text = getString(R.string.edt_out_bounds)
         } else {
             val dsWeek = dsList[j]

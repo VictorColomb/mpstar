@@ -1,4 +1,4 @@
-package com.jack.royer.kotlintest2.ui.read
+package com.example.mpstar.read
 
 import android.util.Log
 import com.example.mpstar.MainActivity
@@ -8,10 +8,9 @@ import com.example.mpstar.sheets.SheetsAPIDataSource
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
+import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.HashMap
+
 
 class ReadSpreadsheetPresenter( private val view: MainActivity,
                                 private val authenticationManager: AuthenticationManager,
@@ -20,6 +19,12 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     private lateinit var readSpreadsheetDisposable : Disposable
     var students : MutableList<Student> = mutableListOf()
     var personal : MutableList<Personal> = mutableListOf()
+
+    fun setErrorHandler() {
+        RxJavaPlugins.setErrorHandler {
+            Log.i("PRESENTER", "Observable reported error while reading spreadsheet")
+        }
+    }
 
     fun loginSuccessful() {
         Log.i("PRESENTER", "Logged in successfully")
@@ -32,12 +37,14 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetStudents(){
+        setErrorHandler()
         students.clear()
         readSpreadsheetDisposable=
             sheetsAPIDataSource.readSpreadSheet(spreadsheetId, rangeStudents)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError { view.showError(it.message!!) }
+                    .doOnError {
+                        view.refreshFailed(it) }
                 .subscribe(Consumer {
                     students.addAll(it)
                     view.finishedReadingStudents()
@@ -45,12 +52,12 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetPersonal(){
+        setErrorHandler()
         personal.clear()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetPersonal(spreadsheetId, rangePersonal)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError { view.showError(it.message!!) }
                         .subscribe(Consumer {
                             personal.addAll(it)
                             view.finishedReadingPersonal()
@@ -58,12 +65,12 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetDS(){
+        setErrorHandler()
         val ds = mutableListOf<DS>()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetDS(spreadsheetId, rangeDS)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError { view.showError(it.message!!) }
                         .subscribe(Consumer {
                             ds.addAll(it)
                             view.finishedReadingDS(ds)
@@ -71,12 +78,12 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetColleurs(){
+        setErrorHandler()
         val colleurs = mutableListOf<Colleurs>()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetColleurs(spreadsheetId, rangeColleurs)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError { view.showError(it.message!!) }
                         .subscribe(Consumer {
                             colleurs.addAll(it)
                             view.finishedReadingColleurs(colleurs)
@@ -84,12 +91,12 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetColleM(){
+        setErrorHandler()
         val sheet : MutableList<List<Any>> = mutableListOf()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetCM(spreadsheetId, rangeCM)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError { view.showError(it.message!!) }
                         .subscribe(Consumer {
                             sheet.addAll(it)
                             view.finishedReadingCollesM(sheet)
@@ -97,12 +104,12 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetColleA(){
+        setErrorHandler()
         val sheet : MutableList<List<Any>> = mutableListOf()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetCM(spreadsheetId, rangeCA)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError { view.showError(it.message!!) }
                         .subscribe(Consumer {
                             sheet.addAll(it)
                             view.finishedReadingCollesA(sheet)
@@ -110,12 +117,12 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     }
 
     fun startReadingSpreadsheetEDT(){
+        setErrorHandler()
         val sheet : MutableList<List<Any>> = mutableListOf()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetEDT(spreadsheetId, rangeEDT)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError { view.showError(it.message!!) }
                         .subscribe(Consumer {
                             sheet.addAll(it)
                             view.finishedReadingEDT(sheet)

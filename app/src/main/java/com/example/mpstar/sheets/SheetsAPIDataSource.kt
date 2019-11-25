@@ -8,7 +8,6 @@ import com.google.api.services.sheets.v4.Sheets
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.text.SimpleDateFormat
-import java.util.*
 
 class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                           private val transport : HttpTransport,

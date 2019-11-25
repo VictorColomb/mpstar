@@ -3,14 +3,12 @@ package com.example.mpstar
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -29,11 +27,12 @@ import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.ExponentialBackOff
-import com.jack.royer.kotlintest2.ui.read.ReadSpreadsheetPresenter
+import com.example.mpstar.read.ReadSpreadsheetPresenter
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -71,7 +70,6 @@ class MainActivity : AppCompatActivity() {
 
     // Starts Login
     fun launchAuthentication(client: GoogleSignInClient, requestCode: Int) {
-        Log.i("INFORMATION MAIN", "Beginning Authentication")
         startActivityForResult(client.signInIntent, requestCode)
     }
 
@@ -85,7 +83,6 @@ class MainActivity : AppCompatActivity() {
                     presenter.loginSuccessful()
                     val file = File(filesDir,"mpStarPlan.dat")
                     if (!file.exists()) {
-                        Log.i("INFORMATION MAIN", "Data file mpStarPlan.dat not found, refreshing everything")
                         refreshAll()
                     }
                 }
@@ -111,6 +108,9 @@ class MainActivity : AppCompatActivity() {
                         presenter.startReadingSpreadsheetPersonal()
                         presenter.startReadingSpreadsheetDS()
                         presenter.startReadingSpreadsheetColleurs()
+                        presenter.startReadingSpreadsheetColleM()
+                        presenter.startReadingSpreadsheetColleA()
+                        presenter.startReadingSpreadsheetEDT()
                     }
                     catch (e:Exception){
                         showError(e.toString())
@@ -242,6 +242,16 @@ class MainActivity : AppCompatActivity() {
         filesIO.writeEDTList(EDT(monday,tuesday,wednesday,thursday,friday))
     }
 
+    fun refreshFailed(error :Throwable) {
+        Log.e("REFRESH FAILED", error.toString())
+        val builder = AlertDialog.Builder(this)
+        builder
+                .setTitle(getString(R.string.refresh_error))
+                .setMessage(getString(R.string.refresh_error_message))
+                .setPositiveButton(getString(R.string.ok)) { _, _ ->}
+        builder.create().show()
+    }
+
     //</editor-fold>
 
 
@@ -263,12 +273,19 @@ class MainActivity : AppCompatActivity() {
     // shows class plan
     private fun showClassPlan(){
         val name = preferences.getString("perso_name", "JEFF")
+        val nameSet = preferences.getBoolean("perso_name_isset", false)
+        if (!nameSet) {
+            showPopup()
+        }
         for (student in students){
             val textView: TextView = findViewById(resources.getIdentifier("seat" + student.myRow.toString() + student.myColumn.toString(), "id", packageName))
             textView.text = student.myName
             if (student.myName == name) {
-                textView.setBackgroundColor(Color.parseColor("#3f51b5"))
+                textView.background = getDrawable(R.drawable.rounded_corner_inv)
                 textView.setTextColor(Color.parseColor("#ffffff"))
+            } else {
+                textView.setTextColor(Color.parseColor("#3f51b5"))
+                textView.background = getDrawable(R.drawable.rounded_corner)
             }
         }
     }
@@ -332,7 +349,6 @@ class MainActivity : AppCompatActivity() {
                     editor.putBoolean("perso_name_isset", true)
                     editor.commit()
                     resumePlan()
-                    Log.i("mpstar", "Setting name preference to : $selectedName")
                 }
             }.setNeutralButton(R.string.not_again) { _, _ ->
                 val editor = preferences.edit()
@@ -348,10 +364,6 @@ class MainActivity : AppCompatActivity() {
     fun resumePlan() {
         students = filesIO.readStudentList()
         showClassPlan()
-        val nameSet = preferences.getBoolean("perso_name_isset", false)
-        if (!nameSet) {
-            showPopup()
-        }
     }
 
 
@@ -363,9 +375,8 @@ class MainActivity : AppCompatActivity() {
 
     //<editor-fold desc="Miscellaneous">
     //Shows the error
-    fun showError(error: String) {
+    private fun showError(error: String) {
         Log.e("ERROR MAIN", error)
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
     }
 
     companion object{
