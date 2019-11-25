@@ -86,7 +86,8 @@ class NotificationService: Service(
                 .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(myTitle)
                 .setContentText(myContent)
-                .setPriority(priority)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setStyle(NotificationCompat.BigTextStyle()
                         .bigText(myBigText))
                 // sets the intent that will fire when the user taps the notification
