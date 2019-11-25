@@ -133,7 +133,7 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
     fun readSpreadSheetEDT(spreadsheetId: String,
                           spreadsheetRange: String): Single<List<List<Any>>> {
         return Observable
-                .fromCallable{
+                .fromCallable{sheetsAPI.spreadsheets().get(spreadsheetId).isNullOrEmpty()
                     val response = sheetsAPI.spreadsheets().values()
                             .get(spreadsheetId, spreadsheetRange)
                             .execute()

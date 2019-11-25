@@ -3,14 +3,19 @@ package com.example.mpstar
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
@@ -169,11 +174,19 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration!!)
         NavigationUI.setupWithNavController(navigationView, navController)
 
+        // notifications
+        createNotificationChannel()
+
         // initializes late-init classes
         initDependencies()
         filesIO = FilesIO(this)
 
         try{requestSignIn()}catch (ex:Exception){showError(ex.toString())}
+    }
+
+    override fun onStop() {
+        startService(Intent(this, NotificationService::class.java))
+        super.onStop()
     }
     //</editor-fold>
 
@@ -293,6 +306,24 @@ class MainActivity : AppCompatActivity() {
     //</editor-fold>
 
 
+    //<editor-fold desc="Notification">
+    private fun createNotificationChannel(){
+        // Creates the notification channel
+        if(Build.VERSION.SDK_INT >= 26){
+            val name = getString(R.string.channel_name)
+            val desc = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = desc
+            }
+            //registers the channel with the system
+            val notificationManager : NotificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+    //</editor-fold>
+
     //<editor-fold desc="Read Google Sheets">
     // Fetches Personal Info from List of all Info
     private fun matchPersonal(personals: MutableList<Personal>){
@@ -380,6 +411,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object{
+        const val CHANNEL_ID = "10001"
         const val RQ_GOOGLE_SIGN_IN = 999
         const val RQ_REFRESH_PLAN = 998
         const val RQ_REFRESH_ALL = 997
