@@ -34,6 +34,7 @@ import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.ExponentialBackOff
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -65,6 +66,9 @@ class MainActivity : AppCompatActivity() {
 
     // is user signed in
     var signedIn = false
+
+    //date time
+    private val dtmd = SimpleDateFormat("dd/MM/yyyy", Locale.US)
     //</editor-fold>
 
 
@@ -185,8 +189,60 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
-        startService(Intent(this, NotificationService::class.java))
+        prochainesColles()
         super.onStop()
+    }
+
+    fun makeNotification(notificationTitle: String,notificationContent: String, notificationTime: Int, notificationID : Int){
+        val service:Intent = Intent(this, NotificationService::class.java)
+        service.putExtra("Title", notificationTitle)
+        service.putExtra("Content", notificationContent)
+        service.putExtra("Time", notificationTime)
+        service.putExtra("ID", notificationID)
+        startService(service)
+    }
+
+    fun prochainesColles() {
+        //fetch colles data
+        val colleurs = filesIO.readColleursList()
+        val collesMaths = filesIO.readCollesMathsList()
+        val collesAutre = filesIO.readCollesAutreList()
+        val personalAll = filesIO.readPersonalList()
+
+        // fetch personal data
+        val preferences = this.getSharedPreferences("mySharedPreferences", 0)
+        val namePreference = preferences.getString("perso_name", null)
+
+        // gets list of user's colles
+        val personal = personalAll[
+                personalAll.map{personal ->  personal.myName}.indexOf(namePreference)
+        ]
+
+        val mesCollesMath = collesMaths[
+                collesMaths.map { colles -> colles.myGroup }.indexOf(personal.myGroup)
+                ]
+
+        val c = GregorianCalendar.getInstance(Locale.FRANCE)
+        c.time = Date()
+        val today = c.get(Calendar.DAY_OF_WEEK)
+        c.add(Calendar.DAY_OF_WEEK, -today + Calendar.MONDAY)
+        val thisMonday = dtmd.parse(dtmd.format(c.time))
+
+        if (mesCollesMath.myColles.containsKey(thisMonday)) {
+            val maColleMaths = mesCollesMath.myColles[thisMonday]
+            val colleMathsData = colleurs[
+                    colleurs.map { colleur -> colleur.myId }.indexOf(maColleMaths)
+            ]
+
+            val days = mapOf("Mon" to 0, "Tue" to 1, "Wed" to 3, "Thu" to 4, "Fri" to 5)
+
+            c.time = Date()
+            val myColleDay = c.add(Calendar.DAY_OF_WEEK, days.getValue(colleMathsData.myDay) + Calendar.MONDAY)
+            val myColleTime = dtmd.parse(dtmd.format(myColleDay))
+            val timeUntilColle = myColleTime.time - Date().time
+            val content = "Colle avec " + colleMathsData.myName + " en " + colleMathsData.myPlace + " a " + timeUntilColle
+            makeNotification("Colle de Maths", content, 1000, 1)
+        }
     }
     //</editor-fold>
 

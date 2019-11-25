@@ -16,11 +16,11 @@ class NotificationService: Service(
 {
     var timer: Timer? = null
     lateinit var timerTask: TimerTask
-    val secondsUntilNotification: Long = 5
-    var myTitle: String = "Title"
-    var myContent: String = "Body"
-    var notificationID: Int = 0
-    var priority: Int = NotificationCompat.PRIORITY_HIGH
+    private var timeUntilNotification: Long = 0
+    private lateinit var myTitle: String
+    private lateinit var myContent: String
+    private var notificationID: Int = 0
+    var priority: Int = NotificationCompat.PRIORITY_DEFAULT
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -29,6 +29,13 @@ class NotificationService: Service(
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.i(TAG, "On Start Command")
         super .onStartCommand(intent, flags, startId)
+
+        myTitle = intent?.extras?.getString("Title")?:"Lorem Ipsum Dolor"
+        myContent = intent?.extras?.getString("Content")?:"Lorem Ipsum Dolor"
+        timeUntilNotification = intent?.extras?.getLong("Time")?: 1000
+        notificationID = intent?.extras?.getInt("ID")?: 0
+
+
         startTimer()
         return START_STICKY
     }
@@ -48,7 +55,7 @@ class NotificationService: Service(
     fun startTimer(){
         timer = Timer()
         initializeTimerTask()
-        timer!!.schedule(timerTask, secondsUntilNotification * 1000)
+        timer!!.schedule(timerTask, timeUntilNotification)
     }
 
     fun stopTimerTask(){
