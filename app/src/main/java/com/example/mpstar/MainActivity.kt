@@ -193,13 +193,18 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    fun makeNotification(notificationTitle: String,notificationContent: String, notificationTime: Int, notificationID : Int){
+    fun makeNotification(notificationTitle: String,notificationContent: String, notificationBigText: String, notificationTime: Int, notificationID : Int){
         val service:Intent = Intent(this, NotificationService::class.java)
         service.putExtra("Title", notificationTitle)
         service.putExtra("Content", notificationContent)
+        service.putExtra("BigText", notificationBigText)
         service.putExtra("Time", notificationTime)
         service.putExtra("ID", notificationID)
         startService(service)
+    }
+
+    fun nextBDay(){
+
     }
 
     fun prochainesColles() {
@@ -241,7 +246,7 @@ class MainActivity : AppCompatActivity() {
             val myColleTime = dtmd.parse(dtmd.format(myColleDay))
             val timeUntilColle = myColleTime.time - Date().time
             val content = "Colle avec " + colleMathsData.myName + " en " + colleMathsData.myPlace + " a " + timeUntilColle
-            makeNotification("Colle de Maths", content, 1000, 1)
+            makeNotification("Colle", "Colle de Maths ce Soir", content,1000, 1)
         }
     }
     //</editor-fold>

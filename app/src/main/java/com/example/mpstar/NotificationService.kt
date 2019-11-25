@@ -19,8 +19,9 @@ class NotificationService: Service(
     private var timeUntilNotification: Long = 0
     private lateinit var myTitle: String
     private lateinit var myContent: String
+    private lateinit var myBigText: String
     private var notificationID: Int = 0
-    var priority: Int = NotificationCompat.PRIORITY_DEFAULT
+    var priority: Int = NotificationCompat.PRIORITY_HIGH
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -32,6 +33,7 @@ class NotificationService: Service(
 
         myTitle = intent?.extras?.getString("Title")?:"Lorem Ipsum Dolor"
         myContent = intent?.extras?.getString("Content")?:"Lorem Ipsum Dolor"
+        myContent = intent?.extras?.getString("BigText")?:"Lorem Ipsum Dolor"
         timeUntilNotification = intent?.extras?.getLong("Time")?: 1000
         notificationID = intent?.extras?.getInt("ID")?: 0
 
@@ -84,6 +86,8 @@ class NotificationService: Service(
                 .setContentTitle(myTitle)
                 .setContentText(myContent)
                 .setPriority(priority)
+                .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(myBigText))
                 // sets the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
