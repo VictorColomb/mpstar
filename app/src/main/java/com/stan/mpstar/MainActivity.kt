@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.stan.mpstar
 
 import android.annotation.SuppressLint
@@ -213,12 +215,9 @@ class MainActivity : AppCompatActivity() {
         if (!preferences.getBoolean("notifications_birthdays", false)) {return}
 
         //fetch colles data
-        val personalAll = filesIO.readPersonalList()
-
-        val bDays = personalAll.map { it.myBirthday }
+        val bDays = filesIO.readPersonalList().map { it.myBirthday }
 
         // fetch personal data
-        val preferences = this.getSharedPreferences("mySharedPreferences", 0)
         val namePreference = preferences.getString("perso_name", null)
 
 
@@ -246,7 +245,6 @@ class MainActivity : AppCompatActivity() {
         val personalAll = filesIO.readPersonalList()
 
         // fetch personal data
-        val preferences = this.getSharedPreferences("mySharedPreferences", 0)
         val namePreference = preferences.getString("perso_name", null)
 
         // gets list of user's colles
