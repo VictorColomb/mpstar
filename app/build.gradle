@@ -48,23 +48,23 @@ dependencies {
     implementation "com.google.android.gms:play-services-drive:17.0.0"
 
     // Google API client library for Java
-    implementation ('com.google.api-client:google-api-client-android:1.23.0'){
+    implementation ('com.google.api-client:google-api-client-android:1.30.5'){
         exclude group: 'org.apache.httpcomponents'
     }
 
     // Google API sheets
-    implementation('com.google.apis:google-api-services-sheets:v4-rev505-1.23.0') {
+    implementation('com.google.apis:google-api-services-sheets:v4-rev9-1.22.0') {
         exclude group: 'org.apache.httpcomponents'
     }
 
     // Adding RxJava2 support
-    implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
-    implementation "io.reactivex.rxjava2:rxjava:2.1.8"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.15'
 
     implementation 'androidx.core:core:1.1.0'
 
     // Java
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.1"
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.10.1'
     // Debugging
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.1'
 

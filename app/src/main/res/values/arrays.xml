@@ -2,4 +2,35 @@
 
     <string-array name="names" />
 
+    <string-array name="notifications_time">
+        <item>5h00</item>
+        <item>5h15</item>
+        <item>5h30</item>
+        <item>5h45</item>
+        <item>6h00</item>
+        <item>6h15</item>
+        <item>6h30</item>
+        <item>6h45</item>
+        <item>7h00</item>
+        <item>7h15</item>
+        <item>7h30</item>
+        <item>7h45</item>
+        <item>8h00</item>
+        <item>8h15</item>
+        <item>8h30</item>
+        <item>8h45</item>
+        <item>9h00</item>
+        <item>9h15</item>
+        <item>9h30</item>
+        <item>9h45</item>
+        <item>10h00</item>
+        <item>10h15</item>
+        <item>10h30</item>
+        <item>10h45</item>
+        <item>11h00</item>
+        <item>11h15</item>
+        <item>11h30</item>
+        <item>11h45</item>
+        <item>12h00</item>
+    </string-array>
 </resources>
