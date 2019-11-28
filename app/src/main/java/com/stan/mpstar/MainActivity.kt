@@ -201,13 +201,14 @@ class MainActivity : AppCompatActivity() {
         super.onStop()
     }
 
-    private fun makeNotification(notificationTitle: String,notificationContent: String, notificationBigText: String, notificationTime: Long, notificationID : Int){
+    private fun makeNotification(notificationTitle: String,notificationContent: String, notificationBigText: String, notificationTime: Long, notificationID : Int, navDestination: Int){
         val service = Intent(this, NotificationService::class.java)
         service.putExtra("Title", notificationTitle)
         service.putExtra("Content", notificationContent)
         service.putExtra("BigText", notificationBigText)
         service.putExtra("Time", notificationTime)
         service.putExtra("ID", notificationID)
+        service.putExtra("NavDestination", navDestination)
         startService(service)
     }
 
@@ -286,7 +287,7 @@ class MainActivity : AppCompatActivity() {
             var timeUntilColle = myColleTime!!.time - Date().time + notificationTimePreference!!
             if (timeUntilColle > 0) {
                 val content = "Colle avec " + colleMathsData.myName + " en " + colleMathsData.myPlace + " à " + timeToString(colleMathsData.myTime)
-                makeNotification("Colle", "Colle de Maths aujourd'hui", content,timeUntilColle, 1)
+                makeNotification("Colle", "Colle de Maths aujourd'hui", content,timeUntilColle, 1, R.id.nav_planning_colles)
             }
 
             c.time = Date()
@@ -298,7 +299,7 @@ class MainActivity : AppCompatActivity() {
             if (timeUntilColle > 0) {
                 Log.i("NOTIFICATION SERVICE", "Setting notification timer : $timeUntilColle")
                 val content = "Colle avec " + colleAutreData.myName + " en " + colleAutreData.myPlace + " à " + timeToString(colleAutreData.myTime)
-                makeNotification("Colle", "Colle de "+ colleAutreData.mySubject +" aujourd'hui", content,timeUntilColle, 2)
+                makeNotification("Colle", "Colle de "+ colleAutreData.mySubject +" aujourd'hui", content,timeUntilColle, 2, R.id.nav_planning_colles)
             }
         }
     }
