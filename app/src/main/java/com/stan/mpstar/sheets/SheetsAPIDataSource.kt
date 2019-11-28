@@ -8,6 +8,7 @@ import com.google.api.services.sheets.v4.Sheets
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.text.SimpleDateFormat
+import java.util.*
 
 class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                           private val transport : HttpTransport,
@@ -98,6 +99,27 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                             myDuration = it[2].toString(),
                             mySecondDiscipline = it[3].toString(),
                             mySecondDuration = it[4].toString()
+                    )
+                }
+                .toList()
+    }
+
+    fun readSpreadSheetCustom(spreadsheetId: String,
+                          spreadsheetRange: String): Single<List<Notif>> {
+        val df = SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.US)
+        return Observable
+                .fromCallable{
+                    val response = sheetsAPI.spreadsheets().values()
+                            .get(spreadsheetId, spreadsheetRange)
+                            .execute()
+                    response.getValues() }
+                .flatMapIterable { it }
+                .map {
+                    Notif (
+                            myTitle = it[0].toString(),
+                            myTxt = it[1].toString(),
+                            myTime = df.parse(it[2].toString())!!,
+                            myId = it[3].toString().toInt()
                     )
                 }
                 .toList()

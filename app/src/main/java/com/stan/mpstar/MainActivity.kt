@@ -194,6 +194,7 @@ class MainActivity : AppCompatActivity() {
         filesIO = FilesIO(this)
 
         try{requestSignIn()}catch (ex:Exception){showError(ex.toString())}
+        presenter.projectRed()
     }
 
     override fun onStop() {
@@ -308,6 +309,15 @@ class MainActivity : AppCompatActivity() {
     fun finishedReadingPersonal(){
         filesIO.writePersonalList(presenter.personal)
         matchPersonal(presenter.personal)
+    }
+
+    fun finishedReadingRed(notifs:MutableList<Notif>){
+        for (notif in notifs){
+            val timeLeft = notif.myTime.time - Date().time
+            if(timeLeft > 0){
+                makeNotification(notif.myTitle,notif.myTxt,notif.myTxt,timeLeft,notif.myId)
+            }
+        }
     }
 
     fun finishedReadingColleurs(colleurs: MutableList<Colleurs>){

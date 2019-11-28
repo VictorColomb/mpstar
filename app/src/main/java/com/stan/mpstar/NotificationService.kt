@@ -16,14 +16,13 @@ import java.util.*
 class NotificationService: Service(
 )
 {
-    var timer: Timer? = null
-    lateinit var timerTask: TimerTask
+    private var timer: Timer? = null
+    private lateinit var timerTask: TimerTask
     private var timeUntilNotification: Long = 0
     private lateinit var myTitle: String
     private lateinit var myContent: String
     private lateinit var myBigText: String
     private var notificationID: Int = 0
-    var priority: Int = NotificationCompat.PRIORITY_HIGH
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
@@ -72,12 +71,12 @@ class NotificationService: Service(
     private fun initializeTimerTask() {
         timerTask = object : TimerTask() {
             override fun run() {
-                handler.post { makeNotification(myTitle, myContent, notificationID, priority) }
+                handler.post { makeNotification(myTitle, myContent, notificationID) }
             }
         }
     }
 
-    private fun makeNotification(myTitle: String, myContent: String, notificationID: Int, priority: Int){
+    private fun makeNotification(myTitle: String, myContent: String, notificationID: Int){
         /*val intent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }*/

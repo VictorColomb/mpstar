@@ -22,6 +22,7 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     var students : MutableList<Student> = mutableListOf()
     var planCreatedOn :Date? = null
     var personal : MutableList<Personal> = mutableListOf()
+    private var customNotification: MutableList<Notif> = mutableListOf()
 
     private fun setErrorHandler() {
         RxJavaPlugins.setErrorHandler {
@@ -61,6 +62,21 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                         .subscribe {
                             planCreatedOn = df.parse(it.toString())
                         }
+    }
+
+    fun projectRed(){
+        readSpreadsheetDisposable=
+                sheetsAPIDataSource.readSpreadSheetCustom(spreadsheetId, rangeCreatedNotifs)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .doOnError {
+                            view.refreshFailed(it) }
+                        .subscribe(Consumer {
+                            customNotification.addAll(it)
+                            view.finishedReadingRed(customNotification)
+                        })
     }
 
     fun startReadingSpreadsheetPersonal(){
@@ -153,5 +169,6 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
         const val rangeCA = "CollesAutre!A2:N"
         const val rangeEDT = "EDT!B1:X"
         const val rangeCreatedDate = "Sheet1!I5"
+        const val rangeCreatedNotifs = "Sheet1!R78:U80"
     }
 }
