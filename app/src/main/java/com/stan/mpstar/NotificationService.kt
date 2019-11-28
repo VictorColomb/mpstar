@@ -18,7 +18,7 @@ class NotificationService: Service(
     private var timer: Timer? = null
     private lateinit var timerTask: TimerTask
     private var timeUntilNotification: Long = 0
-    private lateinit var myTitle: String
+    private var myTitle: String? = null
     private lateinit var myContent: String
     private lateinit var myBigText: String
     private var myNavDestination: Int = R.id.nav_plan_de_classe
@@ -29,17 +29,16 @@ class NotificationService: Service(
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super .onStartCommand(intent, flags, startId)
+        super.onStartCommand(intent, flags, startId)
 
-        myTitle = intent?.extras?.getString("Title")?:"Lorem Ipsum Dolor"
+        myTitle = intent?.extras?.getString("Title")
         myContent = intent?.extras?.getString("Content")?:"Lorem Ipsum Dolor"
         myBigText = intent?.extras?.getString("BigText")?:"Lorem Ipsum Dolor"
         timeUntilNotification = intent?.extras?.getLong("Time")?: 1000
         notificationID = intent?.extras?.getInt("ID")?: 0
         myNavDestination = intent?.extras?.getInt("NavDestination")?: R.id.nav_plan_de_classe
 
-
-        startTimer()
+        if (myTitle != null) {startTimer()}
         return START_STICKY
     }
 
@@ -65,7 +64,7 @@ class NotificationService: Service(
     private fun initializeTimerTask() {
         timerTask = object : TimerTask() {
             override fun run() {
-                handler.post { makeNotification(myTitle, myContent, notificationID, myNavDestination) }
+                handler.post { makeNotification(myTitle!!, myContent, notificationID, myNavDestination) }
             }
         }
     }

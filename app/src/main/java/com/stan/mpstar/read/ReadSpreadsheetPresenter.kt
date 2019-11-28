@@ -24,17 +24,13 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     var personal : MutableList<Personal> = mutableListOf()
     private var customNotification: MutableList<Notif> = mutableListOf()
 
-    private fun setErrorHandler() {
-        RxJavaPlugins.setErrorHandler {
-            Log.i("PRESENTER", "Observable reported error while reading spreadsheet")
-            Log.e("PRESENTER", it.toString())
-        }
-    }
+    private fun setErrorHandler() {RxJavaPlugins.setErrorHandler {}}
 
     fun loginSuccessful() {
         Log.i("PRESENTER", "Logged in successfully")
         view.signedIn = true
         authenticationManager.setUpGoogleAccountCredential()
+        projectRed()
     }
 
     fun startLogin(requestCode: Int){
@@ -64,15 +60,14 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                         }
     }
 
-    fun projectRed(){
+    private fun projectRed(){
+        setErrorHandler()
         readSpreadsheetDisposable=
                 sheetsAPIDataSource.readSpreadSheetCustom(spreadsheetId, rangeCreatedNotifs)
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeOn(Schedulers.computation())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .doOnError {
-                            view.refreshFailed(it) }
                         .subscribe(Consumer {
                             customNotification.addAll(it)
                             view.finishedReadingRed(customNotification)
@@ -162,13 +157,13 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     companion object {
         const val spreadsheetId = "1VXDSYl2X5oXNXKeYbNrBH8b1zR_nIzqHbRhZaopWgCw"
         const val rangeStudents = "Sheet1!A5:F"
-        const val rangePersonal = "Personal!A2:H"
+        const val rangePersonal = "Personal!A2:I"
         const val rangeDS = "DS!A2:E"
         const val rangeColleurs = "Colleurs!A2:F"
         const val rangeCM = "CollesMaths!A2:N"
         const val rangeCA = "CollesAutre!A2:N"
         const val rangeEDT = "EDT!B1:X"
         const val rangeCreatedDate = "Sheet1!I5"
-        const val rangeCreatedNotifs = "Sheet1!R78:U80"
+        const val rangeCreatedNotifs = "Sheet1!R78:U"
     }
 }

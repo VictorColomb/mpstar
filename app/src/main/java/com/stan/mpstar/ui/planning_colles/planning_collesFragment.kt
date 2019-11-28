@@ -47,7 +47,6 @@ class planning_collesFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun loadColles(selectedDate :Date) {
         Log.i("mpstar", "Loading colles of the week of "+dtmd.format(selectedDate))
-selectedDate
         val colleDisplay1 = activity!!.findViewById<TextView>(R.id.colles_display1)
         val colleDisplay2 = activity!!.findViewById<TextView>(R.id.colles_display2)
         val colleDisplay3 = activity!!.findViewById<TextView>(R.id.colles_display3)

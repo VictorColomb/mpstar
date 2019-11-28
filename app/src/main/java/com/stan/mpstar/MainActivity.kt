@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity() {
 
     // VICCCCCCCCCCCCCCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTOOOOOOOOOOOOOOOOOOOOOOR
     private lateinit var preferences : SharedPreferences
+    private val timeFromPreference = mapOf("5h00" to 18000000, "5h15" to 18900000, "5h30" to 19800000, "5h45" to 20700000, "6h00" to 21600000, "6h15" to 22500000, "6h30" to 23400000, "6h45" to 24300000, "7h00" to 25200000, "7h15" to 26100000, "7h30" to 27000000, "7h45" to 27900000, "8h00" to 28800000, "8h15" to 29700000, "8h30" to 30600000, "8h45" to 31500000, "9h00" to 32400000, "9h15" to 33300000, "9h30" to 34200000, "9h45" to 35100000, "10h00" to 36000000, "10h15" to 36900000, "10h30" to 37800000, "10h45" to 38700000, "11h00" to 39600000, "11h15" to 40500000, "11h30" to 41400000, "11h45" to 42300000, "12h00" to 43200000)
 
     // list of all the students in the class
     private lateinit var students: List<Student>
@@ -194,11 +195,11 @@ class MainActivity : AppCompatActivity() {
         filesIO = FilesIO(this)
 
         try{requestSignIn()}catch (ex:Exception){showError(ex.toString())}
-        presenter.projectRed()
     }
 
     override fun onStop() {
         prochainesColles()
+        nextBDay()
         super.onStop()
     }
 
@@ -213,15 +214,27 @@ class MainActivity : AppCompatActivity() {
         startService(service)
     }
 
-    fun nextBDay(){
+    private fun nextBDay(){
         if (!preferences.getBoolean("notifications_birthdays", false)) {return}
 
-        //fetch colles data
-        val bDays = filesIO.readPersonalList().map { it.myBirthday }
+        val personal = filesIO.readPersonalList()
+        val notificationTimePreference = timeFromPreference[preferences.getString("notifications_time", "7h30")]
 
         // fetch personal data
-        val namePreference = preferences.getString("perso_name", null)
+        val namePreference = preferences.getString("perso_name", "HERVEEEEEEEEE")
 
+        for (e in personal) {
+            if (e.myBirthday.time >= Date().time-notificationTimePreference!!) {
+                val timeUntilBday = dtmd.parse(dtmd.format(e.myBirthday))!!.time - Date().time + notificationTimePreference
+                if (timeUntilBday < 2592000000) {
+                    if (e.myName == namePreference) {
+                        makeNotification("Joyeux anniversaire ${e.myName}!", "", "", timeUntilBday, e.myId+3, R.id.nav_plan_de_classe)
+                    } else {
+                        makeNotification("C'est l'anniversaire de ${e.myName} !", "", "", timeUntilBday, e.myId+3, R.id.nav_plan_de_classe)
+                    }
+                }
+            }
+        }
     }
 
     private fun timeToString(time :Int) :String{
@@ -277,7 +290,6 @@ class MainActivity : AppCompatActivity() {
             ]
 
             val days = mapOf("Mon" to 0, "Tue" to 1, "Wed" to 2, "Thu" to 3, "Fri" to 4)
-            val timeFromPreference = mapOf("5h00" to 18000000, "5h15" to 18900000, "5h30" to 19800000, "5h45" to 20700000, "6h00" to 21600000, "6h15" to 22500000, "6h30" to 23400000, "6h45" to 24300000, "7h00" to 25200000, "7h15" to 26100000, "7h30" to 27000000, "7h45" to 27900000, "8h00" to 28800000, "8h15" to 29700000, "8h30" to 30600000, "8h45" to 31500000, "9h00" to 32400000, "9h15" to 33300000, "9h30" to 34200000, "9h45" to 35100000, "10h00" to 36000000, "10h15" to 36900000, "10h30" to 37800000, "10h45" to 38700000, "11h00" to 39600000, "11h15" to 40500000, "11h30" to 41400000, "11h45" to 42300000, "12h00" to 43200000)
 
             val notificationTimePreference = timeFromPreference[preferences.getString("notifications_time", "7h30")]
 
@@ -288,7 +300,7 @@ class MainActivity : AppCompatActivity() {
             var timeUntilColle = myColleTime!!.time - Date().time + notificationTimePreference!!
             if (timeUntilColle > 0) {
                 val content = "Colle avec " + colleMathsData.myName + " en " + colleMathsData.myPlace + " à " + timeToString(colleMathsData.myTime)
-                makeNotification("Colle", "Colle de Maths aujourd'hui", content,timeUntilColle, 1, R.id.nav_planning_colles)
+                makeNotification("Colle", "Colle de Maths aujourd'hui", content, timeUntilColle, 1, R.id.nav_planning_colles)
             }
 
             c.time = Date()
@@ -296,11 +308,9 @@ class MainActivity : AppCompatActivity() {
             c.add(Calendar.DAY_OF_WEEK, days.getValue(colleAutreData.myDay))
             myColleTime = dtmd.parse(dtmd.format(c.time))
             timeUntilColle = myColleTime!!.time - Date().time + notificationTimePreference
-            Log.i("NOTIFICATION SERVICE", "Creating notification for kholle de autre avec ${colleAutreData.myName} à ${timeToString(colleAutreData.myTime)} en ${colleAutreData.myName}")
             if (timeUntilColle > 0) {
-                Log.i("NOTIFICATION SERVICE", "Setting notification timer : $timeUntilColle")
                 val content = "Colle avec " + colleAutreData.myName + " en " + colleAutreData.myPlace + " à " + timeToString(colleAutreData.myTime)
-                makeNotification("Colle", "Colle de "+ colleAutreData.mySubject +" aujourd'hui", content,timeUntilColle, 2, R.id.nav_planning_colles)
+                makeNotification("Colle", "Colle de "+ colleAutreData.mySubject +" aujourd'hui", content, timeUntilColle, 2, R.id.nav_planning_colles)
             }
         }
     }
@@ -317,7 +327,7 @@ class MainActivity : AppCompatActivity() {
         for (notif in notifs){
             val timeLeft = notif.myTime.time - Date().time
             if(timeLeft > 0){
-                makeNotification(notif.myTitle,notif.myTxt,notif.myTxt,timeLeft,notif.myId)
+                makeNotification(notif.myTitle,notif.myTxt,notif.myTxt,timeLeft,notif.myId, R.id.nav_plan_de_classe)
             }
         }
     }
@@ -440,15 +450,14 @@ class MainActivity : AppCompatActivity() {
 
     //<editor-fold desc="Notification">
     private fun createNotificationChannel(){
-        // Creates the notification channel
         if(Build.VERSION.SDK_INT >= 26){
+            Log.i("NOTIFICATION SERVICE", "Creating notification channel")
             val name = getString(R.string.channel_name)
             val desc = getString(R.string.channel_description)
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
                 description = desc
             }
-            //registers the channel with the system
             val notificationManager : NotificationManager =
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)

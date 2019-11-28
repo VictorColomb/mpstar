@@ -58,7 +58,8 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
     @SuppressLint("SimpleDateFormat")
     fun readSpreadSheetPersonal(spreadsheetId: String,
                           spreadsheetRange: String): Single<List<Personal>> {
-        val df = SimpleDateFormat("MM/dd")
+        val df = SimpleDateFormat("yyyy/MM/dd")
+        val year = SimpleDateFormat("yyyy")
         return Observable
                 .fromCallable{
                     val response = sheetsAPI.spreadsheets().values()
@@ -68,14 +69,15 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                 .flatMapIterable { it }
                 .map {
                     Personal(
-                            myName = it[0].toString(),
-                            myLastName = it[1].toString(),
-                            myBirthday = df.parse(it[2].toString())!!,
-                            myOption = it[3].toString(),
-                            myLanguage = it[4].toString(),
-                            myGroup = it[5].toString().toInt(),
-                            myGroupInfo = it[6].toString().toInt(),
-                            myGroupTD = it[7].toString().toInt()
+                            myId = it[0].toString().toInt(),
+                            myName = it[1].toString(),
+                            myLastName = it[2].toString(),
+                            myBirthday = df.parse(year.format(Date())+"/"+it[3].toString())!!,
+                            myOption = it[4].toString(),
+                            myLanguage = it[5].toString(),
+                            myGroup = it[6].toString().toInt(),
+                            myGroupInfo = it[7].toString().toInt(),
+                            myGroupTD = it[8].toString().toInt()
                     )
                 }
                 .toList()
@@ -106,7 +108,7 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
 
     fun readSpreadSheetCustom(spreadsheetId: String,
                           spreadsheetRange: String): Single<List<Notif>> {
-        val df = SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.US)
+        val df = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US)
         return Observable
                 .fromCallable{
                     val response = sheetsAPI.spreadsheets().values()
