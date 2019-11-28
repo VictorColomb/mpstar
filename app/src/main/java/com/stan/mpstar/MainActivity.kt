@@ -220,9 +220,6 @@ class MainActivity : AppCompatActivity() {
         // fetch personal data
         val namePreference = preferences.getString("perso_name", null)
 
-
-
-
     }
 
     private fun timeToString(time :Int) :String{
@@ -283,21 +280,25 @@ class MainActivity : AppCompatActivity() {
             val notificationTimePreference = timeFromPreference[preferences.getString("notifications_time", "7h30")]
 
             c.time = Date()
+            c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
             c.add(Calendar.DAY_OF_WEEK, days.getValue(colleMathsData.myDay))
             var myColleTime = dtmd.parse(dtmd.format(c.time))
             var timeUntilColle = myColleTime!!.time - Date().time + notificationTimePreference!!
             if (timeUntilColle > 0) {
                 val content = "Colle avec " + colleMathsData.myName + " en " + colleMathsData.myPlace + " à " + timeToString(colleMathsData.myTime)
-                makeNotification("Colle", "Colle de Maths ce Soir", content,timeUntilColle, 1)
+                makeNotification("Colle", "Colle de Maths aujourd'hui", content,timeUntilColle, 1)
             }
 
             c.time = Date()
-            c.add(Calendar.DAY_OF_WEEK, days.getValue(colleMathsData.myDay))
+            c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            c.add(Calendar.DAY_OF_WEEK, days.getValue(colleAutreData.myDay))
             myColleTime = dtmd.parse(dtmd.format(c.time))
             timeUntilColle = myColleTime!!.time - Date().time + notificationTimePreference
+            Log.i("NOTIFICATION SERVICE", "Creating notification for kholle de autre avec ${colleAutreData.myName} à ${timeToString(colleAutreData.myTime)} en ${colleAutreData.myName}")
             if (timeUntilColle > 0) {
+                Log.i("NOTIFICATION SERVICE", "Setting notification timer : $timeUntilColle")
                 val content = "Colle avec " + colleAutreData.myName + " en " + colleAutreData.myPlace + " à " + timeToString(colleAutreData.myTime)
-                makeNotification("Colle", "Colle de "+ colleAutreData.mySubject +" ce Soir", content,timeUntilColle, 2)
+                makeNotification("Colle", "Colle de "+ colleAutreData.mySubject +" aujourd'hui", content,timeUntilColle, 2)
             }
         }
     }
