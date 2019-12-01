@@ -1,10 +1,8 @@
 package com.stan.mpstar.ui.planning_ds
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,11 +31,8 @@ class PlanningDsFragment : Fragment() {
 
 
     //<editor-fold desc="Load DS from date sent by the DatePicker">
-    @SuppressLint("SetTextI18n")
     private fun loadPlanningDs(selectedDate :Calendar) {
-        Log.i("mpstar", "Loading planning de colles for "+selectedDate.time.toString())
         val dsList = filesIO.readDSList()
-        Log.i("mpstar", "Got DS list from FilesIO : $dsList")
         var i=0
         while (i<dsList.size && dsList[i].myDate != selectedDate.time) {i+=1}
         val dsText1 = activity!!.findViewById<TextView>(R.id.dsText1)
@@ -59,18 +54,24 @@ class PlanningDsFragment : Fragment() {
                 dsText1.text = getString(R.string.holidays)
             } else {
                 if (listOf("A","E","I","O","U").contains(selectedDS.myDiscipline[0].toString())) {
-                    dsText1.text = "Devoir d'"+selectedDS.myDiscipline
+                    val tempString = "Devoir d'"+selectedDS.myDiscipline
+                    dsText1.text = tempString
                 } else {
-                    dsText1.text = "Devoir de "+selectedDS.myDiscipline
+                    val tempString = "Devoir de "+selectedDS.myDiscipline
+                    dsText1.text = tempString
                 }
-                dsText2.text = "Durée : "+selectedDS.myDuration
+                val tempString2 = "Durée : "+selectedDS.myDuration
+                dsText2.text = tempString2
                 if (selectedDS.mySecondDiscipline != "FALSE") {
                     if (listOf("A","E","I","O","U").contains(selectedDS.mySecondDiscipline[0].toString())) {
-                        dsText3.text = "Devoir d'"+selectedDS.mySecondDiscipline
+                        val tempString ="Devoir d'"+selectedDS.mySecondDiscipline
+                        dsText3.text = tempString
                     } else {
-                        dsText3.text = "Devoir de "+selectedDS.mySecondDiscipline
+                        val tempString = "Devoir de "+selectedDS.mySecondDiscipline
+                        dsText3.text = tempString
                     }
-                    dsText4.text = "Durée : "+selectedDS.mySecondDuration
+                    val tempString3 = "Durée : "+selectedDS.mySecondDuration
+                    dsText4.text = tempString3
                 }
             }
         }
@@ -79,7 +80,6 @@ class PlanningDsFragment : Fragment() {
 
 
     //<editor-fold desc="DatePicker popup">
-    @SuppressLint("SetTextI18n")
     private fun selectDate() {
         val selectedDateView = activity?.findViewById<TextView>(R.id.dsSelectedDate)
         val datePicker = DatePickerDialog(context!!, { _, syear, smonth, sday ->
@@ -89,7 +89,8 @@ class PlanningDsFragment : Fragment() {
             while (dayOfWeek.format(selectedDate.time) != "Sat") {
                 selectedDate.add(Calendar.DAY_OF_MONTH, 1)
             }
-            selectedDateView?.text = "Devoir du "+dt.format(selectedDate.time)
+            val tempString = "Devoir du "+dt.format(selectedDate.time)
+            selectedDateView?.text = tempString
             loadPlanningDs(selectedDate)
         }, year, month, day)
         datePicker.show()
@@ -113,7 +114,6 @@ class PlanningDsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_planning_ds, container, false)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
@@ -122,7 +122,8 @@ class PlanningDsFragment : Fragment() {
             selectDate()
         }
         val collesSelectedDate = activity!!.findViewById<TextView>(R.id.dsSelectedDate)
-        collesSelectedDate.text = "Devoir du "+dt.format(c.time)
+        val tempString = "Devoir du "+dt.format(c.time)
+        collesSelectedDate.text = tempString
         loadPlanningDs(c)
     }
     //</editor-fold>

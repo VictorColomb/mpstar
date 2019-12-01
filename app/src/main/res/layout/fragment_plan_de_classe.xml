@@ -33,7 +33,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/seat00"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -46,7 +45,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat01"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -59,7 +57,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat02"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -72,7 +69,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat03"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -96,7 +92,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/seat10"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -108,7 +103,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat11"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -120,7 +114,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat12"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -132,7 +125,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat13"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -149,7 +141,6 @@
                         android:layout_margin="20dp" />
 
                     <TextView
-                        android:id="@+id/seat04"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -162,7 +153,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat05"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -175,7 +165,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat06"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -188,7 +177,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat07"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -201,7 +189,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat08"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -221,7 +208,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/seat20"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -233,7 +219,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat21"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -245,7 +230,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat22"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -257,7 +241,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat23"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -274,7 +257,6 @@
                         android:layout_margin="20dp" />
 
                     <TextView
-                        android:id="@+id/seat14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -286,7 +268,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat15"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -298,7 +279,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -310,7 +290,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat17"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -322,7 +301,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -341,7 +319,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/seat30"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -353,7 +330,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat31"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -365,7 +341,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat32"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -377,7 +352,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat33"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -394,7 +368,6 @@
                         android:layout_margin="20dp" />
 
                     <TextView
-                        android:id="@+id/seat24"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -406,7 +379,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat25"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -418,7 +390,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat26"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -430,7 +401,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat27"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -442,7 +412,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat28"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -461,7 +430,6 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/seat40"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -474,7 +442,6 @@
                         android:visibility="invisible" />
 
                     <TextView
-                        android:id="@+id/seat41"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -486,7 +453,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat42"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -498,7 +464,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat43"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -515,7 +480,6 @@
                         android:layout_margin="20dp" />
 
                     <TextView
-                        android:id="@+id/seat34"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -527,7 +491,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat35"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -539,7 +502,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat36"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -551,7 +513,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat37"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"
@@ -563,7 +524,6 @@
                         android:textColor="#3F51B5" />
 
                     <TextView
-                        android:id="@+id/seat38"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="3dp"

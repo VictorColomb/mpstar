@@ -1,10 +1,8 @@
 package com.stan.mpstar.ui.planning_colles
 
-import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +16,7 @@ import com.stan.mpstar.save.FilesIO
 import java.text.SimpleDateFormat
 import java.util.*
 
-class planning_collesFragment : Fragment() {
+class PlanningCollesFragment : Fragment() {
 
     //<editor-fold desc="Variables">
     private lateinit var filesIO : FilesIO
@@ -44,9 +42,7 @@ class planning_collesFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun loadColles(selectedDate :Date) {
-        Log.i("mpstar", "Loading colles of the week of "+dtmd.format(selectedDate))
         val colleDisplay1 = activity!!.findViewById<TextView>(R.id.colles_display1)
         val colleDisplay2 = activity!!.findViewById<TextView>(R.id.colles_display2)
         val colleDisplay3 = activity!!.findViewById<TextView>(R.id.colles_display3)
@@ -84,12 +80,18 @@ class planning_collesFragment : Fragment() {
 
                 val days = mapOf("Mon" to "Lundi", "Tue" to "Mardi", "Wed" to "Mercredi", "Thu" to "Jeudi", "Fri" to "Vendredi")
 
-                colleDisplay1.text = "Khôlle "+colleMathsData.mySubject
-                colleDisplay2.text = days[colleMathsData.myDay] + " | " + timeToString(colleMathsData.myTime) + " - " + timeToString(colleMathsData.myTime + 2)
-                colleDisplay3.text = colleMathsData.myName + " (" + colleMathsData.myPlace + ")"
-                colleDisplay4.text = "Khôlle "+colleAutreData.mySubject
-                colleDisplay5.text = days[colleAutreData.myDay] + " | " + timeToString(colleAutreData.myTime) + " - " + timeToString(colleAutreData.myTime + 2)
-                colleDisplay6.text = colleAutreData.myName + " ("+colleAutreData.myPlace + ")"
+                var tempString = "Khôlle "+colleMathsData.mySubject
+                colleDisplay1.text = tempString
+                tempString = days[colleMathsData.myDay] + " | " + timeToString(colleMathsData.myTime) + " - " + timeToString(colleMathsData.myTime + 2)
+                colleDisplay2.text = tempString
+                tempString = colleMathsData.myName + " (" + colleMathsData.myPlace + ")"
+                colleDisplay3.text = tempString
+                tempString = "Khôlle "+colleAutreData.mySubject
+                colleDisplay4.text = tempString
+                tempString = days[colleAutreData.myDay] + " | " + timeToString(colleAutreData.myTime) + " - " + timeToString(colleAutreData.myTime + 2)
+                colleDisplay5.text = tempString
+                tempString = colleAutreData.myName + " ("+colleAutreData.myPlace + ")"
+                colleDisplay6.text = tempString
             } else {
                 colleDisplay1.text = getString(R.string.pas_colles)
                 colleDisplay2.text = getString(R.string.empty)
@@ -105,7 +107,6 @@ class planning_collesFragment : Fragment() {
 
 
     //<editor-fold desc="Select date popup">
-    @SuppressLint("SetTextI18n")
     private fun selectDate() {
         val selectedDateView = activity?.findViewById<TextView>(R.id.collesSelectedDate)
         val datePicker = DatePickerDialog(context!!, { _, syear, smonth, sday ->
@@ -118,7 +119,8 @@ class planning_collesFragment : Fragment() {
             }
             val selectedDateFri = selectedDate.clone() as Calendar
             selectedDateFri.add(Calendar.DAY_OF_MONTH, 5)
-            selectedDateView?.text = "Semaine du "+dt.format(selectedDate.time)+" au "+dt.format(selectedDateFri.time)
+            val tempString = "Semaine du "+dt.format(selectedDate.time)+" au "+dt.format(selectedDateFri.time)
+            selectedDateView?.text = tempString
             loadColles(selectedDate.time)
         }, year, month, day)
         datePicker.show()
@@ -149,7 +151,6 @@ class planning_collesFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_planning_colles, container, false)
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
@@ -165,7 +166,8 @@ class planning_collesFragment : Fragment() {
         val collesSelectedDate = activity!!.findViewById<TextView>(R.id.collesSelectedDate)
         val cFri:Calendar = c.clone() as Calendar
         cFri.add(Calendar.DAY_OF_MONTH, 5)
-        collesSelectedDate.text = "Semaine du "+dt.format(c.time)+" au "+dt.format(cFri.time)
+        val tempString = "Semaine du "+dt.format(c.time)+" au "+dt.format(cFri.time)
+        collesSelectedDate.text = tempString
         loadColles(dtmd.parse(dtmd.format(c.time))!!)
     }
     //</editor-fold>
