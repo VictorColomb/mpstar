@@ -197,11 +197,11 @@ class MainActivity : AppCompatActivity() {
         try{requestSignIn()}catch (ex:Exception){showError(ex.toString())}
     }
 
-    override fun onStop() {
-        prochainesColles()
-        nextBDay()
-        super.onStop()
-    }
+    //override fun onStop() {
+        //prochainesColles()
+        //nextBDay()
+        //super.onStop()
+    //}
 
     private fun makeNotification(notificationTitle: String,notificationContent: String, notificationBigText: String, notificationTime: Long, notificationID : Int, navDestination: Int){
         val service = Intent(this, NotificationService::class.java)
