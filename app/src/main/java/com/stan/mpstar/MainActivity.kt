@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity() {
     private fun initDependencies() {
         val signInOptions: GoogleSignInOptions =
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        //.requestScopes(Scope(SheetsScopes.SPREADSHEETS_READONLY))
+                        .requestScopes(Scope(SheetsScopes.SPREADSHEETS_READONLY))
                         //.requestScopes(Scope(SheetsScopes.SPREADSHEETS))
                         //.requestScopes(Drive.SCOPE_FILE)
                         .requestEmail()
