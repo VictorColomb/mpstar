@@ -5,13 +5,16 @@
     <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_action_refresh"
+        android:title="@string/refresh_button"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_action_share"
+        android:title="@string/share_button"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_orientation"
         android:icon="@drawable/ic_action_orientation"
+        android:title="@string/refresh_button"
         app:showAsAction="ifRoom" />
 </menu>

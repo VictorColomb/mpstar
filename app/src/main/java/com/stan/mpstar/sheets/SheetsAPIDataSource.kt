@@ -1,10 +1,9 @@
 package com.stan.mpstar.sheets
 
-import android.annotation.SuppressLint
-import com.stan.mpstar.model.*
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.services.sheets.v4.Sheets
+import com.stan.mpstar.model.*
 import io.reactivex.Observable
 import io.reactivex.Single
 import java.text.SimpleDateFormat
@@ -55,11 +54,10 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                 }
     }
 
-    @SuppressLint("SimpleDateFormat")
     fun readSpreadSheetPersonal(spreadsheetId: String,
                           spreadsheetRange: String): Single<List<Personal>> {
-        val df = SimpleDateFormat("yyyy/MM/dd")
-        val year = SimpleDateFormat("yyyy")
+        val df = SimpleDateFormat("yyyy/MM/dd", Locale.US)
+        val year = SimpleDateFormat("yyyy", Locale.US)
         return Observable
                 .fromCallable{
                     val response = sheetsAPI.spreadsheets().values()
@@ -83,10 +81,9 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                 .toList()
     }
 
-    @SuppressLint("SimpleDateFormat")
     fun readSpreadSheetDS(spreadsheetId: String,
                                 spreadsheetRange: String): Single<List<DS>> {
-        val df = SimpleDateFormat("MM/dd/yyyy")
+        val df = SimpleDateFormat("MM/dd/yyyy", Locale.US)
         return Observable
                 .fromCallable{
                     val response = sheetsAPI.spreadsheets().values()
@@ -149,7 +146,6 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                 .toList()
     }
 
-    @SuppressLint("SimpleDateFormat")
     fun readSpreadSheetCM(spreadsheetId: String,
                                 spreadsheetRange: String): Single<List<List<Any>>> {
         return Observable
@@ -163,7 +159,6 @@ class SheetsAPIDataSource(private val authManager : AuthenticationManager,
                 .toList()
     }
 
-    @SuppressLint("SimpleDateFormat")
     fun readSpreadSheetEDT(spreadsheetId: String,
                           spreadsheetRange: String): Single<List<List<Any>>> {
         return Observable

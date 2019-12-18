@@ -10,7 +10,7 @@ import com.stan.mpstar.MainActivity
 import com.stan.mpstar.NetworkInformation
 import com.stan.mpstar.R
 
-class plan_de_classeFragment : Fragment() {
+class PlanDeClasseFragment : Fragment() {
 
     //<editor-fold desc="onCreateView and onResume">
     override fun onCreateView(inflater: LayoutInflater,

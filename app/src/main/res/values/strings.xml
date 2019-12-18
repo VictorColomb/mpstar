@@ -1,31 +1,21 @@
 <resources>
     <string name="app_name">MP* Stan</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">MP* Stan</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Réglages</string>
-    <string name="action_refresh">Rafraîchir</string>
 
     <string name="menu_plan_de_classe">Plan de Classe</string>
     <string name="menu_planning_ds">Planning des DS</string>
     <string name="menu_planning_colles">Planning des khôlles</string>
-    <string name="menu_pokedex">Pokédex</string>
     <string name="menu_emploi_du_temps">Emploi du temps</string>
-    <string name="title_activity_settings">Settings</string>
     <string name="colles_groupe">Groupe de Colle : </string>
-    <string name="colle1">Khôlle 1</string>
-    <string name="colle2">Khôlle 2</string>
     <string name="pas_colles">Pas de colles cette semaine !</string>
 
     <string name="available" />
     <string name="welcome" />
     <string name="empty" />
     <string name="ok">OK</string>
-    <string name="cancel">Annuler</string>
     <string name="not_again">Ne plus demander</string>
-    <string name="name_spinner">Nom</string>
 
     <string name="holidays">Pas de DS cette semaine, c\'est les vacances !</string>
     <string name="no_ds_found">Pas de DS trouvé pour cette date…</string>
@@ -35,22 +25,21 @@
     <string name="edt_holidays2">c\'est les vacances !</string>
 
     <!-- SETTINGS -->
-    <string name="settings_notifications_header">Notifications</string>
-    <string name="settings_notifications_activated">Activer les notifications</string>
+    <string name="settings_notifications_activated">Activer les notifications (À venir…)</string>
     <string name="settings_notifications_birthdays">Anniversaires</string>
     <string name="settings_notifications_colles">Khôlles</string>
-    <string name="settings_perso">Informations personnelles</string>
+    <string name="settings_perso">Notifications (À venir…)</string>
     <string name="settings_perso_name">Nom</string>
     <string name="preferences">Préférences</string>
     <string name="select_date">Changer</string>
-    <string name="settings_refresh">Réglages avancés</string>
-    <string name="settings_refresh_button">Tout mettre à jour</string>
     <string name="settings_notification_time">Heure de notification</string>
-    <string name="settings_notification_time_message">À quelle heure voulez-vous être notifié(e) ?</string>
 
     <string name="refresh_error">Erreur d\'actualisation</string>
     <string name="refresh_error_message">Les données n\'ont pas pu être récupérées depuis Google Sheets.\n\nVérifiez que vous êtes connecté(e) et que votre compte Google a accès à la Google spreadsheet pour pouvoir actualiser avec succès.\n\nPour obtenir accès à la Google spreadsheet avec votre compte Google, veuillez contactez les administrateurs.</string>
     <string name="data_error">Aucune donnée,\nveuillez actualiser.</string>
+
+    <string name="refresh_button">Refresh Button</string>
+    <string name="share_button">Share Button</string>
 
     <!-- Notifications -->
     <string name="channel_name">MpStar</string>

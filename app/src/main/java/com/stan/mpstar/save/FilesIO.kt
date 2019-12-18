@@ -1,11 +1,10 @@
 package com.stan.mpstar.save
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
-import com.stan.mpstar.model.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.stan.mpstar.model.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
@@ -18,7 +17,6 @@ class FilesIO(
 
     private fun write(fileContents: String, filename:String){
         // Writes parsed data to internal storage
-        Log.i("FILESIO", "Writing data $filename")
         try {
             val fileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE)
             val outputStreamWriter = OutputStreamWriter(fileOutputStream)
@@ -28,7 +26,6 @@ class FilesIO(
         }
         catch (ex: Exception){
             Toast.makeText(context,"Error Saving Data", Toast.LENGTH_SHORT).show()
-            Log.e("FILE ERROR", ex.toString())
         }
     }
 
@@ -54,13 +51,7 @@ class FilesIO(
 
             return fileContents
         }
-        //catch (ex : NoSuchFileException) {Log.i("FILESIO", "File not found")}
-        catch (ex : Exception)
-        {
-            Toast.makeText(context,"Error Reading Data", Toast.LENGTH_SHORT).show()
-            Log.e("FILE ERROR", ex.toString())
-            return null
-        }
+        catch (ex : Exception) {return null}
     }
 
     //<editor-fold desc="Read and Write Student data">

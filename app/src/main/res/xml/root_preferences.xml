@@ -12,6 +12,7 @@
         <SwitchPreference
             android:defaultValue="false"
             android:disableDependentsState="false"
+            android:enabled="false"
             android:key="notifications_activated"
             android:title="@string/settings_notifications_activated" />
         <CheckBoxPreference

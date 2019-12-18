@@ -1,6 +1,5 @@
 package com.stan.mpstar.read
 
-import android.util.Log
 import com.stan.mpstar.MainActivity
 import com.stan.mpstar.model.*
 import com.stan.mpstar.sheets.AuthenticationManager
@@ -27,7 +26,6 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
     private fun setErrorHandler() {RxJavaPlugins.setErrorHandler {}}
 
     fun loginSuccessful() {
-        Log.i("PRESENTER", "Logged in successfully")
         view.signedIn = true
         authenticationManager.setUpGoogleAccountCredential()
         projectRed()
@@ -46,7 +44,7 @@ class ReadSpreadsheetPresenter( private val view: MainActivity,
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                     .doOnError {
-                        view.refreshFailed(it) }
+                        view.refreshFailed() }
                 .subscribe(Consumer {
                     students.addAll(it)
                     view.finishedReadingStudents()
