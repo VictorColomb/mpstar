@@ -51,12 +51,7 @@ class FilesIO(
 
             return fileContents
         }
-        catch (ex : NoSuchFileException) {return null}
-        catch (ex : Exception)
-        {
-            Toast.makeText(context,"Error Reading Data", Toast.LENGTH_SHORT).show()
-            return null
-        }
+        catch (ex : Exception) {return null}
     }
 
     //<editor-fold desc="Read and Write Student data">

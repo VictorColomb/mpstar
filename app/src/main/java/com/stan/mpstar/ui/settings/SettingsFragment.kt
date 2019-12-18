@@ -25,7 +25,7 @@ class SettingsFragment : Fragment() {
 
     class SettingsFragmentInside : PreferenceFragmentCompat() {
         private var filesIO: FilesIO? = null
-        override fun onCreatePreferences(savedInstanceState: Bundle, rootKey: String) {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             preferenceManager.sharedPreferencesName = "mySharedPreferences"
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
             val preferences = Objects.requireNonNull<FragmentActivity>(activity).getSharedPreferences("mySharedPreferences", 0)

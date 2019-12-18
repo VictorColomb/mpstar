@@ -25,10 +25,10 @@
     <string name="edt_holidays2">c\'est les vacances !</string>
 
     <!-- SETTINGS -->
-    <string name="settings_notifications_activated">Activer les notifications</string>
+    <string name="settings_notifications_activated">Activer les notifications (À venir…)</string>
     <string name="settings_notifications_birthdays">Anniversaires</string>
     <string name="settings_notifications_colles">Khôlles</string>
-    <string name="settings_perso">Informations personnelles</string>
+    <string name="settings_perso">Notifications (À venir…)</string>
     <string name="settings_perso_name">Nom</string>
     <string name="preferences">Préférences</string>
     <string name="select_date">Changer</string>

@@ -25,11 +25,13 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.Scope
 import com.google.android.material.navigation.NavigationView
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.ExponentialBackOff
+import com.google.api.services.sheets.v4.SheetsScopes
 import com.stan.mpstar.model.*
 import com.stan.mpstar.read.ReadSpreadsheetPresenter
 import com.stan.mpstar.save.FilesIO
@@ -57,7 +59,6 @@ class MainActivity : AppCompatActivity() {
     //class for interacting with google sheets
     private lateinit var presenter : ReadSpreadsheetPresenter
 
-    // VICCCCCCCCCCCCCCCCCCCCCCCCCCTTTTTTTTTTTTTTTTTTTTOOOOOOOOOOOOOOOOOOOOOOR
     private lateinit var preferences : SharedPreferences
 
     // list of all the students in the class
@@ -129,7 +130,7 @@ class MainActivity : AppCompatActivity() {
     private fun initDependencies() {
         val signInOptions: GoogleSignInOptions =
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        //.requestScopes(Scope(SheetsScopes.SPREADSHEETS_READONLY))
+                        .requestScopes(Scope(SheetsScopes.SPREADSHEETS_READONLY))
                         //.requestScopes(Scope(SheetsScopes.SPREADSHEETS))
                         //.requestScopes(Drive.SCOPE_FILE)
                         .requestEmail()
@@ -194,6 +195,11 @@ class MainActivity : AppCompatActivity() {
         service.putExtra("ID", notificationID)
         service.putExtra("NavDestination", R.id.nav_plan_de_classe)
         startService(service)
+    }
+
+    override fun onResume(){
+        super.onResume()
+        showWelcomeMessage()
     }
 
     //</editor-fold>
@@ -287,8 +293,11 @@ class MainActivity : AppCompatActivity() {
     // adds the user welcome message
     private fun showWelcomeMessage(){
         val welcome = findViewById<TextView>(R.id.welcome_string)
-        val tempString = "Salutations\n" + perso.myName
-        welcome.text = tempString
+        if (welcome != null) {
+            val persoName = preferences.getString("perso_name", "")
+            val tempString = "Salutations\n$persoName"
+            welcome.text = tempString
+        }
     }
 
     // DEPRECATED
@@ -353,7 +362,6 @@ class MainActivity : AppCompatActivity() {
         for (personal in personals){
             if(personal.myName == myName){
                 perso = personal
-                showWelcomeMessage()
                 return
             }
         }
